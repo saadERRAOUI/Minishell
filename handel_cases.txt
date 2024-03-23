@@ -1,0 +1,3 @@
+every command inside "" without a flage and the command should not
+preceded or ended by space or other with spaces.
+
