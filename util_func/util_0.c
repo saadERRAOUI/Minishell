@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   util_0.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 18:01:05 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/03/23 18:09:39 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/03/24 02:46:11 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,22 @@ int	ft_strlen(char *str)
 	while (str[i])
 		i++;
 	return (i);
+}
+
+char    *ft_strchr(const char *s, int c)
+{
+        char    character;
+
+        character = (char) c;
+        if (character == '\0' && s)
+                return ((char *)(s + ft_strlen(s)));
+        while (*s)
+        {
+                if (*s == (char)character)
+                        return ((char *)s);
+                s++;
+        }
+        if (character == '\0')
+                return ((char *)s);
+        return (NULL);
 }
