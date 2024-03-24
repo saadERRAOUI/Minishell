@@ -6,39 +6,12 @@
 /*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 23:54:50 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/03/24 03:35:08 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/03/24 03:38:17 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_strlen(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-		i++;
-	return (i);
-}
-
-char    *ft_strchr(const char *s, int c)
-{
-        char    character;
-
-        character = (char) c;
-        if (character == '\0' && s)
-                return ((char *)(s + ft_strlen(s)));
-        while (*s)
-        {
-                if (*s == (char)character)
-                        return ((char *)s);
-                s++;
-        }
-        if (character == '\0')
-                return ((char *)s);
-        return (NULL);
-}
 /*
 	@AUTHOR	: Saad ERRAOUI
 	@PROTO	: int	getToken(char **ps, char *es, char **q, char **eq);
