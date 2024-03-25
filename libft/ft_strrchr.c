@@ -1,29 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   util_0.c                                           :+:      :+:    :+:   */
+/*   ft_strrchr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/23 18:01:05 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/03/25 00:48:12 by hibouzid         ###   ########.fr       */
+/*   Created: 2023/11/01 12:13:56 by hibouzid          #+#    #+#             */
+/*   Updated: 2023/11/15 12:31:17 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./../minishell.h"
+#include "libft.h"
 
-int ft_strcmp(char *s1, char *s2)
+char	*ft_strrchr(const char *s, int c)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	while (s1[i] || s2[i])
+	if (s && (unsigned char)c == 0)
+		return (ft_strlen(s) + (char *)s);
+	i = ft_strlen(s);
+	while (i >= 0)
 	{
-		if (s1[i] != s2[i])
-		{
-			return (s1[i] - s2[i]);
-		}
-		i++;
+		if (s[i] == (unsigned char)c)
+			return ((char *)s + i);
+		i--;
 	}
 	return (0);
 }
