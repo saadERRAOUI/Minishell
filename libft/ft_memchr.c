@@ -1,28 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   util_0.c                                           :+:      :+:    :+:   */
+/*   ft_memchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/23 18:01:05 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/03/25 00:48:12 by hibouzid         ###   ########.fr       */
+/*   Created: 2023/11/02 11:24:35 by hibouzid          #+#    #+#             */
+/*   Updated: 2023/11/02 12:07:14 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./../minishell.h"
+#include "libft.h"
 
-int ft_strcmp(char *s1, char *s2)
+void	*ft_memchr(const void *s, int c, size_t n)
 {
-	int i;
+	size_t			i;
+	unsigned char	*sr;
 
 	i = 0;
-	while (s1[i] || s2[i])
+	sr = (unsigned char *)s;
+	while (i < n)
 	{
-		if (s1[i] != s2[i])
-		{
-			return (s1[i] - s2[i]);
-		}
+		if (sr[i] == (unsigned char)c)
+			return ((void *)s + i);
 		i++;
 	}
 	return (0);

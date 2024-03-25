@@ -1,28 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   util_0.c                                           :+:      :+:    :+:   */
+/*   ft_memcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/23 18:01:05 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/03/25 00:48:12 by hibouzid         ###   ########.fr       */
+/*   Created: 2023/11/03 11:28:18 by hibouzid          #+#    #+#             */
+/*   Updated: 2023/11/03 11:49:55 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./../minishell.h"
+#include "libft.h"
 
-int ft_strcmp(char *s1, char *s2)
+int	ft_memcmp(const void *s1, const void *s2, size_t n)
 {
-	int i;
+	size_t			i;
+	unsigned char	*ss1;
+	unsigned char	*ss2;
 
 	i = 0;
-	while (s1[i] || s2[i])
+	ss1 = (unsigned char *)s1;
+	ss2 = (unsigned char *)s2;
+	while (i < n)
 	{
-		if (s1[i] != s2[i])
-		{
-			return (s1[i] - s2[i]);
-		}
+		if (ss1[i] != ss2[i])
+			return (ss1[i] - ss2[i]);
 		i++;
 	}
 	return (0);
