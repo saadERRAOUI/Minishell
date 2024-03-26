@@ -1,29 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   util_0.c                                           :+:      :+:    :+:   */
+/*   ft_lstclear_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/23 18:01:05 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/03/25 00:48:12 by hibouzid         ###   ########.fr       */
+/*   Created: 2023/11/10 15:14:58 by hibouzid          #+#    #+#             */
+/*   Updated: 2023/11/18 12:19:10 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./../minishell.h"
+#include "libft.h"
 
-int ft_strcmp(char *s1, char *s2)
+void	ft_lstclear(t_list **lst, void (*del)(void *))
 {
-	int i;
+	t_list	*ptr;
+	t_list	*tmp;
 
-	i = 0;
-	while (s1[i] || s2[i])
+	if (!*lst || !del)
+		return ;
+	ptr = *lst;
+	while (ptr)
 	{
-		if (s1[i] != s2[i])
-		{
-			return (s1[i] - s2[i]);
-		}
-		i++;
+		tmp = ptr;
+		ptr = ptr->next;
+		ft_lstdelone(tmp, del);
 	}
-	return (0);
+	*lst = 0;
 }

@@ -1,29 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   util_0.c                                           :+:      :+:    :+:   */
+/*   ft_toupper.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/23 18:01:05 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/03/25 00:48:12 by hibouzid         ###   ########.fr       */
+/*   Created: 2023/11/03 10:33:39 by hibouzid          #+#    #+#             */
+/*   Updated: 2023/11/03 10:39:36 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./../minishell.h"
+#include "libft.h"
 
-int ft_strcmp(char *s1, char *s2)
+int	ft_toupper(int c)
 {
-	int i;
+	unsigned char	f;
 
-	i = 0;
-	while (s1[i] || s2[i])
-	{
-		if (s1[i] != s2[i])
-		{
-			return (s1[i] - s2[i]);
-		}
-		i++;
-	}
-	return (0);
+	f = (unsigned char)c;
+	if (f >= 'a' && f <= 'z')
+		return (c - 32);
+	return (c);
 }

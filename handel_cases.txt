@@ -1,3 +1,130 @@
 every command inside "" without a flage and the command should not
 preceded or ended by space or other with spaces.
 
+
+/*
+	@AUTHOR	: hicham bouzid
+	@DESC	: explenation how to work every function gived in
+				the part on function  allowed to use.
+	@DATE	: 24-03-2024
+*/
+
+readline: A library function for reading a line of text from a 
+			user in a command-line interface, providing features
+			like line editing and history.
+
+rl_clear_history: Clears the history list maintained by the 
+					readline library.
+
+rl_on_new_line: Notifies readline that the cursor has moved 
+				to a new line.
+
+rl_replace_line: Replaces the contents of the current input
+			line with the given text.
+
+rl_redisplay: Asks readline to redisplay the current input line.
+
+add_history: Adds a line to the history list.
+
+printf: Standard C function for formatted output to stdout.
+
+malloc: Allocates memory dynamically on the heap.
+
+free: Frees memory allocated dynamically with malloc.
+
+write: Writes data to a file descriptor, often used
+		for writing to files or standard output.
+
+access: Checks accessibility permissions for a file.
+
+open: Opens a file or creates a new one.
+
+read: Reads data from a file descriptor into a buffer.
+
+close: Closes a file descriptor.
+
+fork: Creates a new process by duplicating the existing process.
+
+wait: Suspends execution of the calling process until one of its
+		child processes terminates.
+
+waitpid: Waits for a specific child process to terminate.
+
+wait3: Similar to waitpid but provides more information about
+		child processes.
+
+wait4: Similar to waitpid but provides more information about child
+		processes.
+
+signal: Sets a function to handle a specific signal.
+
+sigaction: Another way to set a function to handle a specific signal,
+			with more options and control than signal.
+
+sigemptyset: Initializes an empty set of signals.
+
+sigaddset: Adds a signal to a set of signals.
+
+kill: Sends a signal to a process or a group of processes.
+
+exit: Terminates the calling process.
+
+getcwd: Gets the current working directory.
+
+chdir: Changes the current working directory.
+
+stat: Retrieves information about a file (file attributes) by 
+		filename.
+
+lstat: Similar to stat but does not follow symbolic links.
+
+fstat: Retrieves information about a file (file attributes) by file
+		descriptor.
+
+unlink: Deletes a name from the filesystem.
+
+execve: Executes a program.
+
+dup: Duplicates an open file descriptor.
+
+dup2: Duplicates an open file descriptor to a specified new file
+		descriptor.
+
+pipe: Creates an inter-process communication channel.
+
+opendir: Opens a directory stream.
+
+readdir: Reads a directory stream.
+
+closedir: Closes a directory stream.
+
+strerror: Returns a string describing the error code passed to it.
+
+perror: Prints a descriptive error message to stderr.
+
+isatty: Checks whether a file descriptor refers to a terminal.
+
+ttyname: Returns the name of the terminal device.
+
+ttyslot: Returns the number of the slot in the terminal
+			information table.
+
+ioctl: Performs I/O control operations on file descriptors.
+
+getenv: Retrieves the value of an environment variable.
+
+tcsetattr: Sets the parameters associated with a terminal.
+
+tcgetattr: Gets the parameters associated with a terminal.
+
+tgetent: Initializes the termcap database.
+
+tgetflag: Retrieves a boolean capability from the termcap database.
+
+tgetnum: Retrieves a numeric capability from the termcap database.
+
+tgetstr: Retrieves a string capability from the termcap database.
+
+tgoto: Transmits a terminal capability string with parameters.
+
+tputs: Outputs a string to the terminal.
