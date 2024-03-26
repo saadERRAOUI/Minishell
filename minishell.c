@@ -6,7 +6,7 @@
 /*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 17:15:26 by serraoui          #+#    #+#             */
-/*   Updated: 2024/03/26 07:23:30 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/03/26 08:11:29 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,11 +98,10 @@ t_env_v *env_init(char **env)
 	while (env[i])
 	{
 		node = (t_env_v *)malloc(sizeof(t_env_v));
-		s = ft_split(env[i], '=');
+		s = ft_split_2(env[i], '=');
 		if (s) //! fix else case !
 			(*node) = (t_env_v){s[0], s[1], NULL};
 		ft_lstadd_back(&envs, node);
-		free(s[2]);
 		free(s);
 		i++;
 	}
@@ -125,9 +124,10 @@ int main(int ac, char **av, char **env)
 		return (0); //! hanle error if env unsetted
 	// ft_env(envs);				   // env
 	ft_export(&envs, "TEST=test"); // export TEST=test
-	// system("leaks a.out");
+	system("leaks a.out");
 	// printf("\n== *SET* =============================================================\n\n");
 	ft_env(envs);
+	// *im' fexed the leaks until here
 	// ft_unset(&envs, "TEST"); // unset TEST
 	// printf("\n== *UNSET* ===========================================================\n\n");
 	// ft_env(envs);

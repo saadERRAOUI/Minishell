@@ -6,7 +6,7 @@
 /*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 01:40:47 by serraoui          #+#    #+#             */
-/*   Updated: 2024/03/26 07:23:10 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/03/26 08:10:23 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,9 @@ void ft_export(t_env_v **env, char *s) //! Can be returning boolean //
 
 	if (!s)
 		return;
-	_s = ft_split(s, '=');
+	_s = ft_split_2(s, '=');
 	if (!_s)
 		return;
-	free(_s[2]);
 	node = malloc(sizeof(t_env_v));
 	if (!node)
 		return;
@@ -31,4 +30,5 @@ void ft_export(t_env_v **env, char *s) //! Can be returning boolean //
 		(*node) = (t_env_v){_s[0], _s[1], NULL};
 		ft_lstadd_back(env, node);
 	}
+	free(_s);
 }

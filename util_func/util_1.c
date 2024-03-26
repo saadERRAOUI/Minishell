@@ -6,7 +6,7 @@
 /*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 23:43:26 by serraoui          #+#    #+#             */
-/*   Updated: 2024/03/26 06:59:42 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/03/26 08:00:42 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,4 +169,23 @@ void ft_list_remove_if(t_env_v **begin_list, void *data_ref, int (*cmp)(char *, 
         node = (*begin_list);
         ft_list_remove_if(&(node->next), data_ref, cmp);
     }
+}
+char **ft_split_2(char *s, char c)
+{
+	char **ptr;
+	int i;
+	char *str;
+
+	ptr = malloc(sizeof(char *) * 2);
+	if (!ptr)
+		return (NULL);
+	// todo! change strdup by ft_strdup
+	str = strdup(s);
+	i = 0;
+	while (str[i] != '=' && str[i])
+		i++;
+	ptr[0] = str;
+	str[i++] = 0;
+	ptr[1] = (str + i);
+	return (ptr);
 }

@@ -6,7 +6,7 @@
 /*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 18:02:20 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/03/26 07:22:32 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/03/26 07:59:33 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,5 +40,7 @@ char **ft_split(char const *s, char c);
 
 char	**ft_free(int index, char **ptr);
 int	ft_strleen(char **ptr);
+char **ft_split_2(char *s, char c);
+
 
 #endif
