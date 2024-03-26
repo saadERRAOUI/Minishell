@@ -27,4 +27,11 @@ int ft_strcmp(char *s1, char *s2);
 // int     ft_strlen(char *str);
 // char    *ft_strchr(const char *s, int c);
 
+typedef struct s_env_v
+{
+	char *key;
+	char *value;
+	struct s_env_v *next;
+} t_env_v;
+
 #endif
