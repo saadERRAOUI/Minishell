@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   util_0.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 18:01:05 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/03/26 01:02:03 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/03/26 06:59:58 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,4 +59,16 @@ char    *ft_strchr(const char *s, int c)
         if (character == '\0')
                 return ((char *)s);
         return (NULL);
+}
+
+int	ft_strleen(char **ptr)
+{
+	int	i;
+
+	i = 0;
+	if (!ptr)
+		return (0);
+	while (ptr[i])
+		i++;
+	return (i);
 }

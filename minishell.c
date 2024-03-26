@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 17:15:26 by serraoui          #+#    #+#             */
-/*   Updated: 2024/03/26 01:51:37 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/03/26 07:23:30 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,12 @@
 		String.
 	@DATE	: 24-03-2024
 */
-int	getToken(char **ps, char *es, char **q, char **eq)
+int getToken(char **ps, char *es, char **q, char **eq)
 {
-	char	*whitespaces;
-	char	*symbols;
-	char	*s;
-	int		ret;
+	char *whitespaces;
+	char *symbols;
+	char *s;
+	int ret;
 
 	whitespaces = " \t\r\v\n";
 	symbols = "<|>;&()";
@@ -35,38 +35,38 @@ int	getToken(char **ps, char *es, char **q, char **eq)
 		(*q) = s;
 	ret = (*s);
 	/* //TODO : MAKE THIS CODE IN A SEPERATE FUNC - START */
-	switch(*s)
+	switch (*s)
 	{
-		case 0:
-			break;
-		case '|':
-		case '(':
-		case ')':
-		case '&':
-		case ':':
+	case 0:
+		break;
+	case '|':
+	case '(':
+	case ')':
+	case '&':
+	case ':':
+		s++;
+		break;
+	case '>':
+		s++;
+		if (*s == '>')
+		{
+			ret = '+';
 			s++;
-			break;
-		case '>':
+		}
+		break;
+	case '<':
+		s++;
+		if (*s == '<')
+		{
+			ret = '-';
 			s++;
-			if (*s == '>')
-			{
-				ret = '+';
-				s++;
-			}
-			break;
-		case '<':
+		}
+		break;
+	default:
+		ret = 'a';
+		while (s < es && !ft_strchr(whitespaces, (*s)) && !ft_strchr(symbols, (*s)))
 			s++;
-			if (*s == '<')
-			{
-				ret = '-';
-				s++;
-			}
-			break;
-		default:
-			ret = 'a';
-			while (s < es && !ft_strchr(whitespaces, (*s)) && !ft_strchr(symbols, (*s)))
-				s++;
-			break;
+		break;
 	}
 	/* //TODO : MAKE THIS CODE IN A SEPERATE FUNC - END */
 	if (eq)
@@ -84,60 +84,62 @@ int	getToken(char **ps, char *es, char **q, char **eq)
 		an each node contains 1 env var defined by a (key, value) params.
 	@DATE	: 25-03-2024
 */
-t_env_v	*env_init(char **env)
+t_env_v *env_init(char **env)
 {
-	t_env_v	*envs;
-	t_env_v	*node;
-	char	**s;
+	t_env_v *envs;
+	t_env_v *node;
+	int i;
+	char **s;
 
 	if (!env)
 		return (NULL);
-	envs = (t_env_v *)malloc(sizeof(t_env_v));
 	envs = NULL;
-	while (*env)
+	i = 0;
+	while (env[i])
 	{
 		node = (t_env_v *)malloc(sizeof(t_env_v));
-		s = ft_split((*env), '=');
-		// printf("%s -> %s\n", s[0], s[1]);
+		s = ft_split(env[i], '=');
 		if (s) //! fix else case !
 			(*node) = (t_env_v){s[0], s[1], NULL};
 		ft_lstadd_back(&envs, node);
+		free(s[2]);
 		free(s);
-		env++;	
+		i++;
 	}
-	return (envs);		
+	return (envs);
 }
 
 int main(int ac, char **av, char **env)
 {
-	t_env_v	*envs;
+	t_env_v *envs;
 	t_env_v *check;
 
 	envs = env_init(env);
 	// *TEST PURPOSE
-	//printf("\n===============================================================\n\n");
+	// printf("\n===============================================================\n\n");
 	// while((*env)) {
 	// 	printf("%s\n", (*env));
-	// 	env++;		
+	// 	env++;
 	// }
 	if (!envs)
-		return (0); //!hanle error if env unsetted
-	ft_env(envs); //env
-	ft_export(&envs, "TEST=test");//export TEST=test
-	printf("\n== *SET* =============================================================\n\n");
+		return (0); //! hanle error if env unsetted
+	// ft_env(envs);				   // env
+	ft_export(&envs, "TEST=test"); // export TEST=test
+	// system("leaks a.out");
+	// printf("\n== *SET* =============================================================\n\n");
 	ft_env(envs);
-	ft_unset(&envs, "TEST");//unset TEST
-	printf("\n== *UNSET* ===========================================================\n\n");
-	ft_env(envs);
+	// ft_unset(&envs, "TEST"); // unset TEST
+	// printf("\n== *UNSET* ===========================================================\n\n");
+	// ft_env(envs);
 	// *TEST PURPOSE
-	//check = envs;
+	// check = envs;
 	// while(check->next) {
 	// 	printf("%s -> %s\n", check->key, check->value);
-	// 	check = check->next;		
+	// 	check = check->next;
 	// }
 }
 
-//!TEST
+//! TEST
 // int main()
 // {
 // 	char *ps = "  >>sad|test";
@@ -149,7 +151,7 @@ int main(int ac, char **av, char **env)
 
 // 	token = getToken(&ps, es, &q, &eq);
 // 	printf("next token %i %c\n", token, token);
-	
+
 // 	token = getToken(&ps, es, &q, &eq);
 // 	printf("next token %i %c\n", token, token);
 // 	return (0);

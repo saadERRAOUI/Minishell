@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   util_1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 23:43:26 by serraoui          #+#    #+#             */
-/*   Updated: 2024/03/25 21:51:16 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/03/26 06:59:42 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,62 +34,97 @@ int      count_words(char const *s, char c)
         return (chuncks_number);
 }
 
-static int      count_word_len(char const *s, char c)
+int	is_separator(char s, char c)
 {
-        int     i;
-        int     len;
-
-        i = 0;
-        len = 0;
-        while (s[i] && s[i] == c)
-                i++;
-        while (s[i] && s[i] != c)
-        {
-                len++;
-                i++;
-        }
-        return (len);
+	return ((c == s));
 }
 
-static void     *free_allocation(char **s, int count)
+int	ft_count(char const *s, char c)
 {
-        while (count >= 0)
-        {
-                free(s[count]);
-                count--;
-        }
-        free(s);
-        s = NULL;
-        return (NULL);
+	int	count;
+	int	i;
+
+	i = 0;
+	count = 0;
+	if (!is_separator(s[0], c))
+	{
+		count++;
+		i++;
+	}
+	while (s[i])
+	{
+		if (is_separator(s[i], c) && s[i + 1] && !is_separator(s[i + 1], c))
+			count++;
+		i++;
+	}
+	return (count);
 }
 
-char    **ft_split(char const *s, char c)
+char	**ft_free(int index, char **ptr)
 {
-        char    **str;
-        int             offset;
-        int             j;
-        int             i;
+	if (index == 0)
+	{
+		free(ptr);
+		return (0);
+	}
+	while (index >= 0)
+	{
+		if (ptr[index])
+			free(ptr[index]);
+		index--;
+	}
+	free(ptr);
+	return (0);
+}
 
-        offset = 0;
-        i = 0;
-        str = malloc((count_words(s, c) + 1) * sizeof(char *));
-        if (!s || !str)
-                return (NULL);
-        while (i < count_words(s, c))
-        {
-                str[i] = malloc((count_word_len(&s[offset], c) + 1) * sizeof(char));
-                if (!str[i])
-                        return (free_allocation(str, i));
-                j = 0;
-                while (s[offset] == c)
-                        offset++;
-                while (s[offset] && s[offset] != c)
-                        str[i][j++] = s[offset++];
-                str[i][j] = '\0';
-                i++;
-        }
-        str[i] = NULL;
-        return (str);
+char	**ft_alloc(char **ptr, const char *s, char c, int e)
+{
+	int	i;
+	int	j;
+	int	f;
+
+	i = 0;
+	j = 0;
+	while (s[i] && j != e)
+	{
+		while (is_separator(s[i], c) && s[i])
+			i++;
+		f = i;
+		if (!s[f])
+			break ;
+		while (!is_separator(s[f], c) && s[f])
+			f++;
+		ptr[j] = malloc(sizeof(char) * (1 + f - i));
+		if (!ptr[j])
+			return (ft_free(j - 1, ptr));
+		f = 0;
+		while (s[i] && !is_separator(s[i], c))
+			ptr[j][f++] = s[i++];
+		ptr[j][f] = 0;
+		j++;
+	}
+	return (ptr);
+}
+
+char	**ft_split(char const *s, char c)
+{
+	char	**ptr;
+	int		count;
+
+	if (!s || !*s)
+	{
+		ptr = malloc(sizeof(char *));
+		if (!ptr)
+			return (NULL);
+		ptr[0] = 0;
+		return (ptr);
+	}
+	count = ft_count(s, c);
+	ptr = malloc(sizeof(char *) * (count + 1));
+	if (!ptr)
+		return (NULL);
+	ptr[count] = 0;
+	return (ft_alloc(ptr, s, c, count));
 }
 
 t_env_v	*ft_lstlast(t_env_v *lst)
@@ -116,7 +151,7 @@ void	ft_lstadd_back(t_env_v **lst, t_env_v *new)
 	tmp->next = new;
 }
 
-void ft_list_remove_if(t_env_v **begin_list, void *data_ref, int (*cmp)(const char *, const char *))
+void ft_list_remove_if(t_env_v **begin_list, void *data_ref, int (*cmp)(char *, char *))
 {
     if (begin_list == NULL || *begin_list == NULL)
         return;
