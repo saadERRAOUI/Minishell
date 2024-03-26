@@ -6,7 +6,7 @@
 /*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 17:15:26 by serraoui          #+#    #+#             */
-/*   Updated: 2024/03/25 03:03:31 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/03/26 00:58:20 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,9 +120,12 @@ int main(int ac, char **av, char **env)
 	// }
 	if (!envs)
 		return (0); //!hanle error if env unsetted
+	ft_env(envs); //env
+	ft_export(&envs, "TEST=test");//export TEST=test
+	printf("\n== *SET* =============================================================\n\n");
 	ft_env(envs);
-	ft_export(&envs, "TEST=test");
-	printf("\n===============================================================\n\n");
+	ft_unset(&envs, "TEST");//unset TEST
+	printf("\n== *UNSET* ===========================================================\n\n");
 	ft_env(envs);
 	// *TEST PURPOSE
 	//check = envs;

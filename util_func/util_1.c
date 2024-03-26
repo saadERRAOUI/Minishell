@@ -6,7 +6,7 @@
 /*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 23:43:26 by serraoui          #+#    #+#             */
-/*   Updated: 2024/03/25 02:47:07 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/03/25 21:51:16 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,4 +114,24 @@ void	ft_lstadd_back(t_env_v **lst, t_env_v *new)
 	}
 	tmp = ft_lstlast(*lst);
 	tmp->next = new;
+}
+
+void ft_list_remove_if(t_env_v **begin_list, void *data_ref, int (*cmp)(const char *, const char *))
+{
+    if (begin_list == NULL || *begin_list == NULL)
+        return;
+        
+    t_env_v *node = (*begin_list);
+    
+    if (!cmp((char *)node->key, (char *)data_ref))
+    {
+        (*begin_list) = (*begin_list)->next;
+        free(node);
+        ft_list_remove_if(begin_list, data_ref, cmp);
+    }
+    else
+    {
+        node = (*begin_list);
+        ft_list_remove_if(&(node->next), data_ref, cmp);
+    }
 }
