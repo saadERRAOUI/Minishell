@@ -6,7 +6,7 @@
 /*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 18:02:20 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/03/25 00:46:33 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/03/28 16:05:11 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@
 #include <string.h>
 #include <limits.h>
 #include <signal.h>
-
+#include <readline/history.h>
+#include <readline/readline.h>
 #include "./libft/libft.h"
 
 int ft_strcmp(char *s1, char *s2);
