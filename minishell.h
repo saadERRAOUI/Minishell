@@ -23,10 +23,6 @@
 #include <readline/readline.h>
 #include "./libft/libft.h"
 
-// int     ft_putstr_fd(char *s, int fd);
-// int     ft_strlen(char *str);
-// char    *ft_strchr(const char *s, int c);
-
 typedef struct s_env_v
 {
 	char *key;

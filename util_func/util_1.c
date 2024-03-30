@@ -12,29 +12,29 @@
 
 #include "./../minishell.h"
 
-int      count_words(char const *s, char c)
+int count_words(char const *s, char c)
 {
-        int     i;
-        int     chuncks_number;
+	int i;
+	int chuncks_number;
 
-        i = 0;
-        chuncks_number = 0;
-        if (*s == '\0')
-                return (chuncks_number);
-        while (s[i] && s[i] == c)
-                i++;
-        while (s[i])
-        {
-                if (s[i] == c && s[i - 1] != c)
-                        chuncks_number += 1;
-                i++;
-        }
-        if (s[i - 1] != c)
-                chuncks_number += 1;
-        return (chuncks_number);
+	i = 0;
+	chuncks_number = 0;
+	if (*s == '\0')
+		return (chuncks_number);
+	while (s[i] && s[i] == c)
+		i++;
+	while (s[i])
+	{
+		if (s[i] == c && s[i - 1] != c)
+			chuncks_number += 1;
+		i++;
+	}
+	if (s[i - 1] != c)
+		chuncks_number += 1;
+	return (chuncks_number);
 }
 
-char	**ft_free(int index, char **ptr)
+char **ft_free(int index, char **ptr)
 {
 	if (index == 0)
 	{
@@ -51,7 +51,7 @@ char	**ft_free(int index, char **ptr)
 	return (0);
 }
 
-t_env_v	*ft_lstlast(t_env_v *lst)
+t_env_v *ft_lstlast(t_env_v *lst)
 {
 	if (!lst)
 		return (lst);
@@ -60,16 +60,16 @@ t_env_v	*ft_lstlast(t_env_v *lst)
 	return (lst);
 }
 
-void	ft_lstadd_back(t_env_v **lst, t_env_v *new)
+void ft_lstadd_back(t_env_v **lst, t_env_v *new)
 {
-	t_env_v	*tmp;
+	t_env_v *tmp;
 
 	if (!lst)
-		return ;
+		return;
 	if (!(*lst))
 	{
 		(*lst) = new;
-		return ;
+		return;
 	}
 	tmp = ft_lstlast(*lst);
 	tmp->next = new;
@@ -77,22 +77,23 @@ void	ft_lstadd_back(t_env_v **lst, t_env_v *new)
 
 void ft_list_remove_if(t_env_v **begin_list, void *data_ref, int (*cmp)(char *, char *))
 {
-    if (begin_list == NULL || *begin_list == NULL)
-        return;
-        
-    t_env_v *node = (*begin_list);
-    
-    if (!cmp((char *)node->key, (char *)data_ref))
-    {
-        (*begin_list) = (*begin_list)->next;
-        free(node);
-        ft_list_remove_if(begin_list, data_ref, cmp);
-    }
-    else
-    {
-        node = (*begin_list);
-        ft_list_remove_if(&(node->next), data_ref, cmp);
-    }
+	if (begin_list == NULL || *begin_list == NULL)
+		return;
+
+	t_env_v *node = (*begin_list);
+
+	if (!cmp((char *)node->key, (char *)data_ref))
+	{
+		(*begin_list) = (*begin_list)->next;
+		free(node->key);
+		free(node);
+		ft_list_remove_if(begin_list, data_ref, cmp);
+	}
+	else
+	{
+		node = (*begin_list);
+		ft_list_remove_if(&(node->next), data_ref, cmp);
+	}
 }
 
 char **ft_split_2(char *s, char c)
@@ -105,7 +106,7 @@ char **ft_split_2(char *s, char c)
 	if (!ptr)
 		return (NULL);
 	// todo! change strdup by ft_strdup
-	str = strdup(s);
+	str = ft_strdup(s);
 	i = 0;
 	while (str[i] != '=' && str[i])
 		i++;

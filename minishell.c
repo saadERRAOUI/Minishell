@@ -84,6 +84,7 @@ int getToken(char **ps, char *es, char **q, char **eq)
 		an each node contains 1 env var defined by a (key, value) params.
 	@DATE	: 25-03-2024
 */
+
 t_env_v *env_init(char **env)
 {
 	t_env_v *envs;
@@ -124,14 +125,14 @@ int main(int ac, char **av, char **env)
 	if (!envs)
 		return (0); //! hanle error if env unsetted
 	// ft_env(envs);				   // env
-	ft_export(&envs, "TEST=test"); // export TEST=test
-	system("leaks a.out");
-	// printf("\n== *SET* =============================================================\n\n");
+	ft_export(&envs, " "); // export TEST=test
 	ft_env(envs);
-	// *im' fexed the leaks until here
-	// ft_unset(&envs, "TEST"); // unset TEST
-	// printf("\n== *UNSET* ===========================================================\n\n");
+	// printf("\n== *SET* =============================================================\n\n");
 	// ft_env(envs);
+	// *im' fexed the leaks until here
+	ft_unset(&envs, "LESS"); // unset TEST
+	system("leaks a.out");
+	// printf("\n== *UNSET* ===========================================================\n\n");
 	// *TEST PURPOSE
 	// check = envs;
 	// while(check->next) {
