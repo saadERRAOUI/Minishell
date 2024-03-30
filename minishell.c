@@ -6,7 +6,7 @@
 /*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 17:15:26 by serraoui          #+#    #+#             */
-/*   Updated: 2024/03/27 02:39:52 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/03/30 01:02:51 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ t_env_v *env_init(char **env)
 	return (envs);
 }
 
+/**
 int main(int ac, char **av, char **env)
 {
 	t_env_v *envs;
@@ -138,7 +139,7 @@ int main(int ac, char **av, char **env)
 	// 	printf("%s -> %s\n", check->key, check->value);
 	// 	check = check->next;
 	// }
-}
+}*/
 
 //! TEST
 // int main()
@@ -157,3 +158,42 @@ int main(int ac, char **av, char **env)
 // 	printf("next token %i %c\n", token, token);
 // 	return (0);
 // }
+
+int ft_run_shell(t_env_v *env)
+{
+	char *str;
+	
+	while (1)
+	{
+		str = readline("$ ");
+		add_history(str);
+		if (!str)
+		{
+			ft_free_stack(&env);
+			exit(130);
+		}
+		if (!ft_strcmp(str, "exit"))
+		{
+			ft_free_stack(&env);
+			exit(0);
+		}
+		if (!ft_strcmp(str, "clear"))
+			clear_history();
+		// else
+		// {
+			
+		// }
+		free(str);
+	}
+	return (0);
+}
+
+int main(int ac, char **av, char **envp)
+{
+	t_env_v *env;
+
+	env = env_init(envp);
+	if (!env)
+		exit (-1);
+	ft_run_shell(env);
+}
