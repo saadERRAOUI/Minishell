@@ -6,7 +6,7 @@
 /*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 06:09:11 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/03/24 21:39:01 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/03/29 23:37:11 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 	@PROTO	: int pwd();
 	@DESC	: get the path of the current directory
 				by use a syscall named getwcd
-	@DATW	: 24-03-2024
+	@DATE	: 24-03-2024
 */
 
 int pwd(int ac, char **av)
