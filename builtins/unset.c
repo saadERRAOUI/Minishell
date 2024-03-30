@@ -1,29 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstadd_back_bonus.c                             :+:      :+:    :+:   */
+/*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/10 12:22:15 by hibouzid          #+#    #+#             */
-/*   Updated: 2023/11/16 11:16:39 by hibouzid         ###   ########.fr       */
+/*   Created: 2024/03/25 21:46:17 by serraoui          #+#    #+#             */
+/*   Updated: 2024/03/25 22:01:17 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "./../minishell.h"
 
-void	ft_lstadd_back(t_list **lst, t_list *new)
+void	ft_unset(t_env_v **env, char *key)
 {
-	t_list	*save;
-
-	save = *lst;
-	if (!*lst && !new)
+	if (!key || !env)
 		return ;
-	if (!*lst && new)
-	{
-		*lst = new;
-		return ;
-	}
-	save = ft_lstlast(save);
-	save->next = new;
+	ft_list_remove_if(env, key, ft_strcmp);
 }

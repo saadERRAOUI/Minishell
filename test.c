@@ -6,7 +6,7 @@
 /*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 23:54:50 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/03/24 03:38:17 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/03/24 14:19:48 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 	@AUTHOR	: Saad ERRAOUI
 	@PROTO	: int	getToken(char **ps, char *es, char **q, char **eq);
 	@DESC	: utility function that returns the next token (INT) in the parsed
-		string.
+		String.
 	@DATE	: 24-03-2024
 */
 int	getToken(char **ps, char *es, char **q, char **eq)
@@ -44,7 +44,6 @@ int	getToken(char **ps, char *es, char **q, char **eq)
 		case ')':
 		case '&':
 		case ':':
-		case '<':
 			s++;
 			break;
 		case '>':
@@ -52,6 +51,14 @@ int	getToken(char **ps, char *es, char **q, char **eq)
 			if (*s == '>')
 			{
 				ret = '+';
+				s++;
+			}
+			break;
+		case '<':
+			s++;
+			if (*s == '<')
+			{
+				ret = '-';
 				s++;
 			}
 			break;
