@@ -6,7 +6,7 @@
 /*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 23:43:26 by serraoui          #+#    #+#             */
-/*   Updated: 2024/03/27 01:20:56 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/03/29 23:38:33 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,32 +34,6 @@ int count_words(char const *s, char c)
 	return (chuncks_number);
 }
 
-int is_separator(char s, char c)
-{
-	return ((c == s));
-}
-
-int ft_count(char const *s, char c)
-{
-	int count;
-	int i;
-
-	i = 0;
-	count = 0;
-	if (!is_separator(s[0], c))
-	{
-		count++;
-		i++;
-	}
-	while (s[i])
-	{
-		if (is_separator(s[i], c) && s[i + 1] && !is_separator(s[i + 1], c))
-			count++;
-		i++;
-	}
-	return (count);
-}
-
 char **ft_free(int index, char **ptr)
 {
 	if (index == 0)
@@ -75,35 +49,6 @@ char **ft_free(int index, char **ptr)
 	}
 	free(ptr);
 	return (0);
-}
-
-char **ft_alloc(char **ptr, const char *s, char c, int e)
-{
-	int i;
-	int j;
-	int f;
-
-	i = 0;
-	j = 0;
-	while (s[i] && j != e)
-	{
-		while (is_separator(s[i], c) && s[i])
-			i++;
-		f = i;
-		if (!s[f])
-			break;
-		while (!is_separator(s[f], c) && s[f])
-			f++;
-		ptr[j] = malloc(sizeof(char) * (1 + f - i));
-		if (!ptr[j])
-			return (ft_free(j - 1, ptr));
-		f = 0;
-		while (s[i] && !is_separator(s[i], c))
-			ptr[j][f++] = s[i++];
-		ptr[j][f] = 0;
-		j++;
-	}
-	return (ptr);
 }
 
 t_env_v *ft_lstlast(t_env_v *lst)
@@ -150,6 +95,7 @@ void ft_list_remove_if(t_env_v **begin_list, void *data_ref, int (*cmp)(char *, 
 		ft_list_remove_if(&(node->next), data_ref, cmp);
 	}
 }
+
 char **ft_split_2(char *s, char c)
 {
 	char **ptr;
@@ -168,4 +114,28 @@ char **ft_split_2(char *s, char c)
 	str[i++] = 0;
 	ptr[1] = (str + i);
 	return (ptr);
+}
+
+/*
+	@OTHOR: hicham bouzid
+	@PROTO: void ft_free_stack():
+	@DESC: free the the env alloceted if the programme ended or
+			failed
+	@DATE: 29-03-2024
+*/
+
+void	ft_free_stack(t_env_v **a)
+{
+	t_env_v	*tmp;
+
+	if (!a || !*a)
+		return ;
+	tmp = *a;
+	while ((*a))
+	{
+		tmp = *a;
+		*a = (*a)->next;
+		free(tmp->key);
+		free(tmp);
+	}
 }
