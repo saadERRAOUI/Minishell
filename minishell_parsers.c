@@ -6,7 +6,7 @@
 /*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 02:29:36 by serraoui          #+#    #+#             */
-/*   Updated: 2024/03/31 05:24:27 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/03/31 22:40:07 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,10 +98,10 @@ t_cmd  *parseredir(t_cmd *cmd, char **ps, char *es)
 			cmd = redircmd(cmd, q, eq, O_RDONLY, 0);
 			break;
 		case '>':
-			cmd = redircmd(cmd, q, eq, O_WRONLY|O_CREATE, 1);
+			cmd = redircmd(cmd, q, eq, O_WRONLY|O_CREAT, 1);
 			break;
 		case '+':  //* >>
-			cmd = redircmd(cmd, q, eq, O_WRONLY|O_CREATE, 1);
+			cmd = redircmd(cmd, q, eq, O_WRONLY|O_CREAT, 1);
 			break;
 		}
 	}

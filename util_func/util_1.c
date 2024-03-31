@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   util_1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 23:43:26 by serraoui          #+#    #+#             */
-/*   Updated: 2024/03/29 23:38:33 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/03/31 23:24:32 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,8 @@ char **ft_split_2(char *s, char c)
 	int i;
 	char *str;
 
+	//!toremove
+	(void)c;
 	ptr = malloc(sizeof(char *) * 2);
 	if (!ptr)
 		return (NULL);
@@ -123,7 +125,6 @@ char **ft_split_2(char *s, char c)
 			failed
 	@DATE: 29-03-2024
 */
-
 void	ft_free_stack(t_env_v **a)
 {
 	t_env_v	*tmp;

@@ -6,7 +6,7 @@
 /*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 17:15:26 by serraoui          #+#    #+#             */
-/*   Updated: 2024/03/30 02:29:00 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/03/31 23:22:20 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,7 +178,8 @@ int main(int ac, char **av, char **env)
 
 int ft_run_shell(t_env_v *env)
 {
-	char *str;
+	char	*str;
+	t_cmd	*cmd;
 	
 	while (1)
 	{
@@ -196,10 +197,9 @@ int ft_run_shell(t_env_v *env)
 		}
 		if (!ft_strcmp(str, "clear"))
 			clear_history();
+		cmd = parsecmd(str);
+		printf("TYPE CREATED TREE %i\n\n", cmd->type);
 		// else
-		// {
-			
-		// }
 		free(str);
 	}
 	return (0);
@@ -209,6 +209,8 @@ int main(int ac, char **av, char **envp)
 {
 	t_env_v *env;
 
+	(void)ac;
+	(void)av;
 	env = env_init(envp);
 	if (!env)
 		exit (-1);

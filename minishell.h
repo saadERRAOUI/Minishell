@@ -6,22 +6,23 @@
 /*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 18:02:20 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/03/31 03:57:30 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/03/31 22:39:26 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 #define MINISHELL_H
 
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <limits.h>
-#include <signal.h>
-#include <readline/history.h>
-#include <readline/readline.h>
-#include "./libft/libft.h"
+# include <unistd.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <string.h>
+# include <limits.h>
+# include <signal.h>
+# include <fcntl.h>
+# include <readline/history.h>
+# include <readline/readline.h>
+# include "./libft/libft.h"
 
 # define MAXARGS 100
 # define EXEC 1
@@ -37,7 +38,7 @@ typedef struct s_env_v
 
 typedef struct s_cmd
 {
-	int	type
+	int	type;
 }		t_cmd;
 
 typedef struct s_pipecmd {
@@ -64,6 +65,7 @@ typedef struct s_redircmd {
 int		ft_strcmp(char *s1, char *s2);
 int		count_words(char const *s, char c);
 int		getToken(char **ps, char *es, char **q, char **eq);
+int		peek(char **ps, char *es, char *toks);
 char	**ft_split_2(char *s, char c);
 void	ft_export(t_env_v **env, char *s);
 void	ft_env(t_env_v *env);
@@ -79,5 +81,8 @@ t_cmd 	*parsepipe(char **ps, char *es);
 t_cmd 	*parsexec(char **ps, char *es);
 t_cmd 	*parsecmd(char *s);
 t_cmd	*parseline(char **ps, char *es);
+t_cmd	*execcmd(void);
+t_cmd	*redircmd(t_cmd *subcmd, char *file, char *efile, int mode, int fd);
+t_cmd	*pipecmd(t_cmd *left, t_cmd	*right);
 
 #endif
