@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 17:15:26 by serraoui          #+#    #+#             */
-/*   Updated: 2024/03/30 01:02:51 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/03/30 02:29:00 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,6 @@ int getToken(char **ps, char *es, char **q, char **eq)
 		an each node contains 1 env var defined by a (key, value) params.
 	@DATE	: 25-03-2024
 */
-
 t_env_v *env_init(char **env)
 {
 	t_env_v *envs;
@@ -107,6 +106,24 @@ t_env_v *env_init(char **env)
 		i++;
 	}
 	return (envs);
+}
+
+/*
+	@AUTHOR	: Saad ERRAOUI
+	@PROTO	: int	peek(char **ps, char *es, char *toks);
+	@DESC	: utility function that seeks the next none whitespace char
+		and tells weither it exists and included in the toks chars.
+	@DATE	: 30-03-2024
+*/
+int	peek(char **ps, char *es, char *toks)
+{
+	char	*s;
+
+	s = *ps;
+	while (s < es && ft_strchr(" \t\r\n\v", *s))
+		s++;
+	*ps = s;
+	return (*s && ft_strchr(toks, *s));
 }
 
 /**
