@@ -6,50 +6,11 @@
 /*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 23:43:26 by serraoui          #+#    #+#             */
-/*   Updated: 2024/03/29 23:38:33 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/03/30 02:28:53 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./../minishell.h"
-
-int count_words(char const *s, char c)
-{
-	int i;
-	int chuncks_number;
-
-	i = 0;
-	chuncks_number = 0;
-	if (*s == '\0')
-		return (chuncks_number);
-	while (s[i] && s[i] == c)
-		i++;
-	while (s[i])
-	{
-		if (s[i] == c && s[i - 1] != c)
-			chuncks_number += 1;
-		i++;
-	}
-	if (s[i - 1] != c)
-		chuncks_number += 1;
-	return (chuncks_number);
-}
-
-char **ft_free(int index, char **ptr)
-{
-	if (index == 0)
-	{
-		free(ptr);
-		return (0);
-	}
-	while (index >= 0)
-	{
-		if (ptr[index])
-			free(ptr[index]);
-		index--;
-	}
-	free(ptr);
-	return (0);
-}
 
 t_env_v *ft_lstlast(t_env_v *lst)
 {
@@ -94,26 +55,6 @@ void ft_list_remove_if(t_env_v **begin_list, void *data_ref, int (*cmp)(char *, 
 		node = (*begin_list);
 		ft_list_remove_if(&(node->next), data_ref, cmp);
 	}
-}
-
-char **ft_split_2(char *s, char c)
-{
-	char **ptr;
-	int i;
-	char *str;
-
-	ptr = malloc(sizeof(char *) * 2);
-	if (!ptr)
-		return (NULL);
-	// todo! change strdup by ft_strdup
-	str = ft_strdup(s);
-	i = 0;
-	while (str[i] != '=' && str[i])
-		i++;
-	ptr[0] = str;
-	str[i++] = 0;
-	ptr[1] = (str + i);
-	return (ptr);
 }
 
 /*
