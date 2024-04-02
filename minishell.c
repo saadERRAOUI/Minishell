@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 17:15:26 by serraoui          #+#    #+#             */
-/*   Updated: 2024/03/30 02:29:00 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/04/02 00:53:56 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,9 +115,9 @@ t_env_v *env_init(char **env)
 		and tells weither it exists and included in the toks chars.
 	@DATE	: 30-03-2024
 */
-int	peek(char **ps, char *es, char *toks)
+int peek(char **ps, char *es, char *toks)
 {
-	char	*s;
+	char *s;
 
 	s = *ps;
 	while (s < es && ft_strchr(" \t\r\n\v", *s))
@@ -179,27 +179,24 @@ int main(int ac, char **av, char **env)
 int ft_run_shell(t_env_v *env)
 {
 	char *str;
-	
+	t_cmd *cmd;
+
 	while (1)
 	{
 		str = readline("$ ");
-		add_history(str);
+
+		// printf("--> %d\n", (int)ft_strlen(str));
 		if (!str)
 		{
 			ft_free_stack(&env);
 			exit(130);
 		}
-		if (!ft_strcmp(str, "exit"))
-		{
-			ft_free_stack(&env);
-			exit(0);
-		}
-		if (!ft_strcmp(str, "clear"))
-			clear_history();
+		if (!ft_handel_line(str))
+			continue;
+		// add_history(str);
+		cmd = parsecmd(str);
+		printf("TYPE CREATED TREE %i\n\n", cmd->type);
 		// else
-		// {
-			
-		// }
 		free(str);
 	}
 	return (0);
@@ -209,8 +206,10 @@ int main(int ac, char **av, char **envp)
 {
 	t_env_v *env;
 
+	(void)ac;
+	(void)av;
 	env = env_init(envp);
 	if (!env)
-		exit (-1);
+		exit(-1);
 	ft_run_shell(env);
 }
