@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   util_1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 23:43:26 by serraoui          #+#    #+#             */
-/*   Updated: 2024/03/30 02:28:53 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/03/31 23:24:32 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ void ft_list_remove_if(t_env_v **begin_list, void *data_ref, int (*cmp)(char *, 
 			failed
 	@DATE: 29-03-2024
 */
-
 void	ft_free_stack(t_env_v **a)
 {
 	t_env_v	*tmp;

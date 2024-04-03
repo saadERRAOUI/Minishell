@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memmove.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 15:16:07 by hibouzid          #+#    #+#             */
-/*   Updated: 2023/11/12 21:12:09 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/03/31 23:12:19 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	*ft_memmove(void *dst, const void *src, size_t len)
 #include <stdio.h>
 #include <string.h>
 
-int	main(void)
+// int	main(void)
 {
 	printf("function system ==== %s\n", (char *)memmove(((void *)0),
 			((void *)0), 5));

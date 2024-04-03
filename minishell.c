@@ -6,7 +6,7 @@
 /*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 17:15:26 by serraoui          #+#    #+#             */
-/*   Updated: 2024/03/30 01:02:51 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/04/02 00:53:56 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,6 @@ int getToken(char **ps, char *es, char **q, char **eq)
 		an each node contains 1 env var defined by a (key, value) params.
 	@DATE	: 25-03-2024
 */
-
 t_env_v *env_init(char **env)
 {
 	t_env_v *envs;
@@ -107,6 +106,24 @@ t_env_v *env_init(char **env)
 		i++;
 	}
 	return (envs);
+}
+
+/*
+	@AUTHOR	: Saad ERRAOUI
+	@PROTO	: int	peek(char **ps, char *es, char *toks);
+	@DESC	: utility function that seeks the next none whitespace char
+		and tells weither it exists and included in the toks chars.
+	@DATE	: 30-03-2024
+*/
+int peek(char **ps, char *es, char *toks)
+{
+	char *s;
+
+	s = *ps;
+	while (s < es && ft_strchr(" \t\r\n\v", *s))
+		s++;
+	*ps = s;
+	return (*s && ft_strchr(toks, *s));
 }
 
 /**
@@ -162,27 +179,24 @@ int main(int ac, char **av, char **env)
 int ft_run_shell(t_env_v *env)
 {
 	char *str;
-	
+	t_cmd *cmd;
+
 	while (1)
 	{
 		str = readline("$ ");
-		add_history(str);
+
+		// printf("--> %d\n", (int)ft_strlen(str));
 		if (!str)
 		{
 			ft_free_stack(&env);
 			exit(130);
 		}
-		if (!ft_strcmp(str, "exit"))
-		{
-			ft_free_stack(&env);
-			exit(0);
-		}
-		if (!ft_strcmp(str, "clear"))
-			clear_history();
+		if (!ft_handel_line(str))
+			continue;
+		// add_history(str);
+		cmd = parsecmd(str);
+		printf("TYPE CREATED TREE %i\n\n", cmd->type);
 		// else
-		// {
-			
-		// }
 		free(str);
 	}
 	return (0);
@@ -192,8 +206,10 @@ int main(int ac, char **av, char **envp)
 {
 	t_env_v *env;
 
+	(void)ac;
+	(void)av;
 	env = env_init(envp);
 	if (!env)
-		exit (-1);
+		exit(-1);
 	ft_run_shell(env);
 }
