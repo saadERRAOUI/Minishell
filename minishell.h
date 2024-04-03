@@ -6,7 +6,7 @@
 /*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 18:02:20 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/04/02 00:42:35 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/04/03 22:41:38 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,4 +91,9 @@ t_cmd *redircmd(t_cmd *subcmd, char *file, char *efile, int mode, int fd);
 t_cmd *pipecmd(t_cmd *left, t_cmd *right);
 
 int ft_handel_line(char *str);
+char *ft_charjoin(char *str, char c);
+char *add_32(char *str, char *sym);
+int ft_quotes(char *str);
+int ft_util_quotes(char *av, char q, int *index);
+
 #endif

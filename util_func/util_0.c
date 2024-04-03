@@ -6,7 +6,7 @@
 /*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 18:01:05 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/04/02 01:00:13 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/04/03 22:33:29 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ int ft_strcmp(char *s1, char *s2)
 	}
 	return (0);
 }
-
 
 /*
 	@DESC: this fucntion used by ft_quotes
@@ -97,7 +96,8 @@ int ft_handel_line(char *str)
 	else
 		add_history(str);
 	return (1);
-=======
+}
+
 int count_words(char const *s, char c)
 {
 	int i;
@@ -142,6 +142,7 @@ char **ft_split_2(char *s, char c)
 	char **ptr;
 	int i;
 	char *str;
+	(void)c;
 
 	ptr = malloc(sizeof(char *) * 2);
 	if (!ptr)
