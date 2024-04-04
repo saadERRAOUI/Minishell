@@ -6,7 +6,7 @@
 /*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 18:01:05 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/04/03 22:33:29 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/04/04 14:37:56 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,10 @@ int ft_quotes(char *str)
 int ft_handel_line(char *str)
 {
 	if (!*str || !ft_strcmp(str, "\n") || !ft_quotes(str))
+	{
+		free(str);
 		return (0);
+	}
 	// if (!ft_quotes(str))
 	// {
 	// 	printf("close the quotes\n");

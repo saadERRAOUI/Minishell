@@ -3,99 +3,95 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 12:05:34 by hibouzid          #+#    #+#             */
-/*   Updated: 2023/11/12 21:17:55 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/04/04 13:30:51 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include <stdio.h>
 
-static int	is_separator(char s, char c)
+static int is_charset(char *charset, char c)
 {
-	return ((c == s));
+	int i;
+
+	i = 0;
+	while (charset[i])
+	{
+		if (charset[i] == c)
+			return (0);
+		i++;
+	}
+	return (1);
 }
 
-static int	ft_count(char const *s, char c)
+static int ft_count(char *str, char *charset)
 {
-	int	count;
-	int	i;
+	int i;
+	int count;
 
 	i = 0;
 	count = 0;
-	if (!is_separator(s[0], c))
-	{
+	if (is_charset(charset, str[0]))
 		count++;
-		i++;
-	}
-	while (s[i])
+	while (str[i])
 	{
-		if (is_separator(s[i], c) && s[i + 1] && !is_separator(s[i + 1], c))
+		if (is_charset(charset, str[i]) == 0 && is_charset(charset, str[i - 1]) != 0)
 			count++;
 		i++;
 	}
+	if (!is_charset(charset, str[i - 1]))
+		count--;
 	return (count);
 }
 
-static char	**ft_free(int index, char **ptr)
+static char **ft_alloc(char *str, char *charset, char **ptr, int e)
 {
-	while (index >= 0)
-	{
-		free(ptr[index]);
-		index--;
-	}
-	free(ptr);
-	return (0);
-}
+	int i;
+	int j;
 
-static char	**ft_alloc(char **ptr, const char *s, char c, int e)
-{
-	int	i;
-	int	j;
-	int	f;
-
-	i = 0;
-	j = 0;
-	while (s[i] && j != e)
+	j = -1;
+	while (*str && j++ < e)
 	{
-		while (is_separator(s[i], c) && s[i])
+		while (is_charset(charset, *str) == 0)
+			str++;
+		if (!*str)
+			break;
+		i = 0;
+		while (is_charset(charset, str[i]) && str[i])
 			i++;
-		f = i;
-		if (!s[f])
-			break ;
-		while (!is_separator(s[f], c) && s[f])
-			f++;
-		ptr[j] = malloc(sizeof(char) * (1 + f - i));
+		ptr[j] = malloc(sizeof(char) * (i + 1));
 		if (!ptr[j])
-			return (ft_free(j - 1, ptr));
-		f = 0;
-		while (s[i] && !is_separator(s[i], c))
-			ptr[j][f++] = s[i++];
-		ptr[j][f] = 0;
-		j++;
+			return (NULL);
+		ptr[j][i] = 0;
+		i = 0;
+		while (is_charset(charset, *str) && *str)
+		{
+			ptr[j][i++] = *str;
+			str++;
+		}
 	}
 	return (ptr);
 }
 
-char	**ft_split(char const *s, char c)
+char **ft_split(char *str, char *charset)
 {
-	char	**ptr;
-	int		count;
+	char **ptr;
+	int i;
 
-	if (!s || !*s)
+	if (!(*str))
 	{
 		ptr = malloc(sizeof(char *));
-		if (!ptr)
-			return (NULL);
 		ptr[0] = 0;
 		return (ptr);
 	}
-	count = ft_count(s, c);
-	ptr = malloc(sizeof(char *) * (count + 1));
+	i = ft_count(str, charset);
+	ptr = malloc(sizeof(char *) * (i + 1));
 	if (!ptr)
 		return (NULL);
-	ptr[count] = 0;
-	return (ft_alloc(ptr, s, c, count));
+	ptr[i] = NULL;
+	ft_alloc(str, charset, ptr, i);
+	return (ptr);
 }

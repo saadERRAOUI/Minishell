@@ -6,7 +6,7 @@
 /*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 17:22:40 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/04/03 17:52:24 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/04/04 16:13:03 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,8 @@ char *add_32(char *str, char *sym)
 	i = 0;
 	while (str[i])
 	{
-		if (i && ft_strchr(sym, str[i]) && str[i + 1] &&
-			str[i + 1] != 32 && !ft_strchr(sym, str[i + 1]))
+		if (ft_strchr(sym, str[i]) && str[i + 1] &&
+			str[i + 1] != 32 && i - 1 >= 0 && str[i - 1] != '\\')
 		{
 			ptr = ft_charjoin(ptr, 32);
 			ptr = ft_charjoin(ptr, str[i]);
@@ -67,6 +67,58 @@ char *add_32(char *str, char *sym)
 		}
 		else
 			ptr = ft_charjoin(ptr, str[i]);
+		i++;
+	}
+	return (ptr);
+}
+
+/*
+	@AUTHOR: hicham bouzid
+	@DESC: remove " and ' by shif the string
+	@PROTOTYPE: char *ft_shift(char *ptr)
+	@DATE: 04-04-2024
+*/
+
+char *ft_shift(char *ptr)
+{
+	int i;
+	int j;
+	char c;
+
+	i = 0;
+	j = 0;
+	char *str = ft_strdup(ptr);
+	while (ptr[i])
+	{
+		if (ptr[i] == '\'' || ptr[i] == '\"')
+		{
+			c = ptr[i];
+			i++;
+			while (ptr[i] != c && ptr[i])
+				str[j++] = ptr[i++];
+		}
+		else
+			str[j++] = ptr[i++];
+	}
+	str[j] = 0;
+	free(ptr);
+	return (str);
+}
+
+// !todo add function to check if the syntax true or not
+char **ft_check_syntax(char *str)
+{
+	char **ptr;
+	int i;
+
+	str = ft_convert_0(str);
+	str = add_32(str, "|<>");
+	ptr = ft_split(str, " \t\v\r\f");
+	ptr = undo(ptr);
+	i = 0;
+	while (ptr[i])
+	{
+		ptr[i] = ft_shift(ptr[i]);
 		i++;
 	}
 	return (ptr);
