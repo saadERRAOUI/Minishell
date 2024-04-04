@@ -6,7 +6,7 @@
 /*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 17:53:48 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/04/04 16:22:24 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/04/04 22:07:12 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ char *ft_convert_0(char *str)
 					str[i] = SPACE;
 				i++;
 			}
+			if (i < (int)ft_strlen(str))
+				i++;
 		}
 		else
 			i++;
