@@ -6,7 +6,7 @@
 /*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 18:02:20 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/04/02 00:42:35 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/04/04 16:12:08 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,9 @@
 #define EXEC 1
 #define REDIR 2
 #define PIPE 3
+#define LEFT 4
+#define RIGHT 5
+#define SPACE 6
 
 #define EXIT_FAILUR 127
 #define CTRL_C 130
@@ -91,4 +94,12 @@ t_cmd *redircmd(t_cmd *subcmd, char *file, char *efile, int mode, int fd);
 t_cmd *pipecmd(t_cmd *left, t_cmd *right);
 
 int ft_handel_line(char *str);
+char *ft_charjoin(char *str, char c);
+char *add_32(char *str, char *sym);
+int ft_quotes(char *str);
+int ft_util_quotes(char *av, char q, int *index);
+char *ft_convert_0(char *str);
+char **undo(char **ptr);
+char **ft_check_syntax(char *str);
+
 #endif
