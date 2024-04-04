@@ -6,7 +6,7 @@
 /*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 17:53:48 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/04/04 14:55:07 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/04/04 16:22:24 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ char *ft_convert_0(char *str)
 					str[i] = LEFT;
 				else if (str[i] == '>')
 					str[i] = RIGHT;
-				else if (str[i] == 32 || (str[i] >= 9  && str[i] <= 13))
+				else if (str[i] == 32 || (str[i] >= 9 && str[i] <= 13))
 					str[i] = SPACE;
 				i++;
 			}
@@ -70,17 +70,17 @@ char **undo(char **ptr)
 		j = 0;
 		while (ptr[i][j])
 		{
-			if (ptr[i] == PIPE)
-				ptr[i] = '|';
-			else if (ptr[i] == RIGHT)
-				ptr[i] = '>';
-			else if (ptr[i] == LEFT)
-				ptr[i] = '<';
-			else if (ptr[i] == SPACE)
-				ptr[i] = ' ';
+			if (ptr[i][j] == PIPE)
+				ptr[i][j] = '|';
+			else if (ptr[i][j] == RIGHT)
+				ptr[i][j] = '>';
+			else if (ptr[i][j] == LEFT)
+				ptr[i][j] = '<';
+			else if (ptr[i][j] == SPACE)
+				ptr[i][j] = ' ';
 			j++;
 		}
 		i++;
-	}	
+	}
 	return (ptr);
 }

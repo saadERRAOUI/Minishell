@@ -6,7 +6,7 @@
 /*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 17:22:40 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/04/04 16:13:03 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/04/04 21:52:42 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ char *add_32(char *str, char *sym)
 			ptr = ft_charjoin(ptr, str[i]);
 		i++;
 	}
+	free(str);
 	return (ptr);
 }
 
@@ -113,9 +114,12 @@ char **ft_check_syntax(char *str)
 
 	str = ft_convert_0(str);
 	str = add_32(str, "|<>");
+	printf("%s\n", str);
 	ptr = ft_split(str, " \t\v\r\f");
 	ptr = undo(ptr);
 	i = 0;
+	for (i = 0; ptr[i]; i++)
+		printf("--->%s\n", ptr[i]);
 	while (ptr[i])
 	{
 		ptr[i] = ft_shift(ptr[i]);

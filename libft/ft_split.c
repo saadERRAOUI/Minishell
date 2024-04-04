@@ -6,7 +6,7 @@
 /*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 12:05:34 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/04/04 13:30:51 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/04/04 21:16:09 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,3 +95,4 @@ char **ft_split(char *str, char *charset)
 	ft_alloc(str, charset, ptr, i);
 	return (ptr);
 }
+

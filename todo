@@ -1,0 +1,8 @@
+add function parce the command line first:
+	+ function check if string null or just new line
+	+  check if the string containe "" '' and check if closed
+	+ add function print error and exit the correct exit status .
+	+ parce the string by add space around symbols if i't out ""
+	+ parce if the line start by > < 
+	+ parce the  syntax of commands
+	parse error

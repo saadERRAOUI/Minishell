@@ -6,7 +6,7 @@
 /*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 17:15:26 by serraoui          #+#    #+#             */
-/*   Updated: 2024/04/04 16:11:00 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/04/04 21:37:50 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,6 +185,7 @@ int ft_run_shell(t_env_v *env)
 	while (1)
 	{
 		str = readline("$ ");
+		// printf("%s\n", str):
 		if (!str)
 		{
 			ft_free_stack(&env);
@@ -195,6 +196,8 @@ int ft_run_shell(t_env_v *env)
 		ptr = ft_check_syntax(str);
 		if (!ptr)
 			continue;
+		// for (int i = 0; ptr[i]; i++)
+		// 	printf("%s\n", ptr[i]);
 		cmd = parsecmd(str);
 		printf("TYPE CREATED TREE %i\n\n", cmd->type);
 		// else
