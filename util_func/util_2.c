@@ -6,7 +6,7 @@
 /*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 17:22:40 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/04/04 22:17:17 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/04/05 12:47:20 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,18 +58,23 @@ char *add_32(char *str, char *sym)
 	i = 0;
 	while (str[i])
 	{
-		if (ft_strchr(sym, str[i]) && str[i + 1] &&
-			str[i + 1] != 32 && i - 1 >= 0 && str[i - 1] != '\\')
+		if (i == 0 && ft_strchr(sym, str[i]))
 		{
-			ptr = ft_charjoin(ptr, 32);
+			ptr = ft_charjoin(ptr, str[i]);
+			if (!ft_strchr(sym, str[i + 1]))
+				ptr = ft_charjoin(ptr, 32);
+		}
+		else if ((!ft_strchr(sym, str[i]) && i < ft_strlen(str) && ft_strchr(sym, str[i + 1])) ||
+				(ft_strchr(sym, str[i]) && i < ft_strlen(str) && !ft_strchr(sym , str[i + 1])))
+		{
 			ptr = ft_charjoin(ptr, str[i]);
 			ptr = ft_charjoin(ptr, 32);
+
 		}
 		else
 			ptr = ft_charjoin(ptr, str[i]);
 		i++;
 	}
-	// free(str);
 	return (ptr);
 }
 
