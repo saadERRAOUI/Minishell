@@ -33,6 +33,7 @@ $(NAME): $(OBJS)
 	cc  -lreadline $(OBJS) -o $(NAME) 
 
 all: $(NAME)
+	@clear
 
 clean:
 	rm -rf $(OBJS)

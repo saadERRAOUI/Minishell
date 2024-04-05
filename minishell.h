@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 18:02:20 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/04/04 16:12:08 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/04/05 04:04:44 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ typedef struct s_redircmd
 	int type;
 	t_cmd *cmd;
 	char *file;
-	char *efile;
 	int mode;
 	int fd;
 } t_redircmd;
@@ -84,14 +83,19 @@ void ft_unset(t_env_v **env, char *key);
 void ft_free_stack(t_env_v **a);
 t_env_v *ft_lstlast(t_env_v *lst);
 t_env_v *env_init(char **env);
-t_cmd *parseredir(t_cmd *cmd, char **ps, char *es);
-t_cmd *parsepipe(char **ps, char *es);
-t_cmd *parsexec(char **ps, char *es);
+// t_cmd *parseredir(t_cmd *cmd, char **ps, char *es);
+t_cmd  *parseredir(t_cmd *cmd, char **ps, int *pos);
+t_cmd  *parsepipe(char **ps, int *pos);
+// t_cmd *parsepipe(char **ps, char *es);
+// t_cmd *parsexec(char **ps, char *es);
+t_cmd  *parsexec(char **ps, int *pos);
 t_cmd *parsecmd(char *s);
 t_cmd *parseline(char **ps, char *es);
 t_cmd *execcmd(void);
-t_cmd *redircmd(t_cmd *subcmd, char *file, char *efile, int mode, int fd);
+t_cmd *redircmd(t_cmd *subcmd, char *file, int mode, int fd);
+// t_cmd *redircmd(t_cmd *subcmd, char *file, char *efile, int mode, int fd);
 t_cmd *pipecmd(t_cmd *left, t_cmd *right);
+int	get_token_type(char *s);
 
 int ft_handel_line(char *str);
 char *ft_charjoin(char *str, char c);
