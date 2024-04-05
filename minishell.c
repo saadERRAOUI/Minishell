@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 17:15:26 by serraoui          #+#    #+#             */
-/*   Updated: 2024/04/04 21:37:50 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/04/05 03:38:31 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/*
+/* 	//!toremove -- not used
 	@AUTHOR	: Saad ERRAOUI
 	@PROTO	: int	getToken(char **ps, char *es, char **q, char **eq);
 	@DESC	: utility function that returns the next token (INT) in the parsed
@@ -181,6 +181,7 @@ int ft_run_shell(t_env_v *env)
 	char *str;
 	char **ptr;
 	t_cmd *cmd;
+	int pos;
 
 	while (1)
 	{
@@ -196,9 +197,11 @@ int ft_run_shell(t_env_v *env)
 		ptr = ft_check_syntax(str);
 		if (!ptr)
 			continue;
-		// for (int i = 0; ptr[i]; i++)
-		// 	printf("%s\n", ptr[i]);
-		cmd = parsecmd(str);
+		for (int i = 0; ptr[i]; i++)
+			printf("--> %s\n", ptr[i]);
+		printf("+++HERE\n");
+		pos = 0;
+		cmd = parsepipe(ptr, &pos);
 		printf("TYPE CREATED TREE %i\n\n", cmd->type);
 		// else
 		free(str);
