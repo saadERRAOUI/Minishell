@@ -6,7 +6,7 @@
 /*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 17:15:26 by serraoui          #+#    #+#             */
-/*   Updated: 2024/04/05 03:38:31 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/04/09 15:39:52 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,6 +175,17 @@ int main(int ac, char **av, char **env)
 // 	printf("next token %i %c\n", token, token);
 // 	return (0);
 // }
+void ft_print_tab(char **s)
+{
+	int i = 0;
+	if (!s)
+		return ;
+	while (s[i])
+	{
+		printf("%s\n", s[i]);
+		i++;
+	}
+}
 
 int ft_run_shell(t_env_v *env)
 {
@@ -197,13 +208,14 @@ int ft_run_shell(t_env_v *env)
 		ptr = ft_check_syntax(str);
 		if (!ptr)
 			continue;
-		for (int i = 0; ptr[i]; i++)
-			printf("--> %s\n", ptr[i]);
-		printf("+++HERE\n");
+		// for (int i = 0; ptr[i]; i++)
+		// 	printf("--> %s\n", ptr[i]);
+		// printf("+++HERE\n");
 		pos = 0;
 		cmd = parsepipe(ptr, &pos);
-		printf("TYPE CREATED TREE %i\n\n", cmd->type);
-		// else
+		printf("TYPE CREATED TREE %i\n", cmd->type);
+		printf("==================== \n");
+		ft_print_tab(((t_execcmd *)cmd)->argv);
 		free(str);
 	}
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 18:02:20 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/04/05 04:04:44 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/04/09 15:38:58 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,7 @@ typedef struct s_pipecmd
 typedef struct s_execcmd
 {
 	int type;
-	char *argv[MAXARGS];
-	char *eargv[MAXARGS];
+	char **argv; //TODO : update this pointer to be allocated
 } t_execcmd;
 
 typedef struct s_redircmd
@@ -83,17 +82,11 @@ void ft_unset(t_env_v **env, char *key);
 void ft_free_stack(t_env_v **a);
 t_env_v *ft_lstlast(t_env_v *lst);
 t_env_v *env_init(char **env);
-// t_cmd *parseredir(t_cmd *cmd, char **ps, char *es);
 t_cmd  *parseredir(t_cmd *cmd, char **ps, int *pos);
 t_cmd  *parsepipe(char **ps, int *pos);
-// t_cmd *parsepipe(char **ps, char *es);
-// t_cmd *parsexec(char **ps, char *es);
 t_cmd  *parsexec(char **ps, int *pos);
-t_cmd *parsecmd(char *s);
-t_cmd *parseline(char **ps, char *es);
 t_cmd *execcmd(void);
 t_cmd *redircmd(t_cmd *subcmd, char *file, int mode, int fd);
-// t_cmd *redircmd(t_cmd *subcmd, char *file, char *efile, int mode, int fd);
 t_cmd *pipecmd(t_cmd *left, t_cmd *right);
 int	get_token_type(char *s);
 
@@ -105,5 +98,7 @@ int ft_util_quotes(char *av, char q, int *index);
 char *ft_convert_0(char *str);
 char **undo(char **ptr);
 char **ft_check_syntax(char *str);
+
+void ft_print_tab(char **s);
 
 #endif
