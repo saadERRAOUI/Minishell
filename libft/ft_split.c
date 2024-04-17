@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 12:05:34 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/04/04 21:16:09 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/04/17 11:51:02 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include <stdio.h>
 
-static int is_charset(char *charset, char c)
+static int	is_charset(char *charset, char c)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (charset[i])
@@ -27,10 +27,10 @@ static int is_charset(char *charset, char c)
 	return (1);
 }
 
-static int ft_count(char *str, char *charset)
+static int	ft_count(char *str, char *charset)
 {
-	int i;
-	int count;
+	int	i;
+	int	count;
 
 	i = 0;
 	count = 0;
@@ -38,7 +38,8 @@ static int ft_count(char *str, char *charset)
 		count++;
 	while (str[i])
 	{
-		if (is_charset(charset, str[i]) == 0 && is_charset(charset, str[i - 1]) != 0)
+		if (is_charset(charset, str[i]) == 0 && is_charset(charset, str[i
+					- 1]) != 0)
 			count++;
 		i++;
 	}
@@ -47,10 +48,10 @@ static int ft_count(char *str, char *charset)
 	return (count);
 }
 
-static char **ft_alloc(char *str, char *charset, char **ptr, int e)
+static char	**ft_alloc(char *str, char *charset, char **ptr, int e)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	j = -1;
 	while (*str && j++ < e)
@@ -58,7 +59,7 @@ static char **ft_alloc(char *str, char *charset, char **ptr, int e)
 		while (is_charset(charset, *str) == 0)
 			str++;
 		if (!*str)
-			break;
+			break ;
 		i = 0;
 		while (is_charset(charset, str[i]) && str[i])
 			i++;
@@ -76,10 +77,10 @@ static char **ft_alloc(char *str, char *charset, char **ptr, int e)
 	return (ptr);
 }
 
-char **ft_split(char *str, char *charset)
+char	**ft_split(char *str, char *charset)
 {
-	char **ptr;
-	int i;
+	char	**ptr;
+	int		i;
 
 	if (!(*str))
 	{
@@ -95,4 +96,3 @@ char **ft_split(char *str, char *charset)
 	ft_alloc(str, charset, ptr, i);
 	return (ptr);
 }
-

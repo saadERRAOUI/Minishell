@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   util_0.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 18:01:05 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/04/04 14:37:56 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/04/17 16:35:48 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./../minishell.h"
 
-int ft_strcmp(char *s1, char *s2)
+int	ft_strcmp(char *s1, char *s2)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (s1[i] || s2[i])
@@ -33,7 +33,7 @@ int ft_strcmp(char *s1, char *s2)
 	@DATE: 1-04-2024
 */
 
-int ft_util_quotes(char *av, char q, int *index)
+int	ft_util_quotes(char *av, char q, int *index)
 {
 	if (av[(*index)] == q)
 	{
@@ -50,17 +50,17 @@ int ft_util_quotes(char *av, char q, int *index)
 }
 
 /*
-	@OTHOR: hicham bouzid
+	@AUTHOR: hicham bouzid
 	@PROTOTYPE: ft_quotes(char *line)
 	@DESC: check if a single quote of double quotes closed
 			if the string start with ' or "
 	@DATE: 1-04-2024
 */
 
-int ft_quotes(char *str)
+int	ft_quotes(char *str)
 {
-	int i;
-	char q;
+	int		i;
+	char	q;
 
 	i = 0;
 	while (i < (int)ft_strlen(str))
@@ -84,27 +84,22 @@ int ft_quotes(char *str)
 	return (1);
 }
 
-int ft_handel_line(char *str)
+int	ft_handel_line(char *str)
 {
 	if (!*str || !ft_strcmp(str, "\n") || !ft_quotes(str))
 	{
 		free(str);
 		return (0);
 	}
-	// if (!ft_quotes(str))
-	// {
-	// 	printf("close the quotes\n");
-	// 	return (0);
-	// }
 	else
 		add_history(str);
 	return (1);
 }
 
-int count_words(char const *s, char c)
+int	count_words(char const *s, char c)
 {
-	int i;
-	int chuncks_number;
+	int	i;
+	int	chuncks_number;
 
 	i = 0;
 	chuncks_number = 0;
@@ -123,7 +118,7 @@ int count_words(char const *s, char c)
 	return (chuncks_number);
 }
 
-char **ft_free(int index, char **ptr)
+char	**ft_free(int index, char **ptr)
 {
 	if (index == 0)
 	{
@@ -140,13 +135,13 @@ char **ft_free(int index, char **ptr)
 	return (0);
 }
 
-char **ft_split_2(char *s, char c)
+char	**ft_split_2(char *s, char c)
 {
-	char **ptr;
-	int i;
-	char *str;
-	(void)c;
+	char	**ptr;
+	int		i;
+	char	*str;
 
+	(void)c;
 	ptr = malloc(sizeof(char *) * 2);
 	if (!ptr)
 		return (NULL);

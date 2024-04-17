@@ -23,7 +23,7 @@ t_cmd	*execcmd(void)
 	t_execcmd	*cmd;
 
 	cmd = malloc(sizeof(t_execcmd *));
-	//TODO : Could be set to 0 "memset"
+	// TODO : Could be set to 0 "memset"
 	ft_memset(cmd, 0, sizeof(t_execcmd *));
 	cmd->type = EXEC;
 	return ((t_cmd *)cmd);
@@ -31,25 +31,26 @@ t_cmd	*execcmd(void)
 
 /*
 	@AUTHOR	: Saad ERRAOUI
-	@PROTO	: t_cmd	*redircmd(t_cmd *subcmd, char *file, char *efile, int mode, int fd);
+	@PROTO	: t_cmd	*redircmd(t_cmd *subcmd, char *file, char *efile, int mode,
+				int fd);
 	@DESC	: utility function that initialize a t_redircmd instance with the correspondant params.
 	@DATE	: 30-03-2024
 */
 // t_cmd	*redircmd(t_cmd *subcmd, char *file, char *efile, int mode, int fd)
 t_cmd	*redircmd(t_cmd *subcmd, char *file, int mode, int fd)
 {
-  t_redircmd	*cmd;
+	t_redircmd	*cmd;
 
-  cmd = malloc(sizeof(t_redircmd *));
-  ft_memset(cmd, 0, sizeof(t_redircmd *));
-  cmd->type = REDIR;
-  printf("_type %i\n", cmd->type);
-  cmd->cmd = subcmd;
-  cmd->file = file;
-  //cmd->efile = efile;
-  cmd->mode = mode;
-  cmd->fd = fd;
-  return ((t_cmd *)cmd);
+	cmd = malloc(sizeof(t_redircmd *));
+	ft_memset(cmd, 0, sizeof(t_redircmd *));
+	cmd->type = REDIR;
+	printf("_type %i\n", cmd->type);
+	cmd->cmd = subcmd;
+	cmd->file = file;
+	// cmd->efile = efile;
+	cmd->mode = mode;
+	cmd->fd = fd;
+	return ((t_cmd *)cmd);
 }
 
 /*
@@ -58,9 +59,9 @@ t_cmd	*redircmd(t_cmd *subcmd, char *file, int mode, int fd)
 	@DESC	: utility function that initialize a t_pipecmd instance with the correspondant params.
 	@DATE	: 30-03-2024
 */
-t_cmd	*pipecmd(t_cmd *left, t_cmd	*right)
+t_cmd	*pipecmd(t_cmd *left, t_cmd *right)
 {
-	t_pipecmd	*cmd;	
+	t_pipecmd	*cmd;
 
 	cmd = malloc(sizeof(t_pipecmd *));
 	// memset(cmd, 0, sizeof(*cmd));

@@ -1,11 +1,11 @@
 #include "minishell.h"
 
-t_env_v *env_init(char **env)
+t_env_v	*env_init(char **env)
 {
-	t_env_v *envs;
-	t_env_v *node;
-	int i;
-	char **s;
+	t_env_v	*envs;
+	t_env_v	*node;
+	int		i;
+	char	**s;
 
 	if (!env)
 		return (NULL);
@@ -23,7 +23,6 @@ t_env_v *env_init(char **env)
 	}
 	return (envs);
 }
-
 
 // char *add_$$(char *str, t_env_v *env)
 // {
@@ -43,12 +42,12 @@ t_env_v *env_init(char **env)
 // 	}
 // }
 
-int main(int ac, char **av, char **envp)
+int	main(int ac, char **av, char **envp)
 {
 	// char *tab = add_32(av[1], "<>|");
 	// printf("---> :%s\n", tab);
-	t_env_v  *env;
+	t_env_v *env;
 
 	env = env_init(env);
-	char **tab = 
+	char **tab =
 }

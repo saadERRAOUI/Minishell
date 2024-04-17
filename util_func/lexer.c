@@ -3,27 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 17:53:48 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/04/04 22:07:12 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/04/17 13:24:48 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./../minishell.h"
 
 /*
-	@AUTER: hicham bouzid
+	@AUTOR: hicham bouzid
 	@DESC: function remplace a symbols if inside a "" or ''
 		by imprintibale charchter
 	@PROTOTYPE: char *ft_convert_0(char *str)
 	@DATE: 04-04-2024
 */
 
-char *ft_convert_0(char *str)
+char	*ft_convert_0(char *str)
 {
-	int i;
-	char c;
+	int		i;
+	char	c;
 
 	i = 0;
 	while (str[i])
@@ -55,16 +55,16 @@ char *ft_convert_0(char *str)
 }
 
 /*
-	@AUTHER: hicham bouzid
+	@AUTHOR: hicham bouzid
 	@DESC: function undo changes
 	@PROTOTYPE: char **undo(char **ptr)
 	@DATE: 04-04-2024
 */
 
-char **undo(char **ptr)
+char	**undo(char **ptr)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = 0;
 	while (ptr[i])

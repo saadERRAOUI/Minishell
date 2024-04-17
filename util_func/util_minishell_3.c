@@ -3,25 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   util_minishell_3.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:23:09 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/04/17 11:35:19 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/04/17 16:31:18 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./../minishell.h"
 
 /*
-	@AUTHER: hicham bouzid
+	@AUTHOR: hicham bouzid
 	@PROTOTYPE: int ft_strlen_until(char *str, char c)
 	@DESC: function like strchr but this return the index
 	@DATE: 16-04-2024
 */
 
-int ft_strlen_until(char *str, char c)
+int	ft_strlen_until(char *str, char c)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (str[i])
@@ -33,33 +33,65 @@ int ft_strlen_until(char *str, char c)
 			else
 				return (-1);
 		}
-		i++;	
+		i++;
 	}
 	return (-1);
 }
 
-char *ft_replace_dollar(char *ptr, t_env_v *env)
+char	*ft_modifie(char *ptr, int start, int end, char *t)
 {
-	char *s1;
-	char *s2;
-	int index;
-	int len;
-	int i;
-	int j;
+	int		len;
+	char	*str;
+	int		i;
+	int		j;
 
-	s2 = NULL;
+	len = ft_strlen(ptr) - (end - start) - 1;
+	if (t)
+		len += ft_strlen(t);
+	str = malloc(sizeof(char) * (len));
+	str[len] = 0;
 	i = 0;
 	j = 0;
+	while (i < len)
+	{
+		while (i < start - 1)
+		{
+			str[i] = ptr[i];
+			i++;
+		}
+		while (t && t[j])
+			str[i++] = t[j++];
+		while (i < len && end < (int)ft_strlen(ptr))
+			str[i++] = ptr[end++];
+	}
+	return (str);
+}
+
+char	*get_measurements(int *index, int *len, char *ptr)
+{
+	*index = ft_strlen_until(ptr, '$');
+	*len = *index;
+	while (ptr[*len])
+	{
+		if (ptr[*len] == '\"' || ptr[*len] == ' ' || ptr[*len] == '\'')
+			break ;
+		(*len)++;
+	}
+	return (ft_substr(ptr, *index, *len - *index));
+}
+
+char	*ft_replace_dollar(char *ptr, t_env_v *env)
+{
+	char	*s1;
+	char	*s2;
+	int		index;
+	int		len;
+
+	s2 = NULL;
+	s1 = 0;
 	if (ft_strlen_until(ptr, '$') != -1)
 	{
-		index = ft_strlen_until(ptr, '$');
-		len = index;
-		while (ptr[len])
-		{
-			if (ptr[len] == '\"' || ptr[len] == ' ')
-			break ;
-			len++;
-		}
+		s1 = get_measurements(&index, &len, ptr);
 		s1 = ft_substr(ptr, index, len - index);
 		while (env)
 		{
@@ -70,23 +102,8 @@ char *ft_replace_dollar(char *ptr, t_env_v *env)
 			}
 			env = env->next;
 		}
-		// free(s1);
-		i = ft_strlen(ptr) - (len - index);
-		// printf("->:%d\n", (int)ft_strlen(ptr));
-		if (s2)
-			i += ft_strlen(s2);
-		s1 = malloc(sizeof(char) * (i));
-		s1[i] = 0;
-		while (j < i)
-		{
-			while (j < index)
-			{
-				s1[j] = ptr[j];
-				j++;
-			}
-					
-		}
-		// printf("--> %d\n", (int)ft_strlen(s2));
+		free(s1);
+		s1 = ft_modifie(ptr, index, len, s2);
 	}
-	return (s2);
+	return (s1);
 }

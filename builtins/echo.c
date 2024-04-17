@@ -12,7 +12,7 @@
 
 #include "./../minishell.h"
 
-void print_arg(int index, char **av, int ac)
+void	print_arg(int index, char **av, int ac)
 {
 	while (index < ac)
 	{
@@ -21,12 +21,12 @@ void print_arg(int index, char **av, int ac)
 			ft_putstr_fd(" ", 1);
 		index++;
 	}
-	return;
+	return ;
 }
 
-int echo(int ac, char **av)
+int	echo(int ac, char **av)
 {
-	int i;
+	int	i;
 
 	if (ac >= 2)
 	{

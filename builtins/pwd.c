@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 06:09:11 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/04/06 00:22:11 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/04/17 11:57:46 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,14 @@
 	@DATE	: 24-03-2024
 */
 
-int pwd(int ac, char **av)
+int	pwd(int ac, char **av)
 {
-	char BUFFER[PATH_MAX];
+	char	buffer[1024];
+
 	(void)av;
 	if (ac == 1)
 	{
-		printf("%s\n", getcwd(BUFFER, sizeof(BUFFER)));
+		printf("%s\n", getcwd(buffer, sizeof(buffer)));
 		return (0);
 	}
 	else

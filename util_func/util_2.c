@@ -3,27 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   util_2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 17:22:40 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/04/17 10:59:28 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/04/17 16:36:46 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./../minishell.h"
 
 /*
-	@AUTHER: hicham bouzid
+	@AUTHOR: hicham bouzid
 	@DESC: join a char to an string
 	@PROTOTYPE: char *ft_charjoin(char *str,
 		char c)
 	@DATE: 03-04-2024
 */
 
-char *ft_charjoin(char *str, char c)
+char	*ft_charjoin(char *str, char c)
 {
-	int len;
-	char *ptr;
+	int		len;
+	char	*ptr;
 
 	len = (int)ft_strlen(str);
 	ptr = malloc(sizeof(char) * (len + 2));
@@ -42,17 +42,17 @@ char *ft_charjoin(char *str, char c)
 }
 
 /*
-	@AUTHER: hicham bouzid
+	@AUTHOR: hicham bouzid
 	@DESC: check if chars in sym are syparde by space
 	if not add space
 	@PROTOTYPE: char *add_32(char *str, char *sym)
 	@DATE: 03-04-2023
 */
 
-char *add_32(char *str, char *sym)
+char	*add_32(char *str, char *sym)
 {
-	int i;
-	char *ptr;
+	int		i;
+	char	*ptr;
 
 	ptr = ft_strdup("");
 	i = 0;
@@ -64,12 +64,12 @@ char *add_32(char *str, char *sym)
 			if (!ft_strchr(sym, str[i + 1]))
 				ptr = ft_charjoin(ptr, 32);
 		}
-		else if ((!ft_strchr(sym, str[i]) && i < (int)ft_strlen(str) && ft_strchr(sym, str[i + 1])) ||
-				(ft_strchr(sym, str[i]) && i < (int)ft_strlen(str) && !ft_strchr(sym , str[i + 1])))
+		else if ((!ft_strchr(sym, str[i]) && i < (int)ft_strlen(str)
+				&& ft_strchr(sym, str[i + 1])) || (ft_strchr(sym, str[i])
+				&& i < (int)ft_strlen(str) && !ft_strchr(sym, str[i + 1])))
 		{
 			ptr = ft_charjoin(ptr, str[i]);
 			ptr = ft_charjoin(ptr, 32);
-
 		}
 		else
 			ptr = ft_charjoin(ptr, str[i]);
@@ -85,15 +85,16 @@ char *add_32(char *str, char *sym)
 	@DATE: 04-04-2024
 */
 
-char *ft_shift(char *ptr)
+char	*ft_shift(char *ptr)
 {
-	int i;
-	int j;
-	char c;
+	int		i;
+	int		j;
+	char	c;
+	char	*str;
 
 	i = 0;
 	j = 0;
-	char *str = ft_strdup(ptr);
+	str = ft_strdup(ptr);
 	while (ptr[i])
 	{
 		if (ptr[i] == '\'' || ptr[i] == '\"')
@@ -111,11 +112,11 @@ char *ft_shift(char *ptr)
 	return (str);
 }
 
-char **add_dollar(char **ptr, t_env_v *env)
+char	**add_dollar(char **ptr, t_env_v *env)
 {
-	int i;
-	int token;
-	// char *str;
+	int		i;
+	int		token;
+	char	*tmp;
 
 	i = 0;
 	while (ptr[i])
@@ -127,9 +128,10 @@ char **add_dollar(char **ptr, t_env_v *env)
 		}
 		if (token)
 		{
-			 ft_replace_dollar(ptr[i], env);
+			tmp = ft_replace_dollar(ptr[i], env);
+			free(ptr[i]);
+			ptr[i] = tmp;
 			continue ;
-			// printf("%s\n", ptr[i]);
 		}
 		i++;
 	}
@@ -137,23 +139,15 @@ char **add_dollar(char **ptr, t_env_v *env)
 }
 
 // !todo add function to check if the syntax true or not
-char **ft_check_syntax(char *str)
+char	**ft_check_syntax(char *str)
 {
-	char **ptr;
-	// int i;
+	char	**ptr;
 
+	// int i;
 	str = ft_convert_0(str);
-	// printf("%s\n", str);
+
 	str = add_32(str, "|<>");
 	ptr = ft_split(str, " \t");
 	ptr = undo(ptr);
-	// i = 0;
-	// for (i = 0; ptr[i]; i++)
-	// 	printf("--->%s\n", ptr[i]);
-	// while (ptr[i])
-	// {
-	// 	ptr[i] = ft_shift(ptr[i]);
-	// 	i++;
-	// }
 	return (ptr);
 }
