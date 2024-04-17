@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 17:15:26 by serraoui          #+#    #+#             */
-/*   Updated: 2024/04/05 03:38:31 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/04/16 14:04:57 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,11 +182,11 @@ int ft_run_shell(t_env_v *env)
 	char **ptr;
 	t_cmd *cmd;
 	int pos;
-
+	
+	(void)cmd;
 	while (1)
 	{
 		str = readline("$ ");
-		// printf("%s\n", str):
 		if (!str)
 		{
 			ft_free_stack(&env);
@@ -197,13 +197,11 @@ int ft_run_shell(t_env_v *env)
 		ptr = ft_check_syntax(str);
 		if (!ptr)
 			continue;
+		ptr = add_dollar(ptr, env);
 		for (int i = 0; ptr[i]; i++)
 			printf("--> %s\n", ptr[i]);
-		printf("+++HERE\n");
 		pos = 0;
 		cmd = parsepipe(ptr, &pos);
-		printf("TYPE CREATED TREE %i\n\n", cmd->type);
-		// else
 		free(str);
 	}
 	return (0);
@@ -218,5 +216,9 @@ int main(int ac, char **av, char **envp)
 	env = env_init(envp);
 	if (!env)
 		exit(-1);
+	// ft_env(env);
+	// char **tab = ft_check_syntax(av[1]);
+	// for (int i  = 0; tab[i]; i++)
+	// 	printf("--> %s\n", tab[i]);
 	ft_run_shell(env);
 }

@@ -6,7 +6,7 @@
 /*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 17:22:40 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/04/05 12:47:20 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/04/17 10:59:28 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char *ft_charjoin(char *str, char c)
 	int len;
 	char *ptr;
 
-	len = ft_strlen(str);
+	len = (int)ft_strlen(str);
 	ptr = malloc(sizeof(char) * (len + 2));
 	if (!ptr)
 		return (NULL);
@@ -64,8 +64,8 @@ char *add_32(char *str, char *sym)
 			if (!ft_strchr(sym, str[i + 1]))
 				ptr = ft_charjoin(ptr, 32);
 		}
-		else if ((!ft_strchr(sym, str[i]) && i < ft_strlen(str) && ft_strchr(sym, str[i + 1])) ||
-				(ft_strchr(sym, str[i]) && i < ft_strlen(str) && !ft_strchr(sym , str[i + 1])))
+		else if ((!ft_strchr(sym, str[i]) && i < (int)ft_strlen(str) && ft_strchr(sym, str[i + 1])) ||
+				(ft_strchr(sym, str[i]) && i < (int)ft_strlen(str) && !ft_strchr(sym , str[i + 1])))
 		{
 			ptr = ft_charjoin(ptr, str[i]);
 			ptr = ft_charjoin(ptr, 32);
@@ -111,24 +111,49 @@ char *ft_shift(char *ptr)
 	return (str);
 }
 
+char **add_dollar(char **ptr, t_env_v *env)
+{
+	int i;
+	int token;
+	// char *str;
+
+	i = 0;
+	while (ptr[i])
+	{
+		token = 0;
+		if (ft_strchr(ptr[i], '$'))
+		{
+			token = 1;
+		}
+		if (token)
+		{
+			 ft_replace_dollar(ptr[i], env);
+			continue ;
+			// printf("%s\n", ptr[i]);
+		}
+		i++;
+	}
+	return (ptr);
+}
+
 // !todo add function to check if the syntax true or not
 char **ft_check_syntax(char *str)
 {
 	char **ptr;
-	int i;
+	// int i;
 
 	str = ft_convert_0(str);
 	// printf("%s\n", str);
 	str = add_32(str, "|<>");
 	ptr = ft_split(str, " \t");
 	ptr = undo(ptr);
-	i = 0;
+	// i = 0;
 	// for (i = 0; ptr[i]; i++)
 	// 	printf("--->%s\n", ptr[i]);
-	while (ptr[i])
-	{
-		ptr[i] = ft_shift(ptr[i]);
-		i++;
-	}
+	// while (ptr[i])
+	// {
+	// 	ptr[i] = ft_shift(ptr[i]);
+	// 	i++;
+	// }
 	return (ptr);
 }

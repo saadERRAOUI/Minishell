@@ -6,7 +6,7 @@
 /*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 06:09:11 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/03/29 23:37:11 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/04/06 00:22:11 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 int pwd(int ac, char **av)
 {
 	char BUFFER[PATH_MAX];
+	(void)av;
 	if (ac == 1)
 	{
 		printf("%s\n", getcwd(BUFFER, sizeof(BUFFER)));

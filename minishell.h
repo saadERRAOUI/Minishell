@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 18:02:20 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/04/05 04:04:44 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/04/16 10:23:21 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,5 +105,9 @@ int ft_util_quotes(char *av, char q, int *index);
 char *ft_convert_0(char *str);
 char **undo(char **ptr);
 char **ft_check_syntax(char *str);
+int ft_strlen_until(char *str, char c);
+char *ft_replace_dollar(char *ptr, t_env_v *env);
+char **add_dollar(char **ptr, t_env_v *env);
+
 
 #endif

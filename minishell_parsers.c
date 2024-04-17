@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_parsers.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 02:29:36 by serraoui          #+#    #+#             */
-/*   Updated: 2024/04/05 04:10:26 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/04/05 12:20:46 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ t_cmd  *parsexec(char **ps, int *pos)
 	tok = get_token_type(ps[(*pos)]);
 	while (ps[*pos] && tok && tok != '|')
 	{
-		printf("tok --> %c\n", tok);
+		// printf("tok --> %c\n", tok);
 		if (tok != 'a')
 		{
 			printf("ERROR\n");
@@ -62,14 +62,14 @@ t_cmd  *parsexec(char **ps, int *pos)
 		if(argc >= MAXARGS)
 			exit(1); 	//! panic("too many args");
 		(*pos)++;
-		printf("tok --> %c\n", tok);
+		// printf("tok --> %c\n", tok);
 		ret = parseredir(ret, ps, pos);
 		tok = get_token_type(ps[(*pos)]);
-		printf("__POS_ %i\n", *pos);
+		// printf("__POS_ %i\n", *pos);
 	}
 	//cmd->argv[argc] = NULL;
-	printf("tok --> %c\n", tok);
-	printf("__HERE\n");
+	// printf("tok --> %c\n", tok);
+	// printf("__HERE\n");
 /* 
 	char		*q;
 	char		*eq;
