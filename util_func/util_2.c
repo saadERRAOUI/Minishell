@@ -6,7 +6,7 @@
 /*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 17:22:40 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/04/17 16:36:46 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/04/18 16:02:31 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,14 @@ char	*ft_shift(char *ptr)
 	return (str);
 }
 
+/*
+	@AUTHOR: hicham bouzid
+	@PROTOTYPE: char	**add_dollar(char **ptr, t_env_v *env)
+	@DESC: this function uset to replace env variable by
+			by his value check if containe and call other func
+	@DATE: 18-05-20240
+*/
+
 char	**add_dollar(char **ptr, t_env_v *env)
 {
 	int		i;
@@ -143,11 +151,14 @@ char	**ft_check_syntax(char *str)
 {
 	char	**ptr;
 
-	// int i;
+	int i;
 	str = ft_convert_0(str);
 
 	str = add_32(str, "|<>");
 	ptr = ft_split(str, " \t");
 	ptr = undo(ptr);
+	for(i = 0; ptr[i]; i++)
+		ptr[i] = ft_shift(ptr[i]);
+
 	return (ptr);
 }

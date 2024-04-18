@@ -6,7 +6,7 @@
 /*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:23:09 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/04/17 16:31:18 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/04/18 14:38:34 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,14 @@ int	ft_strlen_until(char *str, char c)
 	return (-1);
 }
 
+/*
+	@AUTHOR: Hicham bouzid
+	@PROTOTYPE: char	*ft_modifie(char *ptr, int start, int end, char *t)
+	@DESC: realloc for a new strin by adding the value of a env variable
+			if it's found else remove it's.
+	@DATE: 18-04-2024
+*/
+
 char	*ft_modifie(char *ptr, int start, int end, char *t)
 {
 	int		len;
@@ -67,6 +75,13 @@ char	*ft_modifie(char *ptr, int start, int end, char *t)
 	return (str);
 }
 
+/*
+	@AUTHOR: Hicham BOUZID
+	@PROTOTYPE: char	*get_measurements(int *index, int *len, char *ptr)
+	@DESC: function uset to get index of start and end of env variable
+	@DATE: 18-04-2024
+*/
+
 char	*get_measurements(int *index, int *len, char *ptr)
 {
 	*index = ft_strlen_until(ptr, '$');
@@ -79,6 +94,14 @@ char	*get_measurements(int *index, int *len, char *ptr)
 	}
 	return (ft_substr(ptr, *index, *len - *index));
 }
+
+/*
+	@AUTOR: hicham bouzid
+	@PRORTOTYPE: char	*ft_replace_dollar(char *ptr, t_env_v *env)
+	@DESC: just check if the env variable found and replace it else
+	remove the word containe $ from the string
+	@DATE: 18-05-2024
+*/
 
 char	*ft_replace_dollar(char *ptr, t_env_v *env)
 {
@@ -93,6 +116,7 @@ char	*ft_replace_dollar(char *ptr, t_env_v *env)
 	{
 		s1 = get_measurements(&index, &len, ptr);
 		s1 = ft_substr(ptr, index, len - index);
+		// printf("_-_-_-_-_%d\n", (int)ft_strlen(s1));
 		while (env)
 		{
 			if (!ft_strcmp(env->key, s1))
