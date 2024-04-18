@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 17:15:26 by serraoui          #+#    #+#             */
-/*   Updated: 2024/04/18 15:59:14 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/04/18 22:15:32 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,8 @@ int	ft_run_shell(t_env_v *env)
 	char *str;
 	char **ptr;
 	int pos;
+	int i = 0;
+	int j = 0;
 
 	pos = 0;
 	while (1)
@@ -82,9 +84,21 @@ int	ft_run_shell(t_env_v *env)
 		if (!ft_handel_line(str))
 			continue ;
 		ptr = ft_check_syntax(str);
+		for (i = 0; ptr[i]; i++)
+			ptr[i] = expand_or_not(ptr[i]);
 		if (!ptr)
 			continue ;
 		ptr = add_dollar(ptr, env);
+		for(i = 0; ptr[i]; i++)
+		{
+			for (j = 0; ptr[i][j]; j++)
+			{
+				if (ptr[i][j] == 7)
+					ptr[i][j] = '$';
+			}
+		}
+		for(i = 0; ptr[i]; i++)
+			ptr[i] = ft_shift(ptr[i]);
 		for (int i = 0; ptr[i]; i++)
 			printf("--> %s\n", ptr[i]);
 		pos = 0;

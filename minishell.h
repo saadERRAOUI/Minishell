@@ -6,7 +6,7 @@
 /*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 18:02:20 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/04/16 10:23:21 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/04/18 22:15:57 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@
 #define LEFT 4
 #define RIGHT 5
 #define SPACE 6
-
+#define DL 7
 #define EXIT_FAILUR 127
 #define CTRL_C 130
 typedef struct s_env_v
@@ -108,6 +108,8 @@ char **ft_check_syntax(char *str);
 int ft_strlen_until(char *str, char c);
 char *ft_replace_dollar(char *ptr, t_env_v *env);
 char **add_dollar(char **ptr, t_env_v *env);
-
+char *expand_or_not(char *ptr);
+int ft_back(char *str, int index);
+char	*ft_shift(char *ptr);
 
 #endif
