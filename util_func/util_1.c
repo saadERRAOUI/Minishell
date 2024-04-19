@@ -6,7 +6,7 @@
 /*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 23:43:26 by serraoui          #+#    #+#             */
-/*   Updated: 2024/04/17 13:24:36 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/04/19 17:32:40 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,4 +79,16 @@ void	ft_free_stack(t_env_v **a)
 		free(tmp->key);
 		free(tmp);
 	}
+}
+
+int	ft_handel_line(char *str)
+{
+	if (!*str || !ft_strcmp(str, "\n") || !ft_quotes(str))
+	{
+		free(str);
+		return (0);
+	}
+	else
+		add_history(str);
+	return (1);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   util_2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 17:22:40 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/04/19 15:27:05 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/04/19 17:14:31 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,16 +146,14 @@ char	**add_dollar(char **ptr, t_env_v *env)
 	return (ptr);
 }
 
-
 // !todo add function to check if the syntax true or not
 char	**ft_check_syntax(char *str)
 {
 	char	**ptr;
-	int i;
-	
+	int		i;
+
 	i = 0;
 	str = ft_convert_0(str);
-
 	str = add_32(str, "|<>");
 	ptr = ft_split(str, " \t");
 	ptr = undo(ptr);
@@ -164,9 +162,5 @@ char	**ft_check_syntax(char *str)
 		ptr[i] = expand_or_not(ptr[i]);
 		i++;
 	}
-	
-	// for(i = 0; ptr[i]; i++)
-	// 	ptr[i] = ft_shift(ptr[i]);
-
 	return (ptr);
 }

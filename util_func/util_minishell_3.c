@@ -6,7 +6,7 @@
 /*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:23:09 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/04/18 14:38:34 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/04/19 17:34:39 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,6 @@ char	*ft_replace_dollar(char *ptr, t_env_v *env)
 	{
 		s1 = get_measurements(&index, &len, ptr);
 		s1 = ft_substr(ptr, index, len - index);
-		// printf("_-_-_-_-_%d\n", (int)ft_strlen(s1));
 		while (env)
 		{
 			if (!ft_strcmp(env->key, s1))
@@ -130,4 +129,24 @@ char	*ft_replace_dollar(char *ptr, t_env_v *env)
 		s1 = ft_modifie(ptr, index, len, s2);
 	}
 	return (s1);
+}
+
+char	**ft_split_2(char *s, char c)
+{
+	char	**ptr;
+	int		i;
+	char	*str;
+
+	(void)c;
+	ptr = malloc(sizeof(char *) * 2);
+	if (!ptr)
+		return (NULL);
+	str = ft_strdup(s);
+	i = 0;
+	while (str[i] != '=' && str[i])
+		i++;
+	ptr[0] = str;
+	str[i++] = 0;
+	ptr[1] = (str + i);
+	return (ptr);
 }

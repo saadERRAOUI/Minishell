@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 17:15:26 by serraoui          #+#    #+#             */
-/*   Updated: 2024/04/19 15:30:38 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/04/19 18:25:00 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 /*
 	@AUTHOR	: Saad ERRAOUI
 	@PROTO	: struct t_env_v	*env_init(char **env);
-	@DESC	: utility function that initiate the env varibales by creating a linked list t_env_v
+	@DESC	: utility function that initiate the env
+	varibales by creating a linked list t_env_v
 		an each node contains 1 env var defined by a (key, value) params.
 	@DATE	: 25-03-2024
 */
@@ -43,7 +44,6 @@ t_env_v	*env_init(char **env)
 	return (envs);
 }
 
-
 /*
 	@AUTHOR	: Saad ERRAOUI
 	@PROTO	: int	peek(char **ps, char *es, char *toks);
@@ -69,10 +69,10 @@ int	peek(char **ps, char *es, char *toks)
 		and replacet at the last remove ' & "
 	@DATE: 19-04-2024
 */
-char **ft_expand(char **ptr, t_env_v *env)
+char	**ft_expand(char **ptr, t_env_v *env)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = 0;
 	ptr = add_dollar(ptr, env);
@@ -98,12 +98,12 @@ char **ft_expand(char **ptr, t_env_v *env)
 
 int	ft_run_shell(t_env_v *env)
 {
-	t_cmd *cmd;
-	(void)cmd;
-	char *str;
-	char **ptr;
-	int pos;
+	t_cmd	*cmd;
+	char	*str;
+	char	**ptr;
+	int		pos;
 
+	(void)cmd;
 	pos = 0;
 	while (1)
 	{
@@ -130,16 +130,12 @@ int	ft_run_shell(t_env_v *env)
 
 int	main(int ac, char **av, char **envp)
 {
-	t_env_v *env;
+	t_env_v	*env;
 
 	(void)ac;
 	(void)av;
 	env = env_init(envp);
 	if (!env)
 		exit(-1);
-	// ft_env(env);
-	// char **tab = ft_check_syntax(av[1]);
-	// for (int i  = 0; tab[i]; i++)
-	// 	printf("--> %s\n", tab[i]);
 	ft_run_shell(env);
 }

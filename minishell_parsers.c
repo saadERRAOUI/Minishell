@@ -45,9 +45,9 @@ t_cmd	*parsexec(char **ps, int *pos)
 	int			argc;
 	t_execcmd	*cmd;
 	t_cmd		*ret;
-		// char		*q;
-		// char		*eq;
 
+	// char		*q;
+	// char		*eq;
 	ret = execcmd();
 	cmd = (t_execcmd *)ret;
 	argc = 0;

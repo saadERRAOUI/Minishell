@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   util_0.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 18:01:05 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/04/18 18:08:11 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/04/19 17:34:27 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,18 +84,6 @@ int	ft_quotes(char *str)
 	return (1);
 }
 
-int	ft_handel_line(char *str)
-{
-	if (!*str || !ft_strcmp(str, "\n") || !ft_quotes(str))
-	{
-		free(str);
-		return (0);
-	}
-	else
-		add_history(str);
-	return (1);
-}
-
 int	count_words(char const *s, char c)
 {
 	int	i;
@@ -133,24 +121,4 @@ char	**ft_free(int index, char **ptr)
 	}
 	free(ptr);
 	return (0);
-}
-
-char	**ft_split_2(char *s, char c)
-{
-	char	**ptr;
-	int		i;
-	char	*str;
-
-	(void)c;
-	ptr = malloc(sizeof(char *) * 2);
-	if (!ptr)
-		return (NULL);
-	str = ft_strdup(s);
-	i = 0;
-	while (str[i] != '=' && str[i])
-		i++;
-	ptr[0] = str;
-	str[i++] = 0;
-	ptr[1] = (str + i);
-	return (ptr);
 }
