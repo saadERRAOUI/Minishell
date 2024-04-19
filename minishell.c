@@ -6,7 +6,7 @@
 /*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 17:15:26 by serraoui          #+#    #+#             */
-/*   Updated: 2024/04/18 22:15:32 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/04/19 15:30:38 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ t_env_v	*env_init(char **env)
 	return (envs);
 }
 
+
 /*
 	@AUTHOR	: Saad ERRAOUI
 	@PROTO	: int	peek(char **ps, char *es, char *toks);
@@ -61,6 +62,39 @@ int	peek(char **ps, char *es, char *toks)
 	return (*s && ft_strchr(toks, *s));
 }
 
+/*
+	@AUTHOR: Hicham BOUZID
+	@PROTOTYPE: char **ft_expand(char **ptr, t_env_v *env)
+	@DESC: this function check if the string containe an env variable
+		and replacet at the last remove ' & "
+	@DATE: 19-04-2024
+*/
+char **ft_expand(char **ptr, t_env_v *env)
+{
+	int i;
+	int j;
+
+	i = 0;
+	ptr = add_dollar(ptr, env);
+	while (ptr[i])
+	{
+		j = 0;
+		while (ptr[i][j])
+		{
+			if (ptr[i][j] == 7)
+				ptr[i][j] = '$';
+			j++;
+		}
+		i++;
+	}
+	i = 0;
+	while (ptr[i])
+	{
+		ptr[i] = ft_shift(ptr[i]);
+		i++;
+	}
+	return (ptr);
+}
 
 int	ft_run_shell(t_env_v *env)
 {
@@ -69,8 +103,6 @@ int	ft_run_shell(t_env_v *env)
 	char *str;
 	char **ptr;
 	int pos;
-	int i = 0;
-	int j = 0;
 
 	pos = 0;
 	while (1)
@@ -84,21 +116,9 @@ int	ft_run_shell(t_env_v *env)
 		if (!ft_handel_line(str))
 			continue ;
 		ptr = ft_check_syntax(str);
-		for (i = 0; ptr[i]; i++)
-			ptr[i] = expand_or_not(ptr[i]);
 		if (!ptr)
 			continue ;
-		ptr = add_dollar(ptr, env);
-		for(i = 0; ptr[i]; i++)
-		{
-			for (j = 0; ptr[i][j]; j++)
-			{
-				if (ptr[i][j] == 7)
-					ptr[i][j] = '$';
-			}
-		}
-		for(i = 0; ptr[i]; i++)
-			ptr[i] = ft_shift(ptr[i]);
+		ptr = ft_expand(ptr, env);
 		for (int i = 0; ptr[i]; i++)
 			printf("--> %s\n", ptr[i]);
 		pos = 0;

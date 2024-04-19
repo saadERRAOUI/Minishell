@@ -6,7 +6,7 @@
 /*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 17:24:26 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/04/18 22:23:29 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/04/19 16:38:04 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,20 +38,24 @@ int ft_back(char *str, int index)
 		}
 		tmp--;
 	}
-	// if (token == '\"' && doubl % 2 == 0 && singl % 2 != 0)
-	if (token == '\"' && doubl % 2 == 0 && singl % 2 != 0 && singl != 1)
-	{
-		printf("----\n");
+	if ((token == '\"' && doubl % 2 == 0 && singl % 2 != 0 && singl != 1) ||
+		(singl % 2 && singl != 1 && token != '\"'))
 		return (0);
-	}
-	if (singl % 2 != 0 && singl != 1 && token != '\"')
-	{
-		printf("====\n");
+	if (token == '\"'  && singl > 1 && singl % 2 != 0 && doubl % 2 == 0)
+		return 0;
+	if (token == '\'' && singl && singl % 2)
 		return (0);
-	}
+	if (token == '\"' && singl >= 1 && singl % 2 && doubl % 2 == 0)
+		return (0);
 	return (1);
 }
 
+/*
+	@AUTHOR: Hicham BOUZID
+	@PROTOTYPE: char *expand_or_not(char *ptr)
+	@DESC: util for expanding env variables
+	@DATE:
+*/
 char *expand_or_not(char *ptr)
 {
 	int i;
