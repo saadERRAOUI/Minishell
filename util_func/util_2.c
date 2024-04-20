@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   util_2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 17:22:40 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/04/20 15:30:28 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/04/20 21:05:14 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,8 +101,16 @@ char	*ft_shift(char *ptr)
 		{
 			c = ptr[i];
 			i++;
-			while (ptr[i] != c && ptr[i])
-				str[j++] = ptr[i++];
+			while (ptr[i])
+			{
+				if (ptr[i] == c)
+				{
+					i++;
+					break;
+				}
+				else
+					str[j++] = ptr[i++];
+			}
 		}
 		else
 			str[j++] = ptr[i++];
@@ -154,12 +162,11 @@ char	**ft_check_syntax(char *str)
 	int		i;
 
 	i = 0;
-	printf ("==========%s=======\n", str);
 	str = ft_convert_0(str);
 	str = add_32(str, "|<>");
-	printf ("==========%s=======\n", str);
 	ptr = ft_split(str, " \t");
 	ptr = undo(ptr);
+	i = 0;
 	while (ptr[i])
 	{
 		ptr[i] = expand_or_not(ptr[i]);
