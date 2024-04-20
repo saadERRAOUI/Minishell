@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_parsers.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 02:29:36 by serraoui          #+#    #+#             */
-/*   Updated: 2024/04/09 15:40:45 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/04/17 12:04:52 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,13 @@
 
 t_cmd  *parsexec(char **ps, int *pos)
 {
-	int			tok; 
+	int			tok;
 	int			argc;
 	t_execcmd	*cmd;
 	t_cmd		*ret;
 
+	// char		*q;
+	// char		*eq;
 	ret = execcmd();
 	cmd = (t_execcmd *)ret;
 	argc = 0;
@@ -29,15 +31,14 @@ t_cmd  *parsexec(char **ps, int *pos)
 		// printf("tok --> %c\n", tok);
 		if (tok != 'a')
 		{
-			// printf("ERROR\n");
 			exit (-1);	//! change to error path
 		}
 		printf("POS -> %i ; CON -> %s\n", *pos, ps[(*pos)]);
 		cmd->argv[argc] = ps[(*pos)];
 		// printf("_POS -> %i ; _CON -> %s\n", argc, cmd->argv[argc]);
 		argc++;
-		if(argc >= MAXARGS)
-			exit(1); 	//! panic("too many args");
+		if (argc >= MAXARGS)
+			exit(1); //! panic("too many args");
 		(*pos)++;
 		// printf("tok --> %c\n", tok);
 		ret = parseredir(ret, ps, pos);
@@ -45,19 +46,13 @@ t_cmd  *parsexec(char **ps, int *pos)
 		tok = get_token_type(ps[(*pos)]);
 		// printf("__POS_ %i\n", *pos);
 	}
-	// ft_print_tab(cmd->argv);
-	cmd->argv[argc] = NULL;
-	// printf("tok --> %c\n", tok);
-	// printf("__HERE\n");
-	return (ret);
-}
 
 t_cmd  *parsepipe(char **ps, int *pos)
 {
-	t_cmd *cmd;
+	t_cmd	*cmd;
 
 	cmd = parsexec(ps, pos);
-	if(get_token_type(ps[(*pos)]) == '|')
+	if (get_token_type(ps[(*pos)]) == '|')
 	{
 		(*pos)++;
 		cmd = pipecmd(cmd, parsepipe(ps, pos));
@@ -75,47 +70,48 @@ int	get_token_type(char *s)
 	ret = (int)*s;
 	switch (*s)
 	{
-		case '|':
-			break ;
-		case '>':
-			if (*(s + 1) == '>')
-				ret = '+';
-			break ;
-		case '<':
-			if (*(s + 1) == '<')
-				ret = '-';
-			break ;
-		default :
-			ret = 'a';
-			break ;
+	case '|':
+		break ;
+	case '>':
+		if (*(s + 1) == '>')
+			ret = '+';
+		break ;
+	case '<':
+		if (*(s + 1) == '<')
+			ret = '-';
+		break ;
+	default:
+		ret = 'a';
+		break ;
 	}
 	return (ret);
 }
 
 t_cmd  *parseredir(t_cmd *cmd, char **ps, int *pos)
 {
-	int tok;
+	int	tok;
 
 	tok = get_token_type(ps[(*pos)]);
-	if (tok != 'a' && tok != '|' && tok != '0' && get_token_type(ps[*pos + 1]) != 'a')
+	if (tok != 'a' && tok != '|' && tok != '0' && get_token_type(ps[*pos
+			+ 1]) != 'a')
 	{
-		exit(-1); //!to change to error "redirection file doesn't exist"
+		exit(-1); //! to change to error "redirection file doesn't exist"
 	}
-	switch(tok)
+	switch (tok)
 	{
-		// (*pos)++;
-		case '<':
-			(*pos)++;
-			cmd = redircmd(cmd, ps[(*pos)], O_RDONLY, 0);
-			break;
-		case '>':
-			(*pos)++;
-			cmd = redircmd(cmd, ps[(*pos)], O_WRONLY|O_CREAT, 1);
-			break;
-		case '+': //* >>
-			(*pos)++;
-			cmd = redircmd(cmd, ps[(*pos)], O_WRONLY|O_CREAT | O_TRUNC, 1);
-			break;
+	// (*pos)++;
+	case '<':
+		(*pos)++;
+		cmd = redircmd(cmd, ps[(*pos)], O_RDONLY, 0);
+		break ;
+	case '>':
+		(*pos)++;
+		cmd = redircmd(cmd, ps[(*pos)], O_WRONLY | O_CREAT, 1);
+		break ;
+	case '+': //* >>
+		(*pos)++;
+		cmd = redircmd(cmd, ps[(*pos)], O_WRONLY | O_CREAT | O_TRUNC, 1);
+		break ;
 	}
 	return (cmd);
 }

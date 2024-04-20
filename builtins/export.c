@@ -3,25 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 01:40:47 by serraoui          #+#    #+#             */
-/*   Updated: 2024/03/30 02:30:44 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/04/17 11:54:40 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./../minishell.h"
 
-void ft_export(t_env_v **env, char *s) //! Can be returning boolean //
+void	ft_export(t_env_v **env, char *s) //! Can be returning boolean //
 {
-	char **_s;
-	t_env_v *node;
+	char		**_s;
+	t_env_v		*node;
 
 	if (!s)
-		return;
+		return ;
 	_s = ft_split_2(s, '=');
 	if (!_s)
-		return;
+		return ;
 	node = malloc(sizeof(t_env_v));
 	if (count_words(s, '=') >= 2)
 	{

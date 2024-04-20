@@ -3,93 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 17:15:26 by serraoui          #+#    #+#             */
-/*   Updated: 2024/04/09 15:39:52 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/04/19 18:25:00 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/* 	//!toremove -- not used
-	@AUTHOR	: Saad ERRAOUI
-	@PROTO	: int	getToken(char **ps, char *es, char **q, char **eq);
-	@DESC	: utility function that returns the next token (INT) in the parsed
-		String.
-	@DATE	: 24-03-2024
-*/
-int getToken(char **ps, char *es, char **q, char **eq)
-{
-	char *whitespaces;
-	char *symbols;
-	char *s;
-	int ret;
-
-	whitespaces = " \t\r\v\n";
-	symbols = "<|>;&()";
-	s = (*ps);
-	while (s < es && ft_strchr(whitespaces, (*s)))
-		s++;
-	if (q)
-		(*q) = s;
-	ret = (*s);
-	/* //TODO : MAKE THIS CODE IN A SEPERATE FUNC - START */
-	switch (*s)
-	{
-	case 0:
-		break;
-	case '|':
-	case '(':
-	case ')':
-	case '&':
-	case ':':
-		s++;
-		break;
-	case '>':
-		s++;
-		if (*s == '>')
-		{
-			ret = '+';
-			s++;
-		}
-		break;
-	case '<':
-		s++;
-		if (*s == '<')
-		{
-			ret = '-';
-			s++;
-		}
-		break;
-	default:
-		ret = 'a';
-		while (s < es && !ft_strchr(whitespaces, (*s)) && !ft_strchr(symbols, (*s)))
-			s++;
-		break;
-	}
-	/* //TODO : MAKE THIS CODE IN A SEPERATE FUNC - END */
-	if (eq)
-		(*eq) = s;
-	while (s < es && ft_strchr(whitespaces, (*s)))
-		s++;
-	(*ps) = s;
-	return (ret);
-}
-
 /*
 	@AUTHOR	: Saad ERRAOUI
 	@PROTO	: struct t_env_v	*env_init(char **env);
-	@DESC	: utility function that initiate the env varibales by creating a linked list t_env_v
+	@DESC	: utility function that initiate the env
+	varibales by creating a linked list t_env_v
 		an each node contains 1 env var defined by a (key, value) params.
 	@DATE	: 25-03-2024
 */
-t_env_v *env_init(char **env)
+t_env_v	*env_init(char **env)
 {
-	t_env_v *envs;
-	t_env_v *node;
-	int i;
-	char **s;
+	t_env_v	*envs;
+	t_env_v	*node;
+	int		i;
+	char	**s;
 
 	if (!env)
 		return (NULL);
@@ -115,9 +51,9 @@ t_env_v *env_init(char **env)
 		and tells weither it exists and included in the toks chars.
 	@DATE	: 30-03-2024
 */
-int peek(char **ps, char *es, char *toks)
+int	peek(char **ps, char *es, char *toks)
 {
-	char *s;
+	char	*s;
 
 	s = *ps;
 	while (s < es && ft_strchr(" \t\r\n\v", *s))
@@ -126,55 +62,40 @@ int peek(char **ps, char *es, char *toks)
 	return (*s && ft_strchr(toks, *s));
 }
 
-/**
-int main(int ac, char **av, char **env)
+/*
+	@AUTHOR: Hicham BOUZID
+	@PROTOTYPE: char **ft_expand(char **ptr, t_env_v *env)
+	@DESC: this function check if the string containe an env variable
+		and replacet at the last remove ' & "
+	@DATE: 19-04-2024
+*/
+char	**ft_expand(char **ptr, t_env_v *env)
 {
-	t_env_v *envs;
-	t_env_v *check;
+	int	i;
+	int	j;
 
-	envs = env_init(env);
-	// *TEST PURPOSE
-	// printf("\n===============================================================\n\n");
-	// while((*env)) {
-	// 	printf("%s\n", (*env));
-	// 	env++;
-	// }
-	if (!envs)
-		return (0); //! hanle error if env unsetted
-	// ft_env(envs);				   // env
-	ft_export(&envs, " "); // export TEST=test
-	ft_env(envs);
-	// printf("\n== *SET* =============================================================\n\n");
-	// ft_env(envs);
-	// *im' fexed the leaks until here
-	ft_unset(&envs, "LESS"); // unset TEST
-	system("leaks a.out");
-	// printf("\n== *UNSET* ===========================================================\n\n");
-	// *TEST PURPOSE
-	// check = envs;
-	// while(check->next) {
-	// 	printf("%s -> %s\n", check->key, check->value);
-	// 	check = check->next;
-	// }
-}*/
+	i = 0;
+	ptr = add_dollar(ptr, env);
+	while (ptr[i])
+	{
+		j = 0;
+		while (ptr[i][j])
+		{
+			if (ptr[i][j] == 7)
+				ptr[i][j] = '$';
+			j++;
+		}
+		i++;
+	}
+	i = 0;
+	while (ptr[i])
+	{
+		ptr[i] = ft_shift(ptr[i]);
+		i++;
+	}
+	return (ptr);
+}
 
-//! TEST
-// int main()
-// {
-// 	char *ps = "  >>sad|test";
-// 	char *es = (char *)ps + 12;
-// 	char *eq;
-// 	char *q;
-// 	int token = getToken(&ps, es, &q, &eq);
-// 	printf("next token %i %c\n", token, token);
-
-// 	token = getToken(&ps, es, &q, &eq);
-// 	printf("next token %i %c\n", token, token);
-
-// 	token = getToken(&ps, es, &q, &eq);
-// 	printf("next token %i %c\n", token, token);
-// 	return (0);
-// }
 void ft_print_tab(char **s)
 {
 	int i = 0;
@@ -187,30 +108,31 @@ void ft_print_tab(char **s)
 	}
 }
 
-int ft_run_shell(t_env_v *env)
+int	ft_run_shell(t_env_v *env)
 {
-	char *str;
-	char **ptr;
-	t_cmd *cmd;
-	int pos;
+	t_cmd	*cmd;
+	char	*str;
+	char	**ptr;
+	int		pos;
 
+	(void)cmd;
+	pos = 0;
 	while (1)
 	{
 		str = readline("$ ");
-		// printf("%s\n", str):
 		if (!str)
 		{
 			ft_free_stack(&env);
 			exit(130);
 		}
 		if (!ft_handel_line(str))
-			continue;
+			continue ;
 		ptr = ft_check_syntax(str);
 		if (!ptr)
-			continue;
-		// for (int i = 0; ptr[i]; i++)
-		// 	printf("--> %s\n", ptr[i]);
-		// printf("+++HERE\n");
+			continue ;
+		ptr = ft_expand(ptr, env);
+		for (int i = 0; ptr[i]; i++)
+			printf("--> %s\n", ptr[i]);
 		pos = 0;
 		cmd = parsepipe(ptr, &pos);
 		printf("TYPE CREATED TREE %i\n", cmd->type);
@@ -221,9 +143,9 @@ int ft_run_shell(t_env_v *env)
 	return (0);
 }
 
-int main(int ac, char **av, char **envp)
+int	main(int ac, char **av, char **envp)
 {
-	t_env_v *env;
+	t_env_v	*env;
 
 	(void)ac;
 	(void)av;

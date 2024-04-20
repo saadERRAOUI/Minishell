@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   util_1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 23:43:26 by serraoui          #+#    #+#             */
-/*   Updated: 2024/03/31 23:24:32 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/04/19 17:32:40 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./../minishell.h"
 
-t_env_v *ft_lstlast(t_env_v *lst)
+t_env_v	*ft_lstlast(t_env_v *lst)
 {
 	if (!lst)
 		return (lst);
@@ -21,28 +21,29 @@ t_env_v *ft_lstlast(t_env_v *lst)
 	return (lst);
 }
 
-void ft_lstadd_back(t_env_v **lst, t_env_v *new)
+void	ft_lstadd_back(t_env_v **lst, t_env_v *new)
 {
-	t_env_v *tmp;
+	t_env_v	*tmp;
 
 	if (!lst)
-		return;
+		return ;
 	if (!(*lst))
 	{
 		(*lst) = new;
-		return;
+		return ;
 	}
 	tmp = ft_lstlast(*lst);
 	tmp->next = new;
 }
 
-void ft_list_remove_if(t_env_v **begin_list, void *data_ref, int (*cmp)(char *, char *))
+void	ft_list_remove_if(t_env_v **begin_list, void *data_ref,
+		int (*cmp)(char *, char *))
 {
+	t_env_v	*node;
+
 	if (begin_list == NULL || *begin_list == NULL)
-		return;
-
-	t_env_v *node = (*begin_list);
-
+		return ;
+	node = (*begin_list);
 	if (!cmp((char *)node->key, (char *)data_ref))
 	{
 		(*begin_list) = (*begin_list)->next;
@@ -58,7 +59,7 @@ void ft_list_remove_if(t_env_v **begin_list, void *data_ref, int (*cmp)(char *, 
 }
 
 /*
-	@OTHOR: hicham bouzid
+	@AUTHOR: hicham bouzid
 	@PROTO: void ft_free_stack():
 	@DESC: free the the env alloceted if the programme ended or
 			failed
@@ -78,4 +79,16 @@ void	ft_free_stack(t_env_v **a)
 		free(tmp->key);
 		free(tmp);
 	}
+}
+
+int	ft_handel_line(char *str)
+{
+	if (!*str || !ft_strcmp(str, "\n") || !ft_quotes(str))
+	{
+		free(str);
+		return (0);
+	}
+	else
+		add_history(str);
+	return (1);
 }
