@@ -96,6 +96,18 @@ char	**ft_expand(char **ptr, t_env_v *env)
 	return (ptr);
 }
 
+void ft_print_tab(char **s)
+{
+	int i = 0;
+	if (!s)
+		return ;
+	while (s[i])
+	{
+		printf("%s\n", s[i]);
+		i++;
+	}
+}
+
 int	ft_run_shell(t_env_v *env)
 {
 	t_cmd	*cmd;
@@ -125,6 +137,9 @@ int	ft_run_shell(t_env_v *env)
 			printf("--> %s\n", ptr[i]);
 		pos = 0;
 		cmd = parsepipe(ptr, &pos);
+		printf("TYPE CREATED TREE %i\n", cmd->type);
+		printf("==================== \n");
+		ft_print_tab(((t_execcmd *)cmd)->argv);
 		free(str);
 	}
 	return (0);

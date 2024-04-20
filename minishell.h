@@ -56,10 +56,9 @@ typedef struct s_pipecmd
 
 typedef struct s_execcmd
 {
-	int				type;
-	char			*argv[MAXARGS];
-	char			*eargv[MAXARGS];
-}					t_execcmd;
+	int type;
+	char **argv; //TODO : update this pointer to be allocated
+} t_execcmd;
 
 typedef struct s_redircmd
 {
@@ -97,7 +96,6 @@ t_cmd				*redircmd(t_cmd *subcmd, char *file, int mode, int fd);
 // t_cmd *redircmd(t_cmd *subcmd, char *file, char *efile, int mode, int fd);
 t_cmd				*pipecmd(t_cmd *left, t_cmd *right);
 int					get_token_type(char *s);
-
 int					ft_handel_line(char *str);
 char				*ft_charjoin(char *str, char c);
 char				*add_32(char *str, char *sym);
@@ -112,5 +110,7 @@ char				**add_dollar(char **ptr, t_env_v *env);
 char				*expand_or_not(char *ptr);
 int					ft_back(char *str, int index);
 char				*ft_shift(char *ptr);
+
+void ft_print_tab(char **s);
 
 #endif
