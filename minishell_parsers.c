@@ -6,7 +6,7 @@
 /*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 02:29:36 by serraoui          #+#    #+#             */
-/*   Updated: 2024/04/17 12:04:52 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/04/19 23:10:35 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ t_cmd	*parsexec(char **ps, int *pos)
 			printf("ERROR\n");
 			exit(-1); //! change to error path
 		}
+		//printf("ARGC___ %i\n", argc);
 		cmd->argv[argc] = ps[(*pos)];
 		argc++;
 		if (argc >= MAXARGS)

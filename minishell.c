@@ -6,7 +6,7 @@
 /*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 17:15:26 by serraoui          #+#    #+#             */
-/*   Updated: 2024/04/19 18:25:00 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/04/20 14:53:52 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,7 @@ int	ft_run_shell(t_env_v *env)
 	char	*str;
 	char	**ptr;
 	int		pos;
+	int i;
 
 	(void)cmd;
 	pos = 0;
@@ -116,11 +117,12 @@ int	ft_run_shell(t_env_v *env)
 		if (!ft_handel_line(str))
 			continue ;
 		ptr = ft_check_syntax(str);
+		for (i = 0; ptr[i]; i++)
+			printf("--> %s\n", ptr[i]);
 		if (!ptr)
 			continue ;
 		ptr = ft_expand(ptr, env);
-		for (int i = 0; ptr[i]; i++)
-			printf("--> %s\n", ptr[i]);
+		// printf():
 		pos = 0;
 		cmd = parsepipe(ptr, &pos);
 		free(str);

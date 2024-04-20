@@ -6,7 +6,7 @@
 /*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 11:09:00 by hibouzid          #+#    #+#             */
-/*   Updated: 2023/11/01 12:06:59 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/04/19 23:00:08 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ char	*ft_strchr(const char *s, int c)
 	int	i;
 
 	i = 0;
+	if (!s)
+		return (NULL);
 	if (s && (unsigned char)c == 0)
 		return (ft_strlen(s) + (char *)s);
 	while (s[i])

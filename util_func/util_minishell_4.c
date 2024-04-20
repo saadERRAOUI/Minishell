@@ -6,7 +6,7 @@
 /*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 17:24:26 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/04/19 18:07:42 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/04/19 23:21:29 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ static int	ft_bool(int singl, char token, int doubl)
 	if (token == '\'' && singl && singl % 2)
 		return (0);
 	if (token == '\"' && singl >= 1 && singl % 2 && doubl % 2 == 0)
+		return (0);
+	if (token == '\"' && doubl % 2 == 0)
 		return (0);
 	return (1);
 }

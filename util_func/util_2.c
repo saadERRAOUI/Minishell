@@ -6,7 +6,7 @@
 /*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 17:22:40 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/04/19 17:14:31 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/04/20 15:30:28 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ char	**add_dollar(char **ptr, t_env_v *env)
 	while (ptr[i])
 	{
 		token = 0;
-		if (ft_strchr(ptr[i], '$'))
+		if (ptr[i] && ft_strchr(ptr[i], '$'))
 		{
 			token = 1;
 		}
@@ -139,7 +139,8 @@ char	**add_dollar(char **ptr, t_env_v *env)
 			tmp = ft_replace_dollar(ptr[i], env);
 			free(ptr[i]);
 			ptr[i] = tmp;
-			continue ;
+			// printf("%s --->\n", ptr[i]);
+			i = 0;
 		}
 		i++;
 	}
@@ -153,8 +154,10 @@ char	**ft_check_syntax(char *str)
 	int		i;
 
 	i = 0;
+	printf ("==========%s=======\n", str);
 	str = ft_convert_0(str);
 	str = add_32(str, "|<>");
+	printf ("==========%s=======\n", str);
 	ptr = ft_split(str, " \t");
 	ptr = undo(ptr);
 	while (ptr[i])
@@ -162,5 +165,7 @@ char	**ft_check_syntax(char *str)
 		ptr[i] = expand_or_not(ptr[i]);
 		i++;
 	}
+	// for (i = 0; ptr[i]; i++)
+	// 	printf("====%s\n", ptr[i]);
 	return (ptr);
 }
