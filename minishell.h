@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 18:02:20 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/04/19 17:29:04 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/04/20 16:06:12 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,8 @@ typedef struct s_pipecmd
 
 typedef struct s_execcmd
 {
-	int type;
-	char **argv; //TODO : update this pointer to be allocated
+	int		type;
+	char	**argv;
 } t_execcmd;
 
 typedef struct s_redircmd

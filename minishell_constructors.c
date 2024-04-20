@@ -6,7 +6,7 @@
 /*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 20:42:18 by serraoui          #+#    #+#             */
-/*   Updated: 2024/04/09 15:36:49 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/04/20 16:43:53 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ t_cmd	*execcmd(void)
 	t_execcmd	*cmd;
 
 	cmd = malloc(sizeof(t_execcmd *));
-	//TODO : Could be set to 0 "memset"
 	cmd->argv = malloc(MAXARGS * sizeof(char *));
 	ft_memset(cmd, 0, sizeof(t_execcmd *));
 	cmd->type = EXEC;

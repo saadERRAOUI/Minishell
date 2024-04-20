@@ -31,7 +31,7 @@ OBJS = $(CFILS:.c=.o)
  # without -lreadline flag the compilation will be failed
  
 $(NAME): $(OBJS)
-	cc  -lreadline $(OBJS) -o $(NAME) 
+	cc -fsanitize=address -g3  -lreadline $(OBJS) -o $(NAME) 
 
 all: $(NAME)
 	clear

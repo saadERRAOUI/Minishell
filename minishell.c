@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 17:15:26 by serraoui          #+#    #+#             */
-/*   Updated: 2024/04/19 18:25:00 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/04/20 19:12:59 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,9 +101,12 @@ void ft_print_tab(char **s)
 	int i = 0;
 	if (!s)
 		return ;
+	// s = malloc (sizeof(char *)) * 9;
+	
 	while (s[i])
 	{
-		printf("%s\n", s[i]);
+		if (s[i])
+			printf("%s\n", s[i]);
 		i++;
 	}
 }
@@ -111,12 +114,14 @@ void ft_print_tab(char **s)
 int	ft_run_shell(t_env_v *env)
 {
 	t_cmd	*cmd;
+	// t_redircmd *_cmd;
 	char	*str;
 	char	**ptr;
 	int		pos;
 
 	(void)cmd;
 	pos = 0;
+	// _cmd = 0;
 	while (1)
 	{
 		str = readline("$ ");
@@ -137,7 +142,9 @@ int	ft_run_shell(t_env_v *env)
 		cmd = parsepipe(ptr, &pos);
 		printf("TYPE CREATED TREE %i\n", cmd->type);
 		printf("==================== \n");
-		ft_print_tab(((t_execcmd *)cmd)->argv);
+		// ft_print_tab(((t_execcmd *)((t_redircmd *)cmd)->cmd)->argv);
+		printf("type____ %i\n", ((t_execcmd *)((t_redircmd *)cmd)->cmd)->type);
+		printf("OFILE ______ %s\n", ((t_redircmd *)cmd)->file);
 		free(str);
 	}
 	return (0);
