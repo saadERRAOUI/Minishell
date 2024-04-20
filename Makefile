@@ -1,6 +1,6 @@
 NAME = minishell
 
-CFLAGS =  -Wall -Wextra -Werror  
+CFLAGS =  -Wall -Wextra -Werror
 
 #LIBFT_DIR = ./libft
 
@@ -29,9 +29,9 @@ CFILS =  ./util_func/util_0.c ./util_func/util_1.c  ./libft/ft_atoi.c ./libft/ft
 OBJS = $(CFILS:.c=.o)
 
  # without -lreadline flag the compilation will be failed
- 
+
 $(NAME): $(OBJS)
-	cc  -lreadline $(OBJS) -o $(NAME) 
+	cc  -fsanitize=address -g3 -lreadline $(OBJS) -o $(NAME)
 
 all: $(NAME)
 	clear

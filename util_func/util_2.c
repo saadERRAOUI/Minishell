@@ -6,7 +6,7 @@
 /*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 17:22:40 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/04/19 17:14:31 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/04/20 21:15:05 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,8 +101,16 @@ char	*ft_shift(char *ptr)
 		{
 			c = ptr[i];
 			i++;
-			while (ptr[i] != c && ptr[i])
-				str[j++] = ptr[i++];
+			while (ptr[i])
+			{
+				if (ptr[i] == c)
+				{
+					i++;
+					break ;
+				}
+				else
+					str[j++] = ptr[i++];
+			}
 		}
 		else
 			str[j++] = ptr[i++];
@@ -130,7 +138,7 @@ char	**add_dollar(char **ptr, t_env_v *env)
 	while (ptr[i])
 	{
 		token = 0;
-		if (ft_strchr(ptr[i], '$'))
+		if (ptr[i] && ft_strchr(ptr[i], '$'))
 		{
 			token = 1;
 		}
@@ -139,7 +147,7 @@ char	**add_dollar(char **ptr, t_env_v *env)
 			tmp = ft_replace_dollar(ptr[i], env);
 			free(ptr[i]);
 			ptr[i] = tmp;
-			continue ;
+			i = 0;
 		}
 		i++;
 	}
@@ -157,6 +165,7 @@ char	**ft_check_syntax(char *str)
 	str = add_32(str, "|<>");
 	ptr = ft_split(str, " \t");
 	ptr = undo(ptr);
+	i = 0;
 	while (ptr[i])
 	{
 		ptr[i] = expand_or_not(ptr[i]);
