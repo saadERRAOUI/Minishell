@@ -37,7 +37,7 @@ char	*ft_convert_0(char *str)
 {
 	int		i;
 	char	c;
-	char token;
+	char	token;
 
 	i = 0;
 	while (str[i])
