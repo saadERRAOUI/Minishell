@@ -1,1 +1,5 @@
 xv6-public
+*.o
+minishell
+main.c
+a.out

@@ -6,7 +6,7 @@
 /*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 17:15:26 by serraoui          #+#    #+#             */
-/*   Updated: 2024/04/20 19:12:59 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/04/21 22:35:06 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,27 +101,61 @@ void ft_print_tab(char **s)
 	int i = 0;
 	if (!s)
 		return ;
-	// s = malloc (sizeof(char *)) * 9;
-	
 	while (s[i])
 	{
 		if (s[i])
-			printf("%s\n", s[i]);
+			printf("EXEC______  %s\n", s[i]);
 		i++;
 	}
+}
+
+static void print_tree(t_cmd *tree)
+{
+    printf("TREE____ %p\n", tree);
+    if (tree && tree->type == 1)
+    {
+        printf("EXEC_NODE => %i\n", tree->type);
+        printf("EXEC_NODE_argv\n");
+        ft_print_tab(((t_execcmd *)tree)->argv);
+        printf("-----------------------------\n");
+    }
+    else if (tree && tree->type == 2)
+    {
+        t_redircmd *_t;
+        _t = (t_redircmd *)tree;
+        printf("REDIR_NODE => %i\n", tree->type);
+        while (_t)
+        {
+            printf("TYPE__type_____%i\n", ((t_redircmd *)_t)->type);
+            printf("TYPE__cmd______%p\n", ((t_redircmd *)_t)->cmd);
+            printf("TYPE__file_____%s\n", ((t_redircmd *)_t)->file);
+            printf("TYPE__mode_____%i\n", ((t_redircmd *)_t)->mode);
+            printf("TYPE__fd_______%i\n", ((t_redircmd *)_t)->fd);
+            if (!_t->next)   
+                print_tree(_t->cmd);
+            _t = _t->next;
+            printf("===========================\n");
+        }
+    }
+    else if (tree && tree->type == 3)
+    {
+        printf("PIPE_NODE => %i\n", tree->type);
+        printf("==================== LEFT\n");
+        print_tree(((t_pipecmd *)tree)->left);
+        printf("==================== RIGHT\n");
+        print_tree(((t_pipecmd *)tree)->right);
+    }
 }
 
 int	ft_run_shell(t_env_v *env)
 {
 	t_cmd	*cmd;
-	// t_redircmd *_cmd;
 	char	*str;
-	char	**ptr;
+	char	**ptr; 
 	int		pos;
 
 	(void)cmd;
 	pos = 0;
-	// _cmd = 0;
 	while (1)
 	{
 		str = readline("$ ");
@@ -142,9 +176,10 @@ int	ft_run_shell(t_env_v *env)
 		cmd = parsepipe(ptr, &pos);
 		printf("TYPE CREATED TREE %i\n", cmd->type);
 		printf("==================== \n");
-		// ft_print_tab(((t_execcmd *)((t_redircmd *)cmd)->cmd)->argv);
-		printf("type____ %i\n", ((t_execcmd *)((t_redircmd *)cmd)->cmd)->type);
-		printf("OFILE ______ %s\n", ((t_redircmd *)cmd)->file);
+		printf("====_PRINT_TREE_==== \n");
+        printf("==================== \n");
+        print_tree(cmd);
+        
 		free(str);
 	}
 	return (0);
