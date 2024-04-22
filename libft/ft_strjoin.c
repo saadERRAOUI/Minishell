@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 22:49:30 by hibouzid          #+#    #+#             */
-/*   Updated: 2023/11/15 12:19:41 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/04/22 14:57:30 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		j++;
 	}
 	str[i + j] = 0;
+	free((char *)s1);
 	return (str);
 }
 // int main()

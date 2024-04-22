@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_parsers.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 02:29:36 by serraoui          #+#    #+#             */
-/*   Updated: 2024/04/19 23:10:35 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/04/21 23:40:51 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ t_cmd  *parsexec(char **ps, int *pos)
 		tok = get_token_type(ps[(*pos)]);
 		// printf("__POS_ %i\n", *pos);
 	}
+	return (NULL);
+}
 
 t_cmd  *parsepipe(char **ps, int *pos)
 {

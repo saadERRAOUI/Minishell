@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 18:02:20 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/04/19 17:29:04 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/04/22 14:52:01 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,5 +112,6 @@ int					ft_back(char *str, int index);
 char				*ft_shift(char *ptr);
 
 void ft_print_tab(char **s);
-
+int					ft_strleen(char **ptr);
+char	**ft_free(int index, char **ptr);
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   util_2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 17:22:40 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/04/20 21:15:05 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/04/22 16:15:04 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,7 +154,57 @@ char	**add_dollar(char **ptr, t_env_v *env)
 	return (ptr);
 }
 
+/*
+	@AUTHOR: Hicham BOUZID
+	@DESC: function util used just in this file
+	@DATE: 22-04-2024
+*/
+
+static int ft_checkk(char **ptr, int index)
+{
+
+	while (ptr[index])
+	{
+		if (ft_strchr("<>|", ptr[index][0]) && ft_strlen(ptr[index]) >= 2)
+		{
+			if (ft_strlen(ptr[index]) > 2)
+				return (0);
+			if (ptr[index][0] != ptr[index][1])
+				return (0);
+			if (!ptr[index + 1])
+			return (0);
+		}
+		else if (index && ft_strchr("|<>", ptr[index][0]) &&
+			ft_strchr("|<>", ptr[index - 1][0]))
+		return (0);
+		else if (ft_strchr("|><", ptr[index][0]) && (!ptr[index + 1] || ft_strchr("|><", ptr[index + 1][0])))
+			return (0);
+		index++;
+	}
+	return (1);
+}
+
+/*
+	@AUTHOR: Hicham BOUZID
+	@DESC: Check if the syntax true or false
+	@PROTOTYPE: char **syntax(char **ptr)
+	DATE: 22-04-2024
+*/
+
+char **syntax(char **ptr)
+{
+
+		 if (!ft_checkk(ptr, 0))
+		 {
+			ft_free(ft_strleen(ptr), ptr);
+			ft_putstr_fd("bash: syntax error near unexpected token\n", 2);
+			return (NULL);
+		 }
+		 return (ptr); 
+}
+
 // !todo add function to check if the syntax true or not
+
 char	**ft_check_syntax(char *str)
 {
 	char	**ptr;
@@ -171,5 +221,7 @@ char	**ft_check_syntax(char *str)
 		ptr[i] = expand_or_not(ptr[i]);
 		i++;
 	}
+	ptr = syntax(ptr);
+	// printf("here\n");
 	return (ptr);
 }
