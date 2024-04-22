@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 17:15:26 by serraoui          #+#    #+#             */
-/*   Updated: 2024/04/21 22:35:06 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/04/20 17:02:03 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,6 +153,7 @@ int	ft_run_shell(t_env_v *env)
 	char	*str;
 	char	**ptr; 
 	int		pos;
+	int i;
 
 	(void)cmd;
 	pos = 0;
@@ -170,7 +171,8 @@ int	ft_run_shell(t_env_v *env)
 		if (!ptr)
 			continue ;
 		ptr = ft_expand(ptr, env);
-		for (int i = 0; ptr[i]; i++)
+		// printf():
+		for (i = 0; ptr[i]; i++)
 			printf("--> %s\n", ptr[i]);
 		pos = 0;
 		cmd = parsepipe(ptr, &pos);
