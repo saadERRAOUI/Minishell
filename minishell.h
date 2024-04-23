@@ -118,5 +118,6 @@ int					ft_back(char *str, int index);
 char				*ft_shift(char *ptr);
 
 void ft_print_tab(char **s);
-
+int					ft_strleen(char **ptr);
+char	**ft_free(int index, char **ptr);
 #endif

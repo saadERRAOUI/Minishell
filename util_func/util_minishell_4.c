@@ -6,7 +6,7 @@
 /*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 17:24:26 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/04/20 20:50:21 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/04/21 22:58:51 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,4 +57,39 @@ char	*expand_or_not(char *ptr)
 			i++;
 	}
 	return (ptr);
+}
+
+/*
+	@AUTHOR: Hicham BOUZID
+	@PROTOTYPE: int	ft_strleen(char **ptr)
+	@DESC: count lenght of an array tow dimention
+	@DATE: 21-04-2024
+*/
+
+int	ft_strleen(char **ptr)
+{
+	int	i;
+
+	i = 0;
+	while (ptr[i])
+		i++;
+	return (i);
+}
+
+/*
+	@AUTHOR: Hicham BOUZID
+	@PROTORTPE: char	**ft_free(int index, char **ptr)
+	@DESC: fucntion free an array tow dimention
+	@DATE: 	21-04-2024
+*/
+
+char	**ft_free(int index, char **ptr)
+{
+	while (index >= 0)
+	{
+		free(ptr[index]);
+		index--;
+	}
+	free(ptr);
+	return (0);
 }

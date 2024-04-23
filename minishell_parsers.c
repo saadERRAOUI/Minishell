@@ -6,7 +6,7 @@
 /*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 02:29:36 by serraoui          #+#    #+#             */
-/*   Updated: 2024/04/19 23:10:35 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/04/21 23:40:51 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ t_cmd  *parsexec(char **ps, int *pos)
 		parseredir(&ret, ps, pos);
 		tok = get_token_type(ps[(*pos)]);
 	}
+
 	cmd->argv[argc] = NULL;
 	ft_print_tab(cmd->argv);
     printf("TEST %p\n", ret);

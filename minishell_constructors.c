@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_constructors.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 20:42:18 by serraoui          #+#    #+#             */
 /*   Updated: 2024/04/21 21:26:12 by serraoui         ###   ########.fr       */

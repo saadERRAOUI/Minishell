@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   util_0.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 18:01:05 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/04/19 17:34:27 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/04/21 23:42:18 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,19 +106,4 @@ int	count_words(char const *s, char c)
 	return (chuncks_number);
 }
 
-char	**ft_free(int index, char **ptr)
-{
-	if (index == 0)
-	{
-		free(ptr);
-		return (0);
-	}
-	while (index >= 0)
-	{
-		if (ptr[index])
-			free(ptr[index]);
-		index--;
-	}
-	free(ptr);
-	return (0);
-}
+
