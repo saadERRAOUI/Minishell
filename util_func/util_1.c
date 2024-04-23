@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   util_1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 23:43:26 by serraoui          #+#    #+#             */
-/*   Updated: 2024/04/19 17:32:40 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/04/21 22:11:39 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,33 @@ void	ft_lstadd_back(t_env_v **lst, t_env_v *new)
 	}
 	tmp = ft_lstlast(*lst);
 	tmp->next = new;
+}
+
+t_redircmd	*ft_lstlast_(t_redircmd *lst)
+{   
+	if (!lst)
+		return (lst);
+	while (lst && lst->next)
+    {
+		lst = lst->next;
+    }
+	return (lst);
+}
+
+void	ft_lstadd_back_(t_redircmd **lst, t_redircmd *new)
+{
+	t_redircmd	*save;
+    
+    if (!lst)
+        return ;
+    save = *lst;
+    if (!*lst && new)
+    {
+        *lst = new;
+        return ;
+    }
+    save = ft_lstlast_(save);
+    save->next = new;
 }
 
 void	ft_list_remove_if(t_env_v **begin_list, void *data_ref,

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 18:02:20 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/04/19 17:29:04 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/04/21 22:12:17 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@
 # define EXIT_FAILUR 127
 # define CTRL_C 130
 
+typedef struct s_redircmd t_redircmd;
 typedef struct s_env_v
 {
 	char			*key;
@@ -56,22 +57,23 @@ typedef struct s_pipecmd
 
 typedef struct s_execcmd
 {
-	int type;
-	char **argv; //TODO : update this pointer to be allocated
+	int		type;
+	char	**argv;
 } t_execcmd;
 
 typedef struct s_redircmd
 {
-	int				type;
-	t_cmd			*cmd;
-	char			*file;
-	int				mode;
-	int				fd;
+	int				        type;
+	t_cmd			        *cmd;
+	char			        *file;
+	int				        mode;
+	int				        fd;
+    t_redircmd       *next;
 }					t_redircmd;
 
 int					ft_strcmp(char *s1, char *s2);
 int					count_words(char const *s, char c);
-int					getToken(char **ps, char *es, char **q, char **eq);
+// int					getToken(char **ps, char *es, char **q, char **eq);
 int					peek(char **ps, char *es, char *toks);
 char				**ft_split_2(char *s, char c);
 void				ft_export(t_env_v **env, char *s);
@@ -79,20 +81,24 @@ void				ft_env(t_env_v *env);
 void				ft_list_remove_if(t_env_v **begin_list, void *data_ref,
 						int (*cmp)(char *, char *));
 void				ft_lstadd_back(t_env_v **lst, t_env_v *new);
+void                ft_lstadd_back_(t_redircmd **lst, t_redircmd *new);
 void				ft_unset(t_env_v **env, char *key);
 void				ft_free_stack(t_env_v **a);
 t_env_v				*ft_lstlast(t_env_v *lst);
+t_redircmd          *ft_lstlast_(t_redircmd *lst);
 t_env_v				*env_init(char **env);
 // t_cmd *parseredir(t_cmd *cmd, char **ps, char *es);
-t_cmd				*parseredir(t_cmd *cmd, char **ps, int *pos);
+// t_cmd				*parseredir(t_cmd *cmd, char **ps, int *pos);
+void                parseredir(t_redircmd **red, char **ps, int *pos);
 t_cmd				*parsepipe(char **ps, int *pos);
 // t_cmd *parsepipe(char **ps, char *es);
 // t_cmd *parsexec(char **ps, char *es);
 t_cmd				*parsexec(char **ps, int *pos);
-t_cmd				*parsecmd(char *s);
-t_cmd				*parseline(char **ps, char *es);
+// t_cmd				*parsecmd(char *s);
+// t_cmd				*parseline(char **ps, char *es);
 t_cmd				*execcmd(void);
-t_cmd				*redircmd(t_cmd *subcmd, char *file, int mode, int fd);
+// t_cmd				*redircmd(t_cmd *subcmd, char *file, int mode, int fd, t_redircmd *red);
+t_redircmd	            *redircmd(char *file, int mode, int fd);
 // t_cmd *redircmd(t_cmd *subcmd, char *file, char *efile, int mode, int fd);
 t_cmd				*pipecmd(t_cmd *left, t_cmd *right);
 int					get_token_type(char *s);

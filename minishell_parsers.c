@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_parsers.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 02:29:36 by serraoui          #+#    #+#             */
 /*   Updated: 2024/04/19 23:10:35 by hibouzid         ###   ########.fr       */
@@ -14,45 +14,62 @@
 
 t_cmd  *parsexec(char **ps, int *pos)
 {
-	int			tok;
+	int			tok; 
 	int			argc;
 	t_execcmd	*cmd;
-	t_cmd		*ret;
+    t_redircmd  *tmp;
+	t_redircmd  *ret;
 
-	// char		*q;
-	// char		*eq;
-	ret = execcmd();
-	cmd = (t_execcmd *)ret;
+	cmd = (t_execcmd *)execcmd();
+    ret = NULL;
 	argc = 0;
-	ret = parseredir(ret, ps, pos);
+	parseredir(&ret, ps, pos);
 	tok = get_token_type(ps[(*pos)]);
 	while (ps[*pos] && tok && tok != '|')
 	{
-		// printf("tok --> %c\n", tok);
 		if (tok != 'a')
-		{
-			exit (-1);	//! change to error path
-		}
-		printf("POS -> %i ; CON -> %s\n", *pos, ps[(*pos)]);
+			exit (-1); //! handle erro path
 		cmd->argv[argc] = ps[(*pos)];
-		// printf("_POS -> %i ; _CON -> %s\n", argc, cmd->argv[argc]);
 		argc++;
-		if (argc >= MAXARGS)
-			exit(1); //! panic("too many args");
+		if(argc >= MAXARGS)
+			exit(1); 	//! too many args
 		(*pos)++;
-		// printf("tok --> %c\n", tok);
-		ret = parseredir(ret, ps, pos);
-		// printf("_POS -> %i ; _CON -> %s\n", argc, cmd->argv[argc]);
+		parseredir(&ret, ps, pos);
 		tok = get_token_type(ps[(*pos)]);
-		// printf("__POS_ %i\n", *pos);
 	}
+	cmd->argv[argc] = NULL;
+	ft_print_tab(cmd->argv);
+    printf("TEST %p\n", ret);
+    if (ret && ret->type == 2)
+    {
+        tmp = ft_lstlast_(ret);
+        tmp->cmd = (t_cmd *)cmd;
+    }
+    //!TO REMOVE TESTING PURPOSE
+    if (!ret)
+        return ((t_cmd *)cmd);
+    // t_redircmd *_t;
+    // _t = ret;
+    // while (_t)
+    // {
+    //     printf("TYPE__type_____%i\n", ((t_redircmd *)_t)->type);
+    //     printf("TYPE__cmd______%p\n", ((t_redircmd *)_t)->cmd);
+    //     printf("TYPE__file_____%s\n", ((t_redircmd *)_t)->file);
+    //     printf("TYPE__mode_____%i\n", ((t_redircmd *)_t)->mode);
+    //     printf("TYPE__fd_______%i\n", ((t_redircmd *)_t)->fd);
+    //     _t = _t->next;
+    //     printf("===========================\n");
+    // }
+    //!TO REMOVE TESTING PURPOSE
+	return ((t_cmd *)ret);
+}
 
 t_cmd  *parsepipe(char **ps, int *pos)
 {
-	t_cmd	*cmd;
+	t_cmd *cmd;
 
 	cmd = parsexec(ps, pos);
-	if (get_token_type(ps[(*pos)]) == '|')
+	if(get_token_type(ps[(*pos)]) == '|')
 	{
 		(*pos)++;
 		cmd = pipecmd(cmd, parsepipe(ps, pos));
@@ -70,48 +87,67 @@ int	get_token_type(char *s)
 	ret = (int)*s;
 	switch (*s)
 	{
-	case '|':
-		break ;
-	case '>':
-		if (*(s + 1) == '>')
-			ret = '+';
-		break ;
-	case '<':
-		if (*(s + 1) == '<')
-			ret = '-';
-		break ;
-	default:
-		ret = 'a';
-		break ;
+		case '|':
+			break ;
+		case '>':
+			if (*(s + 1) == '>')
+				ret = '+';
+			break ;
+		case '<':
+			if (*(s + 1) == '<')
+				ret = '-';
+			break ;
+		default :
+			ret = 'a';
+			break ;
 	}
 	return (ret);
 }
 
-t_cmd  *parseredir(t_cmd *cmd, char **ps, int *pos)
+void    parseredir(t_redircmd **red, char **ps, int *pos)
 {
-	int	tok;
+	int         tok;
+    t_redircmd  *tmp;
+
 
 	tok = get_token_type(ps[(*pos)]);
-	if (tok != 'a' && tok != '|' && tok != '0' && get_token_type(ps[*pos
-			+ 1]) != 'a')
-	{
-		exit(-1); //! to change to error "redirection file doesn't exist"
-	}
-	switch (tok)
-	{
-	// (*pos)++;
-	case '<':
-		(*pos)++;
-		cmd = redircmd(cmd, ps[(*pos)], O_RDONLY, 0);
-		break ;
-	case '>':
-		(*pos)++;
-		cmd = redircmd(cmd, ps[(*pos)], O_WRONLY | O_CREAT, 1);
-		break ;
-	case '+': //* >>
-		(*pos)++;
-		cmd = redircmd(cmd, ps[(*pos)], O_WRONLY | O_CREAT | O_TRUNC, 1);
-		break ;
-	}
-	return (cmd);
+    while (tok == '>' || tok == '+' || tok == '<')
+    { 
+        if (tok != 'a' && tok != '|' && tok != '0' && get_token_type(ps[*pos + 1]) != 'a')
+            exit(-1); //!to change to error "redirection file doesn't exist"
+        switch(tok)
+        {
+            case '<':
+                (*pos)++;
+                tmp = redircmd(ps[(*pos)], O_RDONLY, 0);
+                (*pos)++;
+                ft_lstadd_back_(red, tmp);
+                break;
+            case '>':
+                (*pos)++;
+                tmp = redircmd(ps[(*pos)], O_RDONLY, 1);
+                (*pos)++;
+                
+                //!TO REMOVE TESTING PURPOSE
+                // printf("TMP__ %p\n", tmp);
+                // printf("TMP__ %p\n", tmp->next);
+                // printf("TMP__ %s\n", tmp->file);
+                // if((*red)) {
+                //     printf("TMP_TMP__ %p\n", (*red));
+                //     printf("TMP_TMP__ %p\n", (*red)->next);
+                //     printf("TMP_TMP__ %s\n", (*red)->file); 
+                // }
+                //!TO REMOVE TESTING PURPOSE
+
+                ft_lstadd_back_(red, tmp);
+                break;
+            case '+':
+                (*pos)++;
+                tmp = redircmd(ps[(*pos)], O_WRONLY|O_CREAT | O_TRUNC, 1);
+                (*pos)++;
+                ft_lstadd_back_(red, tmp);
+                break;
+        }
+        tok = get_token_type(ps[(*pos)]);
+    }
 }
