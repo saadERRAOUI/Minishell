@@ -6,7 +6,7 @@
 /*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 20:42:18 by serraoui          #+#    #+#             */
-/*   Updated: 2024/04/22 14:12:39 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/04/21 21:26:12 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ t_cmd	*execcmd(void)
 	t_execcmd	*cmd;
 
 	cmd = malloc(sizeof(t_execcmd *));
-	//TODO : Could be set to 0 "memset"
 	cmd->argv = malloc(MAXARGS * sizeof(char *));
 	ft_memset(cmd, 0, sizeof(t_execcmd *));
 	cmd->type = EXEC;
@@ -38,18 +37,19 @@ t_cmd	*execcmd(void)
 	@DATE	: 30-03-2024
 */
 // t_cmd	*redircmd(t_cmd *subcmd, char *file, char *efile, int mode, int fd)
-t_cmd	*redircmd(t_cmd *subcmd, char *file, int mode, int fd)
+t_redircmd       *redircmd(char *file, int mode, int fd)
 {
-	t_redircmd	*cmd;
+    t_redircmd	*cmd;
 
-  cmd = malloc(sizeof(t_redircmd *));
-  ft_memset(cmd, 0, sizeof(t_redircmd *));
-  cmd->type = REDIR;
-  cmd->cmd = subcmd;
-  cmd->file = file;
-  cmd->mode = mode;
-  cmd->fd = fd;
-  return ((t_cmd *)cmd);
+    cmd = (t_redircmd *)malloc(sizeof(t_redircmd));
+    ft_memset(cmd, 0, sizeof(t_redircmd *));
+    cmd->type = REDIR;
+    cmd->cmd = NULL;
+    cmd->file = file;
+    cmd->mode = mode;
+    cmd->fd = fd;
+    cmd->next = NULL;
+    return (cmd);
 }
 
 /*
@@ -62,8 +62,8 @@ t_cmd	*pipecmd(t_cmd *left, t_cmd *right)
 {
 	t_pipecmd	*cmd;
 
-	cmd = malloc(sizeof(t_pipecmd *));
-	ft_memset(cmd, 0, sizeof(t_pipecmd *));
+	cmd = malloc(sizeof(t_pipecmd));
+	ft_memset(cmd, 0, sizeof(t_pipecmd));
 	cmd->type = PIPE;
 	cmd->left = left;
 	cmd->right = right;
