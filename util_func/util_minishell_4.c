@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   util_minishell_4.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 17:24:26 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/04/21 22:58:51 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/04/23 16:51:55 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,4 +92,20 @@ char	**ft_free(int index, char **ptr)
 	}
 	free(ptr);
 	return (0);
+}
+
+char	*ft_cmd_valid(t_env_v **env, char **cmd)
+{
+	char **path;
+
+	
+	if (!access(*cmd, F_OK | X_OK))
+		return (ft_strdup(*cmd));
+
+	while
+}
+
+char *get_path(char **ptr, t_env_v *env)
+{
+	i
 }

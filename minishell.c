@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 17:15:26 by serraoui          #+#    #+#             */
-/*   Updated: 2024/04/22 14:13:39 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/04/23 18:45:10 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ static void print_tree(t_cmd *tree)
             printf("TYPE__file_____%s\n", ((t_redircmd *)_t)->file);
             printf("TYPE__mode_____%i\n", ((t_redircmd *)_t)->mode);
             printf("TYPE__fd_______%i\n", ((t_redircmd *)_t)->fd);
-            if (!_t->next)   
+            if (!_t->next)
                 print_tree(_t->cmd);
             _t = _t->next;
             printf("===========================\n");
@@ -147,14 +147,112 @@ static void print_tree(t_cmd *tree)
     }
 }
 
+void procces(t_execcmd *cmd, int fd, int pip, int mode)
+{
+	char *path;
+	if (mode == 0)
+	{
+		if (dup2(fd, 0) == -1 || dup2(pip, 1) == -1)
+			ft_putstr_fd("error in dup function\n", 2);
+		path =
+	}
+	else if (mode == 1)
+	{
+		if (dup2(pip, 0) == -1|| dup2(fd, 1) == -1)
+			ft_putstr_fd("error in dup function\n", 2);
+		if (execve(cmd->argv, ))
+	}
+}
+
+void ft_run(t_cmd *cmd, int pip, t_env_v *env)
+{
+	t_redircmd *cmd1;
+	t_element *element;
+	int i;
+
+	i = 0;
+	element = 0;
+	if (cmd->type == 2)
+	{
+		cmd1 = (t_redircmd *)cmd;
+		while (cmd1->next)
+		{
+			i = open(cmd1->file, cmd1->mode);
+			if ((i < 0 && cmd1->fd == 0) || (i < 0))
+			{
+				if (i < 0 && cmd1->fd == 0)
+					ft_putstr_fd("no such file or directory\n", 2);
+				 else
+					ft_putstr_fd("canno't open a file\n", 2);
+			}
+			else if (cmd1->cmd)
+			{
+				element = malloc(sizeof(t_element));
+				element->path = get_path((t_execcmd *)cmd->argv, env);
+			}
+
+		}
+	}
+}
+
+void ft_pipe(t_cmd *left, t_cmd *right)
+{
+	pid_t pid;
+	int pip[2];
+
+
+	if (pipe(pip) == -1)
+	{
+		ft_putstr_fd("problem in pipe\n", 2);
+		exit(-1);
+	}
+	pid = fork();
+	if (pid == 0)
+	{
+		
+	}
+	else
+	{
+
+	}
+}
+
+void ft_execution(t_cmd *cmd, t_env_v *env)
+{
+	int tab[2];
+
+	if (cmd->type == 3)
+	{
+
+	}
+	else if (cmd->type == 2)
+	{
+
+	}
+}
+
+// void exec_tree(t_cmd *cmd, t_env_v *env)
+// {
+// 	if (cmd->type == 3)
+
+// 	else if (cmd->type == 2)
+// 	{
+
+// 	}
+// 	else if (cmd->type == 1)
+// 	{
+
+// 	}
+// }
+
 int	ft_run_shell(t_env_v *env)
 {
 	t_cmd	*cmd;
 	char	*str;
-  
-	char	**ptr; 
+
+	char	**ptr;
 	int		pos;
-  
+
 	int i;
 
 	(void)cmd;
@@ -185,6 +283,7 @@ int	ft_run_shell(t_env_v *env)
 		printf("====_PRINT_TREE_==== \n");
         printf("==================== \n");
         print_tree(cmd);
+		ft_execution(cmd, env);
 		free(str);
 	}
 	return (0);

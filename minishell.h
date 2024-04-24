@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 18:02:20 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/04/21 22:12:17 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/04/23 18:20:52 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 # include <limits.h>
 # include <readline/history.h>
 # include <readline/readline.h>
+#include <sys/types.h>
+#include <unistd.h>
 # include <signal.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -61,6 +63,10 @@ typedef struct s_execcmd
 	char	**argv;
 } t_execcmd;
 
+typedef struct s_elemet
+{
+	char *path;
+} t_element;
 typedef struct s_redircmd
 {
 	int				        type;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   util_2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 17:22:40 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/04/22 16:15:04 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/04/23 11:40:06 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,7 +178,11 @@ static int ft_checkk(char **ptr, int index)
 			ft_strchr("|<>", ptr[index - 1][0]))
 		return (0);
 		else if (ft_strchr("|><", ptr[index][0]) && (!ptr[index + 1] || ft_strchr("|><", ptr[index + 1][0])))
+		{
+			if (ptr[index][0] == '|' && ptr[index + 1][0] != '|')
+				return (1);
 			return (0);
+		}
 		index++;
 	}
 	return (1);
@@ -200,7 +204,7 @@ char **syntax(char **ptr)
 			ft_putstr_fd("bash: syntax error near unexpected token\n", 2);
 			return (NULL);
 		 }
-		 return (ptr); 
+		 return (ptr);
 }
 
 // !todo add function to check if the syntax true or not
