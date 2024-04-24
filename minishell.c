@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 17:15:26 by serraoui          #+#    #+#             */
-/*   Updated: 2024/04/23 18:45:10 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/04/25 00:55:41 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,7 +146,7 @@ static void print_tree(t_cmd *tree)
         print_tree(((t_pipecmd *)tree)->right);
     }
 }
-
+/*
 void procces(t_execcmd *cmd, int fd, int pip, int mode)
 {
 	char *path;
@@ -195,6 +195,7 @@ void ft_run(t_cmd *cmd, int pip, t_env_v *env)
 	}
 }
 
+
 void ft_pipe(t_cmd *left, t_cmd *right)
 {
 	pid_t pid;
@@ -229,7 +230,7 @@ void ft_execution(t_cmd *cmd, t_env_v *env)
 	{
 
 	}
-}
+}*/
 
 // void exec_tree(t_cmd *cmd, t_env_v *env)
 // {
@@ -283,7 +284,7 @@ int	ft_run_shell(t_env_v *env)
 		printf("====_PRINT_TREE_==== \n");
         printf("==================== \n");
         print_tree(cmd);
-		ft_execution(cmd, env);
+		//ft_execution(cmd, env);
 		free(str);
 	}
 	return (0);
@@ -298,5 +299,10 @@ int	main(int ac, char **av, char **envp)
 	env = env_init(envp);
 	if (!env)
 		exit(-1);
-	ft_run_shell(env);
+	ft_export(&env, ft_strdup("TEEEEEEST=test-"));
+	ft_export(&env, ft_strdup("saad=test"));
+	ft_export(&env, ft_strdup("TEEEEEEST+=saaad+saad+hachmi"));
+	ft_export(&env, ft_strdup("TEEEEEESTE+="));
+	ft_export(&env, NULL);
+	//ft_run_shell(env);
 }
