@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 17:15:26 by serraoui          #+#    #+#             */
-/*   Updated: 2024/04/25 00:55:41 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/04/25 14:55:55 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,40 +160,40 @@ void procces(t_execcmd *cmd, int fd, int pip, int mode)
 	{
 		if (dup2(pip, 0) == -1|| dup2(fd, 1) == -1)
 			ft_putstr_fd("error in dup function\n", 2);
-		if (execve(cmd->argv, ))
+		if (execve(cmd->argv, ft_strjoin("/bin/", cmd->argv[0], 0)))
 	}
 }
 
-void ft_run(t_cmd *cmd, int pip, t_env_v *env)
-{
-	t_redircmd *cmd1;
-	t_element *element;
-	int i;
+char *get_path(v)
+// void ft_run(t_cmd *cmd, int pip, t_env_v *env)
+// {
+// 	t_redircmd *cmd1;
+// 	t_element *element;
+// 	int i;
 
-	i = 0;
-	element = 0;
-	if (cmd->type == 2)
-	{
-		cmd1 = (t_redircmd *)cmd;
-		while (cmd1->next)
-		{
-			i = open(cmd1->file, cmd1->mode);
-			if ((i < 0 && cmd1->fd == 0) || (i < 0))
-			{
-				if (i < 0 && cmd1->fd == 0)
-					ft_putstr_fd("no such file or directory\n", 2);
-				 else
-					ft_putstr_fd("canno't open a file\n", 2);
-			}
-			else if (cmd1->cmd)
-			{
-				element = malloc(sizeof(t_element));
-				element->path = get_path((t_execcmd *)cmd->argv, env);
-			}
-
-		}
-	}
-}
+// 	i = 0;
+// 	element = 0;
+// 	if (cmd->type == 2)
+// 	{
+// 		cmd1 = (t_redircmd *)cmd;
+// 		while (cmd1->next)
+// 		{
+// 			i = open(cmd1->file, cmd1->mode);
+// 			if ((i < 0 && cmd1->fd == 0) || (i < 0))
+// 			{
+// 				if (i < 0 && cmd1->fd == 0)
+// 					ft_putstr_fd("no such file or directory\n", 2);
+// 				 else
+// 					ft_putstr_fd("canno't open a file\n", 2);
+// 			}
+// 			else if (cmd1->cmd)
+// 			{
+// 				element = malloc(sizeof(t_element));
+// 				element->path = get_path((t_execcmd *)cmd->argv, env);
+// 			}
+// 		}
+// 	}
+// }
 
 
 void ft_pipe(t_cmd *left, t_cmd *right)
@@ -210,7 +210,7 @@ void ft_pipe(t_cmd *left, t_cmd *right)
 	pid = fork();
 	if (pid == 0)
 	{
-		
+
 	}
 	else
 	{
@@ -218,33 +218,43 @@ void ft_pipe(t_cmd *left, t_cmd *right)
 	}
 }
 
-void ft_execution(t_cmd *cmd, t_env_v *env)
-{
-	int tab[2];
+// void ft_execution(t_cmd *cmd, t_env_v *env)
+// {
+// 	int tab[2];
 
+// 	if (cmd->type == 3)
+// 	{
+
+// 	}
+// 	else if (cmd->type == 2)
+// 	{
+
+// 	}
+// }*/
+/**
+void exec_tree(t_cmd *cmd, t_env_v *env)
+{
 	if (cmd->type == 3)
 	{
+		// if (fork() == 0)
+		// {
+		// 	exec_tree(((t_pipecmd *)cmd)->left, env);
+		// }
+		// else if (((t_pipecmd *)cmd)->right->type , env) == 2)
+		// {
 
+		// }
 	}
 	else if (cmd->type == 2)
 	{
 
 	}
-}*/
-
-// void exec_tree(t_cmd *cmd, t_env_v *env)
-// {
-// 	if (cmd->type == 3)
-
-// 	else if (cmd->type == 2)
-// 	{
-
-// 	}
-// 	else if (cmd->type == 1)
-// 	{
-
-// 	}
-// }
+	else if (cmd->type == 1)
+	{
+		procces();
+	}
+}
+*/
 
 int	ft_run_shell(t_env_v *env)
 {
@@ -278,7 +288,7 @@ int	ft_run_shell(t_env_v *env)
 		for (i = 0; ptr[i]; i++)
 			printf("--> %s\n", ptr[i]);
 		pos = 0;
-		cmd = parsepipe(ptr, &pos);
+		cmd = parsepipe(ptr, &pos, env);
 		printf("TYPE CREATED TREE %i\n", cmd->type);
 		printf("==================== \n");
 		printf("====_PRINT_TREE_==== \n");
@@ -299,10 +309,11 @@ int	main(int ac, char **av, char **envp)
 	env = env_init(envp);
 	if (!env)
 		exit(-1);
-	ft_export(&env, ft_strdup("TEEEEEEST=test-"));
-	ft_export(&env, ft_strdup("saad=test"));
-	ft_export(&env, ft_strdup("TEEEEEEST+=saaad+saad+hachmi"));
-	ft_export(&env, ft_strdup("TEEEEEESTE+="));
-	ft_export(&env, NULL);
-	//ft_run_shell(env);
+	// ft_export(&env, ft_strdup("TEEEEEEST=test-"));
+	// ft_export(&env, ft_strdup("saad=test"));
+	// ft_export(&env, ft_strdup("TEEEEEEST+=saaad+saad+hachmi"));
+	// ft_export(&env, ft_strdup("TEEEEEESTE+="));
+	// ft_export(&env, NULL);
+	ft_env(env);
+	ft_run_shell(env);
 }

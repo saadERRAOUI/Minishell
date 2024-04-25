@@ -6,7 +6,7 @@
 /*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 18:02:20 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/04/23 18:20:52 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/04/25 12:21:02 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ typedef struct s_execcmd
 {
 	int		type;
 	char	**argv;
+	char *path;
+	// char **tab;
 } t_execcmd;
 
 typedef struct s_elemet
@@ -96,10 +98,10 @@ t_env_v				*env_init(char **env);
 // t_cmd *parseredir(t_cmd *cmd, char **ps, char *es);
 // t_cmd				*parseredir(t_cmd *cmd, char **ps, int *pos);
 void                parseredir(t_redircmd **red, char **ps, int *pos);
-t_cmd				*parsepipe(char **ps, int *pos);
+t_cmd				*parsepipe(char **ps, int *pos, t_env_v *env);
 // t_cmd *parsepipe(char **ps, char *es);
 // t_cmd *parsexec(char **ps, char *es);
-t_cmd				*parsexec(char **ps, int *pos);
+t_cmd				*parsexec(char **ps, int *pos, t_env_v *env);
 // t_cmd				*parsecmd(char *s);
 // t_cmd				*parseline(char **ps, char *es);
 t_cmd				*execcmd(void);
@@ -126,4 +128,6 @@ char				*ft_shift(char *ptr);
 void ft_print_tab(char **s);
 int					ft_strleen(char **ptr);
 char	**ft_free(int index, char **ptr);
+char	**ft_parce_env(t_env_v *env);
+
 #endif

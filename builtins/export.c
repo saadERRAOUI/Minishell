@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 01:40:47 by serraoui          #+#    #+#             */
-/*   Updated: 2024/04/25 00:54:24 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/04/25 11:06:55 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static void ft_export_envs(t_env_v **env)
 	tmp = (*env);
 	while (tmp)
 	{
-		printf("declare -x %s=%s\n", tmp->key, tmp->value);
+		printf("declare -x %s=\"%s\"\n", tmp->key, tmp->value);
 		tmp = tmp->next;
 	}
 }
@@ -54,7 +54,7 @@ static void	ft_hdl_case(t_env_v **env, char **_s, t_env_v *node)
 		node->value = ft_strjoin(ft_strdup(node->value), _s[1]);
 	}
 	else
-	{			
+	{
 		(*node) = (t_env_v){_s[0], _s[1], NULL};
 		ft_lstadd_back(env, node);
 	}
