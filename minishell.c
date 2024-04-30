@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 17:15:26 by serraoui          #+#    #+#             */
-/*   Updated: 2024/04/30 18:14:50 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/04/30 21:51:49 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,7 +162,7 @@ static void print_tree(t_cmd *tree)
 // 		close(pip);
 // 		if (execve(cmd->argv, cmd->path, cmd->envp) == -1)
 // 			ft_putchar_fd("error in execve 1\n", 2);
-		
+
 // 	}
 // 	else if (mode == 1)
 // 	{
@@ -210,7 +210,7 @@ void ft_procces(t_cmd *cmd, int mode, int *pip, t_env_v *env)
 {
 	t_pipecmd *cd;
 	// t_execcmd *c;
-	
+
 	cd = (t_pipecmd *)cmd;
 	if (mode == 0)
 	{
@@ -223,7 +223,7 @@ void ft_procces(t_cmd *cmd, int mode, int *pip, t_env_v *env)
 	{
 		close(pip[0]);
 		dup2(pip[1], 1);
-		close(pip[1]);		
+		close(pip[1]);
 		ft_execution(cd->right, env);
 	}
 	close(0);
@@ -277,17 +277,18 @@ void ft_execut(t_cmd *cmd, t_env_v *env)
 	t_execcmd *cd;
 	(void)env;
 	// pid_t p;
-	
+
 	cd = (t_execcmd *)cmd;
 		if (!cd->path)
 		{
 			ft_putstr_fd("command not found\n", 2);
 			return ;
 		}
+			// printf("---\n");
 		if (execve(cd->path, cd->argv, cd->envp) == -1)
 			ft_putstr_fd("error happen in execve\n", 2);
-		cmd->type = 0;
-		ft_execution(cmd, env);
+		// cmd->type = 0;
+		// ft_execution(cmd, env);
 	return ;
 }
 
@@ -390,8 +391,6 @@ void redir_cmd(t_cmd *cmd, t_env_v *env)
 	redir = (t_redircmd *)cmd;
 	in = dup(0);
 	out = dup(1);
-	// close(1);
-	// close(0);
 	while(redir)
 	{
 		 if (redir->fd == 0)
@@ -401,9 +400,10 @@ void redir_cmd(t_cmd *cmd, t_env_v *env)
 				ft_putstr_fd("error in open here_doc\n", 2);
 			if (read(here, tmp, 9) == -1)
 				ft_putstr_fd("error in read\n", 2);
+			close (here);
 			tmp[9] = 0;
-			printf("tmp is : %s\n", tmp);
-			redir->fd = open ("tmp",  O_CREAT | O_RDWR | O_TRUNC, 0777);
+			redir->fd = open (tmp,  O_CREAT | O_RDWR | O_TRUNC, 0777);
+			printf("redir->fd: %d\n", redir->fd);
 			if (redir->fd < 0)
 				ft_putstr_fd("error in open\n", 2);
 			while (1)
@@ -411,7 +411,7 @@ void redir_cmd(t_cmd *cmd, t_env_v *env)
 				str = readline("heredoc> ");
 				if (!ft_strcmp(str, redir->file))
 				{
-					dup2(redir->fd, 0);
+					// dup2(redir->fd, 0);÷
 					free(str);
 					break ;
 				}
@@ -422,14 +422,29 @@ void redir_cmd(t_cmd *cmd, t_env_v *env)
 					free(tm);
 				}
 				ft_putstr_fd(str, redir->fd);
+				ft_putstr_fd("\n", redir->fd);
 				free(str);
 			}
-			dup2(redir->fd, 1);
+			if (dup2(redir->fd, in) == -1)
+				printf("problem in dup function \n");
+			//  close(redir->fd);
+			 printf("fffff\n");
 			if (redir->cmd)
-			ft_execution(redir->cmd, env);
-			close(redir->fd);
-			unlink(tmp);
-			redir = redir->next;
+			{
+				// printf("yyyy\n");
+				if (fork() == 0)
+					ft_execut(redir->cmd, env);
+				// while(wait(0) < 0)
+			else
+			{
+				printf("ppppp\n");
+				unlink("tmp");
+				close(in);
+				close(redir->fd);
+				redir = redir->next;
+			}
+			wait(0);
+			}
 		 continue;
 		}
 		else if (redir->fd == 1 && redir->mode)
