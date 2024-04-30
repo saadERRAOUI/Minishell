@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 17:15:26 by serraoui          #+#    #+#             */
-/*   Updated: 2024/04/25 14:55:55 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/04/30 18:14:50 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,9 @@
 		an each node contains 1 env var defined by a (key, value) params.
 	@DATE	: 25-03-2024
 */
+void ft_execut(t_cmd *cmd, t_env_v *env);
+void ft_execution(t_cmd *cmd, t_env_v *env);
+
 t_env_v	*env_init(char **env)
 {
 	t_env_v	*envs;
@@ -117,7 +120,8 @@ static void print_tree(t_cmd *tree)
         printf("EXEC_NODE => %i\n", tree->type);
         printf("EXEC_NODE_argv\n");
         ft_print_tab(((t_execcmd *)tree)->argv);
-        printf("-----------------------------\n");
+		if (((t_execcmd *)tree)->path)
+			printf("path: %s\n", ((t_execcmd *)tree)->path);
     }
     else if (tree && tree->type == 2)
     {
@@ -146,25 +150,32 @@ static void print_tree(t_cmd *tree)
         print_tree(((t_pipecmd *)tree)->right);
     }
 }
-/*
-void procces(t_execcmd *cmd, int fd, int pip, int mode)
-{
-	char *path;
-	if (mode == 0)
-	{
-		if (dup2(fd, 0) == -1 || dup2(pip, 1) == -1)
-			ft_putstr_fd("error in dup function\n", 2);
-		path =
-	}
-	else if (mode == 1)
-	{
-		if (dup2(pip, 0) == -1|| dup2(fd, 1) == -1)
-			ft_putstr_fd("error in dup function\n", 2);
-		if (execve(cmd->argv, ft_strjoin("/bin/", cmd->argv[0], 0)))
-	}
-}
 
-char *get_path(v)
+// void procces(t_execcmd *cmd, int fd, int pip, int mode)
+// {
+// 	char *path;
+// 	if (mode == 0)
+// 	{
+// 		if (dup2(fd, 0) == -1 || dup2(pip, 1) == -1)
+// 			ft_putstr_fd("error in dup function\n", 2);
+// 		close(fd);
+// 		close(pip);
+// 		if (execve(cmd->argv, cmd->path, cmd->envp) == -1)
+// 			ft_putchar_fd("error in execve 1\n", 2);
+		
+// 	}
+// 	else if (mode == 1)
+// 	{
+// 		if (dup2(pip, 0) == -1|| dup2(fd, 1) == -1)
+// 			ft_putstr_fd("error in dup function\n", 2);
+// 		close(0);
+// 		close(1);
+// 		if (execve(cmd->argv, cmd->path, cmd->envp) == -1)
+// 			ft_putchar_fd("error in execve 2\n", 2);
+// 	}
+// }
+
+// char *get_path(v)
 // void ft_run(t_cmd *cmd, int pip, t_env_v *env)
 // {
 // 	t_redircmd *cmd1;
@@ -195,10 +206,35 @@ char *get_path(v)
 // 	}
 // }
 
+void ft_procces(t_cmd *cmd, int mode, int *pip, t_env_v *env)
+{
+	t_pipecmd *cd;
+	// t_execcmd *c;
+	
+	cd = (t_pipecmd *)cmd;
+	if (mode == 0)
+	{
+		close(pip[0]);
+		dup2(pip[1], 1);
+		close(pip[1]);
+			ft_execution(cd->left, env);
+	}
+	else if (mode == 1)
+	{
+		close(pip[0]);
+		dup2(pip[1], 1);
+		close(pip[1]);		
+		ft_execution(cd->right, env);
+	}
+	close(0);
+	close(1);
+	return ;
+}
 
-void ft_pipe(t_cmd *left, t_cmd *right)
+void ft_pipe(t_pipecmd *cmd ,t_env_v *env)
 {
 	pid_t pid;
+	pid_t pid1;
 	int pip[2];
 
 
@@ -208,53 +244,261 @@ void ft_pipe(t_cmd *left, t_cmd *right)
 		exit(-1);
 	}
 	pid = fork();
+	if (pid < 0)
+		ft_putstr_fd("error in fork child 1\n", 2);
 	if (pid == 0)
 	{
-
+		close(pip[0]);
+		dup2(pip[1], 1);
+		close(pip[1]);
+		// ft_procces(cmd, 0, pip, env);
+		ft_execution(cmd->left, env);
 	}
-	else
+	pid1 = fork();
+	if (pid1 < 0)
+		ft_putstr_fd("error in fork child 2\n", 2);
+	if (pid1 == 0)
 	{
 
+		close(pip[1]);
+		dup2(pip[0], 0);
+		close(pip[0]);
+		ft_execution(cmd->right, env);
+		// ft_procces(cmd, 1, pip, env);
 	}
+	close(pip[0]);
+	close(pip[1]);
+	wait(0);
+	wait(0);
 }
 
-// void ft_execution(t_cmd *cmd, t_env_v *env)
-// {
-// 	int tab[2];
+void ft_execut(t_cmd *cmd, t_env_v *env)
+{
+	t_execcmd *cd;
+	(void)env;
+	// pid_t p;
+	
+	cd = (t_execcmd *)cmd;
+		if (!cd->path)
+		{
+			ft_putstr_fd("command not found\n", 2);
+			return ;
+		}
+		if (execve(cd->path, cd->argv, cd->envp) == -1)
+			ft_putstr_fd("error happen in execve\n", 2);
+		cmd->type = 0;
+		ft_execution(cmd, env);
+	return ;
+}
 
+// int	ft_strncmp(const char *s1, const char *s2, size_t n)
+// {
+// 	size_t	i;
+
+// 	i = 0;
+// 	while ((s1[i] || s2[i]) && (i < n))
+// 	{
+// 		if ((unsigned char)s1[i] != (unsigned char)s2[i])
+// 			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+// 		i++;
+// 	}
+// 	return (0);
+// }
+/**
+
+void ft_here_doc(t_cmd *cmd, t_env_v *env)
+{
+	int fd[2];
+	char *str;
+	// int in;
+	char *tmp;
+	// int out;
+
+	t_redircmd *cd;
+
+	cd = (t_redircmd *)cmd;
+
+	// int out = dup(1);
+	// // in = dup(0);
+	// if (fork() == 0)
+	// {
+	// 	// close(1);
+	// ¬if (fork() == 0)
+	// {
+		if (pipe(fd) == -1)
+		{
+			ft_putstr_fd("problem in pipe here_doc\n", 2);
+			exit (-1);
+		}
+		// close(fd[0]);
+		if (dup2(fd[1], 1) == -1)
+		{
+			ft_putstr_fd("problem in dup2\n", 2);
+			exit(-1);
+		}
+		close(fd[1]);
+		// close(ou);
+		// printf("here\n");
+		while(1)
+		{
+			str = readline("heredoc> ");
+			// printf("---->> %d\n", (int)ft_strlen(str));
+			if (!ft_strcmp(str, cd->file))
+			{
+			printf("11111111111\n");
+				free(str);
+				dup2(fd[0], 0);
+				// dup2(out, 1);
+				// close(out);
+				// close(fd[1]);
+				exit(0);
+				// exit(0);
+			}
+			if (str && ft_strchr(str, '$'))
+				{
+					printf("2222\n");
+					tmp = str;
+					str = ft_replace_dollar(str, env);
+					free(tmp);
+				}
+			// str = *add_dollar(&str, env);
+			// printf("12121212\n");
+			ft_putstr_fd(str, 1);
+			free(str);
+		}
+		// dup2(fd[0], 0);
+		// close();
+		// close(fd[1]);
+	// }
+	// else
+	// 	return ;
+	// wait(0);
+}
+*/
+
+// int ft_here_doc()
+void redir_cmd(t_cmd *cmd, t_env_v *env)
+{
+	t_redircmd *redir;
+	int in;
+	int out;
+	int here;
+	// int f;
+	char tmp[10];
+	char *tm;
+	char *str;
+	redir = (t_redircmd *)cmd;
+	in = dup(0);
+	out = dup(1);
+	// close(1);
+	// close(0);
+	while(redir)
+	{
+		 if (redir->fd == 0)
+		{
+			here = open("/dev/random", O_RDONLY);
+			if (here < 0)
+				ft_putstr_fd("error in open here_doc\n", 2);
+			if (read(here, tmp, 9) == -1)
+				ft_putstr_fd("error in read\n", 2);
+			tmp[9] = 0;
+			printf("tmp is : %s\n", tmp);
+			redir->fd = open ("tmp",  O_CREAT | O_RDWR | O_TRUNC, 0777);
+			if (redir->fd < 0)
+				ft_putstr_fd("error in open\n", 2);
+			while (1)
+			{
+				str = readline("heredoc> ");
+				if (!ft_strcmp(str, redir->file))
+				{
+					dup2(redir->fd, 0);
+					free(str);
+					break ;
+				}
+				if (str && ft_strchr(str, '$'))
+				{
+					tm = str;
+					str = ft_replace_dollar(str, env);
+					free(tm);
+				}
+				ft_putstr_fd(str, redir->fd);
+				free(str);
+			}
+			dup2(redir->fd, 1);
+			if (redir->cmd)
+			ft_execution(redir->cmd, env);
+			close(redir->fd);
+			unlink(tmp);
+			redir = redir->next;
+		 continue;
+		}
+		else if (redir->fd == 1 && redir->mode)
+		{
+			redir->fd = open(redir->file, O_CREAT | O_RDWR | O_APPEND, 0777);
+				if (redir->fd < 0)
+					ft_putstr_fd("problem in open function\n", 2);
+				dup2(redir->fd, 1);
+		}
+		else if (redir->fd == 1)
+		{
+			redir->fd = open(redir->file, O_CREAT | O_RDWR | O_TRUNC, 0777);
+				if (redir->fd < 0)
+					ft_putstr_fd("problem in open function\n", 2);
+				dup2(redir->fd, 1);
+		}
+		if (redir->cmd)
+		ft_execution(redir->cmd, env);
+		close(redir->fd);
+		redir = redir->next;
+	}
+	dup2(in, 0);
+	dup2(out, 1);
+	close(in);
+	close(out);
+}
+
+void ft_execution(t_cmd *cmd, t_env_v *env)
+{
+	// int tab[2];
+
+	if (cmd->type == 3)
+	{
+		// (t_pipecmd *)cmd;
+		ft_pipe((t_pipecmd *)cmd, env);
+	}
+	else if (cmd->type == 2)
+	{
+		redir_cmd(cmd, env);
+	}
+	else if (cmd->type == 1)
+		ft_execut(cmd, env);
+	else
+		exit(0);
+}
+
+// void exec_tree(t_cmd *cmd, t_env_v *env)
+// {
 // 	if (cmd->type == 3)
 // 	{
+// 		// if (fork() == 0)
+// 		// {
+// 		// 	exec_tree(((t_pipecmd *)cmd)->left, env);
+// 		// }
+// 		// else if (((t_pipecmd *)cmd)->right->type , env) == 2)
+// 		// {
 
+// 		// }
 // 	}
 // 	else if (cmd->type == 2)
 // 	{
 
 // 	}
-// }*/
-/**
-void exec_tree(t_cmd *cmd, t_env_v *env)
-{
-	if (cmd->type == 3)
-	{
-		// if (fork() == 0)
-		// {
-		// 	exec_tree(((t_pipecmd *)cmd)->left, env);
-		// }
-		// else if (((t_pipecmd *)cmd)->right->type , env) == 2)
-		// {
-
-		// }
-	}
-	else if (cmd->type == 2)
-	{
-
-	}
-	else if (cmd->type == 1)
-	{
-		procces();
-	}
-}
-*/
+// 	else if (cmd->type == 1)
+// 	{
+// 		procces();
+// 	}
+// }
+// */
 
 int	ft_run_shell(t_env_v *env)
 {
@@ -294,7 +538,9 @@ int	ft_run_shell(t_env_v *env)
 		printf("====_PRINT_TREE_==== \n");
         printf("==================== \n");
         print_tree(cmd);
-		//ft_execution(cmd, env);
+		if (fork() == 0)
+			ft_execution(cmd, env);
+		wait(0);
 		free(str);
 	}
 	return (0);
@@ -309,11 +555,14 @@ int	main(int ac, char **av, char **envp)
 	env = env_init(envp);
 	if (!env)
 		exit(-1);
+	// printf("%lu\n", sizeof(t_execcmd));
+	// printf("%lu\n", sizeof(t_execcmd *));
+	// printf("%lu\n", sizeof(t_cmd));
 	// ft_export(&env, ft_strdup("TEEEEEEST=test-"));
 	// ft_export(&env, ft_strdup("saad=test"));
 	// ft_export(&env, ft_strdup("TEEEEEEST+=saaad+saad+hachmi"));
 	// ft_export(&env, ft_strdup("TEEEEEESTE+="));
 	// ft_export(&env, NULL);
-	ft_env(env);
+	// ft_env(env);
 	ft_run_shell(env);
 }

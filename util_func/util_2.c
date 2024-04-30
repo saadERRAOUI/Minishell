@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   util_2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 17:22:40 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/04/23 11:40:06 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/04/27 17:20:18 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,14 @@ char	*ft_charjoin(char *str, char c)
 	int		len;
 	char	*ptr;
 
+	if (!str || !*str)
+		{
+			ptr = malloc(sizeof(char) * (2));
+			ptr[0] = c;
+			ptr[1] = 0;
+			// printf("+_=+\n");
+			return (ptr);
+		}
 	len = (int)ft_strlen(str);
 	ptr = malloc(sizeof(char) * (len + 2));
 	if (!ptr)

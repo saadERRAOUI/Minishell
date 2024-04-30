@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 18:02:20 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/04/25 12:21:02 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/04/26 10:56:43 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,13 +62,15 @@ typedef struct s_execcmd
 	int		type;
 	char	**argv;
 	char *path;
+	char **envp;
 	// char **tab;
 } t_execcmd;
 
-typedef struct s_elemet
-{
-	char *path;
-} t_element;
+// typedef struct s_elemet
+// {
+// 	char *path;
+// 	char **envp;
+// } t_element;
 typedef struct s_redircmd
 {
 	int				        type;
@@ -93,6 +95,7 @@ void                ft_lstadd_back_(t_redircmd **lst, t_redircmd *new);
 void				ft_unset(t_env_v **env, char *key);
 void				ft_free_stack(t_env_v **a);
 t_env_v				*ft_lstlast(t_env_v *lst);
+int					ft_lst_size(t_env_v *lst);
 t_redircmd          *ft_lstlast_(t_redircmd *lst);
 t_env_v				*env_init(char **env);
 // t_cmd *parseredir(t_cmd *cmd, char **ps, char *es);
@@ -128,6 +131,9 @@ char				*ft_shift(char *ptr);
 void ft_print_tab(char **s);
 int					ft_strleen(char **ptr);
 char	**ft_free(int index, char **ptr);
-char	**ft_parce_env(t_env_v *env);
+char	**ft_parce_env(char **env);
+char **get_path_env(t_env_v *env, char **path, char **argv);
+char **get_envp(t_env_v *env);
+char *ft_cmd_valid(char **env, char **cmd);
 
 #endif

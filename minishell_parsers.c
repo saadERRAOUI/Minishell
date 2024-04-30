@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_parsers.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 02:29:36 by serraoui          #+#    #+#             */
-/*   Updated: 2024/04/25 14:57:56 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/04/29 17:26:37 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ t_cmd  *parsexec(char **ps, int *pos, t_env_v *env)
 {
 	int			tok;
 	int			argc;
+	// char *t;
+	char **tab;
 	t_execcmd	*cmd;
     t_redircmd  *tmp;
 	t_redircmd  *ret;
@@ -39,7 +41,21 @@ t_cmd  *parsexec(char **ps, int *pos, t_env_v *env)
 		tok = get_token_type(ps[(*pos)]);
 	}
 
+		printf("i'm here\n");
 	cmd->argv[argc] = NULL;
+	if (cmd->argv)
+	{
+		cmd->envp = get_envp(env);
+		// 	for (int i = 0; cmd->envp[i]; i++)
+		// printf("%s\n", cmd->envp[i]);
+		if (cmd->envp)
+		{
+			tab = ft_parce_env(cmd->envp);
+			cmd->path = ft_cmd_valid(tab, cmd->argv);
+			// ft_free(ft_strleen(tab), tab);
+			free(tab);
+		}
+	}
 	ft_print_tab(cmd->argv);
     printf("TEST %p\n", ret);
     if (ret && ret->type == 2)
@@ -69,8 +85,6 @@ t_cmd  *parsexec(char **ps, int *pos, t_env_v *env)
 t_cmd  *parsepipe(char **ps, int *pos, t_env_v *env)
 {
 	t_cmd *cmd;
-
-
 
 	cmd = parsexec(ps, pos, env);
 	if(get_token_type(ps[(*pos)]) == '|')
@@ -105,6 +119,7 @@ int	get_token_type(char *s)
 			ret = 'a';
 			break ;
 	}
+	// printf("ret is :%c\n", (char)ret);
 	return (ret);
 }
 

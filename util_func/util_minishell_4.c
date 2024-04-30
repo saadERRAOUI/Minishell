@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   util_minishell_4.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 17:24:26 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/04/25 15:00:40 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/04/27 17:05:55 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,24 +121,64 @@ char *get_value(t_env_v *env,char *str)
 	return (NULL);
 }
 
-char	**ft_parce_env(t_env_v *env)
+// char	**ft_parce_env(t_env_v *env)
+// {
+// 	int		i;
+// 	// int		index;
+// 	char	*tmp;
+// 	char	**tab;
+
+// 	tmp = get_value(env, "PATH");
+// 	// index = ft_index(env, "PATH=");
+// 	if (!tmp)
+// 		return (NULL);
+// 	tab = ft_split(tmp, ":");
+// 	i = 0;
+// 	while (tab[i])
+// 	{
+// 		tmp = tab[i];
+// 		tab[i] = ft_strjoin(tab[i], "/");
+// 		free(tmp);
+// 		i++;
+// 	}
+// 	return (tab);
+// }
+
+static int	ft_index(char **envp, char *str)
+{
+	int	i;
+
+	i = 0;
+	while (envp[i])
+	{
+		if (!ft_strncmp(envp[i], str, ft_strlen(str)))
+			return (i);
+		i++;
+	}
+	return (-1);
+}
+
+char	**ft_parce_env(char **env)
 {
 	int		i;
-	// int		index;
-	char	*tmp;
+	int		index;
+	// char	*tmp;
 	char	**tab;
 
-	tmp = get_value(env, "PATH");
-	// index = ft_index(env, "PATH=");
-	if (!tmp)
+	index = ft_index(env, "PATH=");
+	if (index < 0)
+	{
+		// tab = malloc(sizeof(char *));
+		// tab = 0;
 		return (NULL);
-	tab = ft_split(tmp, ":");
+	}
+	tab = ft_split(env[index] + 5, ":");
 	i = 0;
 	while (tab[i])
 	{
-		tmp = tab[i];
-		tab[i] = ft_strjoin(tab[i], "/");
-		free(tmp);
+		// tmptab[i];
+		tab[i] = ft_strjoin(ft_strdup(tab[i]), "/");
+		// free(tmp);
 		i++;
 	}
 	return (tab);
@@ -172,3 +212,68 @@ char *ft_cmd_valid(char **env, char **cmd)
 	return (NULL);
 }
 
+char **get_envp(t_env_v *env)
+{
+	char **envp;
+	char *tmp;
+	char *tmp1;
+	int i;
+	int size;
+
+	i = 0;
+	
+	size = ft_lst_size(env);
+	if (!env)
+		return (NULL);
+	envp = NULL;
+	envp = malloc(sizeof(char *) * (size + 1));
+	// printf("---------------> %d\n", size);
+	envp[size] = NULL;
+	while (i < size)
+	{
+		tmp = ft_strdup(env->key);	
+		tmp = ft_charjoin(tmp ,'=');
+		tmp1 = ft_strjoin(tmp, env->value);
+		envp[i] = tmp1;
+		env = env->next;
+		i++;
+	}
+	// printf("---------------> %d\n", i);
+	return (envp);
+}
+
+int	ft_lst_size(t_env_v *lst)
+{
+	int i;
+
+	i = 0;
+	if (!lst)
+		return (0);
+	while (lst)
+	{
+		i++;
+		lst = lst->next;
+	}
+	return (i);
+}
+
+// char **get_path_env(t_env_v *env, char **path, char **argv)
+// {
+// 	char **envp;
+// 	// char **ptr;
+// 	(void)path;
+// 	(void)argv;
+// 	envp = get_envp(env);
+// 	// if (!envp)
+		
+// 	// for (int i = 0; envp[i]; i++)
+// 	// 	printf("================= %s\n", envp[i]);
+// 		// printf("================= %s\n", argv[0]);
+// 	if (envp)
+// 	{
+// 		path = ft_parce_env(envp);
+// 		*path = ft_cmd_valid(path, argv);
+// 		// printf("%s\n", *path);
+// 	}
+// 	return (envp);
+// }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_constructors.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 20:42:18 by serraoui          #+#    #+#             */
-/*   Updated: 2024/04/23 11:22:33 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/04/26 09:15:35 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ t_cmd	*execcmd(void)
 {
 	t_execcmd	*cmd;
 
-	cmd = malloc(sizeof(t_execcmd *));
+	cmd = malloc(sizeof(t_execcmd));
 	cmd->argv = malloc(MAXARGS * sizeof(char *));
 	ft_memset(cmd, 0, sizeof(t_execcmd *));
 	cmd->type = EXEC;
