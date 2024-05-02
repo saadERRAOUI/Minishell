@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 17:15:26 by serraoui          #+#    #+#             */
-/*   Updated: 2024/05/02 16:33:06 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/02 22:37:34 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -377,24 +377,53 @@ void ft_here_doc(t_cmd *cmd, t_env_v *env)
 }
 */
 
+/*
+	@AUTHOR: BOUZID Hicham
+	@DESC: get a random name for a temporary file
+		for a here_doc
+	@DATE: 02-05-2024
+*/
+
+char *get_name(void)
+{
+	char *name;
+	char c;
+	char *tmp;
+	int fd;
+	int i;
+
+	i = 0;
+	fd = open("/dev/random", O_RDONLY);
+	if (fd < 0)
+		ft_putstr_fd("bad file descriptor : open ", 2);
+	name = ft_strdup("          ");
+	while (i < 10)
+	{
+		if (read(fd, &c, 1) == -1)
+			ft_putstr_fd("error in read function\n", 2);
+		if (ft_isalnum(c))
+			name[i++] = c;
+		// i++;
+	}
+	close(fd);
+	tmp = name;
+	name = ft_strjoin(ft_strdup("/tmp/"), name);
+	free(tmp);
+	return (name);
+}
+
+//! todo  remove expand from delimeter here_doc
 void ft_here_doc(t_redircmd **cmd, t_env_v *env)
 {
-	int f;
+	// int f;
 	char *tmp;
 	char *str;
 	char *tm;
 
-	f = open("/dev/random", O_RDONLY);
-	if (f < 0)
-		ft_putstr_fd("Error in open file\n", 2);
-	tmp = ft_strdup("          ");
-	if (read(f, tmp, 10) == -1)
-		ft_putstr_fd("Error in read function\n", 2);
-	// tm = tmp;
-	// tmp = ft_strjoin(ft_strdup("/tmp/"), tmp);
+	tmp = get_name();
+	printf("--->%s\n", tmp);
 	// free(tm);
 	(*cmd)->fd = open(tmp, O_CREAT | O_RDWR, 0777);
-	printf("--->%s\n", tmp);
 	if ((*cmd)->fd < 0)
 		ft_putstr_fd("Error in open function\n", 2);
 	while (1)
@@ -421,7 +450,8 @@ void ft_here_doc(t_redircmd **cmd, t_env_v *env)
 	(*cmd)->file = tmp;
 	if ((*cmd)->fd < 0)
 		ft_putstr_fd("error in  open function \n", 2);
-	dup2((*cmd)->fd, 0);
+	// dup2((*cmd)->fd, 0);
+	// close();
 	// return ();
 }
 
@@ -430,44 +460,51 @@ void redir_cmd(t_cmd *cmd, t_env_v *env)
 	t_redircmd *redir;
 	int in;
 	int out;
-	// int here;
-	// int f;
-	// char tmp[10];
-	// char *tm;
-	// char *str;
-	// char str1[100];
+	// int token;
+
 	redir = (t_redircmd *)cmd;
 	in = dup(0);
 	out = dup(1);
 	while(redir)
 	{
+		// token = 0;
 		 if (redir->fd == 0 && redir->mode)
 		{
 			ft_here_doc(&redir, env);
+			// token = 1;
+			dup2(redir->fd, in);
 		}
 		else if (redir->fd == 0)
 		{
 			redir->fd = open(redir->file, O_CREAT | O_RDONLY);
 			if (redir->fd < 0)
 				printf("erro");
-			dup2(redir->fd, 0);
+			dup2(redir->fd, in);
 		}
 		else if (redir->fd == 1 && redir->mode)
 		{
-			redir->fd = open(redir->file, O_CREAT | O_RDWR | O_APPEND, 0777);
+			redir->fd = open(redir->file, O_CREAT | O_RDWR | O_APPEND, 0664);
 				if (redir->fd < 0)
 					ft_putstr_fd("problem in open function\n", 2);
-				dup2(redir->fd, 1);
+				dup2(redir->fd, out);
 		}
 		else if (redir->fd == 1)
 		{
-			redir->fd = open(redir->file, O_CREAT | O_RDWR | O_TRUNC, 0777);
+			redir->fd = open(redir->file, O_CREAT | O_RDWR | O_TRUNC, 0664);
 				if (redir->fd < 0)
 					ft_putstr_fd("problem in open function\n", 2);
-				dup2(redir->fd, 1);
+				dup2(redir->fd, out);
 		}
-		if (redir->cmd)
-			ft_execution(redir->cmd, env);
+		// if (redir->cmd)
+		// {
+			// if (fork() == 0)
+			// wait(0);
+		// }
+		// if (token == 1)
+			// unlink(redir->file);
+		// if (cmd)
+		if (!redir->next)
+			break ;
 		close(redir->fd);
 		redir = redir->next;
 	}
@@ -475,6 +512,7 @@ void redir_cmd(t_cmd *cmd, t_env_v *env)
 	dup2(out, 1);
 	close(in);
 	close(out);
+	ft_execut(redir->cmd, env);
 }
 
 void ft_execution(t_cmd *cmd, t_env_v *env)
@@ -492,8 +530,7 @@ void ft_execution(t_cmd *cmd, t_env_v *env)
 	}
 	else if (cmd->type == 1)
 		ft_execut(cmd, env);
-	else
-		exit(0);
+	exit(0);
 }
 
 // void exec_tree(t_cmd *cmd, t_env_v *env)

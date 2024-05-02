@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_parsers.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 02:29:36 by serraoui          #+#    #+#             */
-/*   Updated: 2024/05/01 14:19:22 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/05/02 22:29:14 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,6 +169,7 @@ void    parseredir(t_redircmd **red, char **ps, int *pos)
 			case '-':
                 (*pos)++;
                 tmp = redircmd(ps[(*pos)], O_RDWR | O_CREAT, 0);
+				//TODO : fork and call ft_here_doc();
                 (*pos)++;
                 ft_lstadd_back_(red, tmp);
                 break;
