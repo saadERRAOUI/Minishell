@@ -6,7 +6,7 @@
 /*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 18:02:20 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/04/26 10:56:43 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/01 14:39:23 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
-
+#include "./get_next_line_curses-/get_next_line.h"
 # define MAXARGS 100
 # define EXEC 1
 # define REDIR 2

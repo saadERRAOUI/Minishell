@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_parsers.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 02:29:36 by serraoui          #+#    #+#             */
-/*   Updated: 2024/04/29 17:26:37 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/01 14:19:22 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ void    parseredir(t_redircmd **red, char **ps, int *pos)
 
 
 	tok = get_token_type(ps[(*pos)]);
-    while (tok == '>' || tok == '+' || tok == '<')
+    while (tok == '>' || tok == '+' || tok == '<' || tok == '-')
     {
         if (tok != 'a' && tok != '|' && tok != '0' && get_token_type(ps[*pos + 1]) != 'a')
             exit(-1); //!to change to error "redirection file doesn't exist"
@@ -162,7 +162,13 @@ void    parseredir(t_redircmd **red, char **ps, int *pos)
                 break;
             case '+':
                 (*pos)++;
-                tmp = redircmd(ps[(*pos)], O_WRONLY|O_CREAT | O_TRUNC, 1);
+                tmp = redircmd(ps[(*pos)], O_WRONLY | O_CREAT | O_TRUNC, 1);
+                (*pos)++;
+                ft_lstadd_back_(red, tmp);
+                break;            
+			case '-':
+                (*pos)++;
+                tmp = redircmd(ps[(*pos)], O_RDWR | O_CREAT, 0);
                 (*pos)++;
                 ft_lstadd_back_(red, tmp);
                 break;

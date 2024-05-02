@@ -23,7 +23,8 @@ CFILS =  ./util_func/util_0.c ./util_func/util_1.c  ./libft/ft_atoi.c ./libft/ft
 		./libft/ft_tolower.c ./libft/ft_toupper.c  minishell.c minishell_constructors.c\
 		minishell_parsers.c ./util_func/util_2.c  ./util_func/lexer.c ./builtins/echo.c\
 		./builtins/export.c ./builtins/unset.c ./builtins/env.c ./builtins/pwd.c\
-		./util_func/util_minishell_3.c ./util_func/util_minishell_4.c
+		./util_func/util_minishell_3.c ./util_func/util_minishell_4.c ./get_next_line_curses-/get_next_line.c\
+		./get_next_line_curses-/get_next_line_utils.c
 #minishell.c minishell_constructors.c minishell_parsers.c $(LIB./libft/FT_C_SOURCES) \
 
 OBJS = $(CFILS:.c=.o)
