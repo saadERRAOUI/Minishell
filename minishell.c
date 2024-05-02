@@ -6,7 +6,7 @@
 /*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 17:15:26 by serraoui          #+#    #+#             */
-/*   Updated: 2024/04/30 18:14:50 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/02 15:52:58 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -376,17 +376,65 @@ void ft_here_doc(t_cmd *cmd, t_env_v *env)
 }
 */
 
-// int ft_here_doc()
+void ft_here_doc(t_redircmd **cmd, t_env_v *env)
+{
+	int f;
+	char *tmp;
+	char *str;
+	char *tm;
+
+	f = open("/dev/random", O_RDONLY);
+	if (f < 0)
+		ft_putstr_fd("Error in open file\n", 2);
+	tmp = ft_strdup("          ");
+	if (read(f, tmp, 10) == -1)
+		ft_putstr_fd("Error in read function\n", 2);
+	// tm = tmp;
+	// tmp = ft_strjoin(ft_strdup("/tmp/"), tmp);
+	// free(tm);
+	(*cmd)->fd = open(tmp, O_CREAT | O_RDWR, 0777);
+	printf("--->%s\n", tmp);
+	if ((*cmd)->fd < 0)
+		ft_putstr_fd("Error in open function\n", 2);
+	while (1)
+	{
+		str = readline("> ");
+		if (!ft_strcmp(str, (*cmd)->file))
+			{
+				// dup2(redir->fd, 0);
+				free(str);
+				break ;
+			}
+		if (str && ft_strchr(str, '$'))
+			{
+				tm = str;
+				str = ft_replace_dollar(str, env);
+				free(tm);
+			}
+		ft_putstr_fd(str, (*cmd)->fd);
+		ft_putstr_fd("\n", (*cmd)->fd);
+		free(str);
+	}
+	close((*cmd)->fd);
+	(*cmd)->fd = open(tmp, O_RDONLY);
+	(*cmd)->file = tmp;
+	if ((*cmd)->fd < 0)
+		ft_putstr_fd("error in  open function \n", 2);
+	dup2((*cmd)->fd, 0);
+	// return ();
+}
+
 void redir_cmd(t_cmd *cmd, t_env_v *env)
 {
 	t_redircmd *redir;
 	int in;
 	int out;
-	int here;
+	// int here;
 	// int f;
-	char tmp[10];
-	char *tm;
-	char *str;
+	// char tmp[10];
+	// char *tm;
+	// char *str;
+	// char str1[100];
 	redir = (t_redircmd *)cmd;
 	in = dup(0);
 	out = dup(1);
@@ -394,43 +442,16 @@ void redir_cmd(t_cmd *cmd, t_env_v *env)
 	// close(0);
 	while(redir)
 	{
-		 if (redir->fd == 0)
+		 if (redir->fd == 0 && redir->mode)
 		{
-			here = open("/dev/random", O_RDONLY);
-			if (here < 0)
-				ft_putstr_fd("error in open here_doc\n", 2);
-			if (read(here, tmp, 9) == -1)
-				ft_putstr_fd("error in read\n", 2);
-			tmp[9] = 0;
-			printf("tmp is : %s\n", tmp);
-			redir->fd = open ("tmp",  O_CREAT | O_RDWR | O_TRUNC, 0777);
+			ft_here_doc(&redir, env);
+		}
+		else if (redir->fd == 0)
+		{
+			redir->fd = open(redir->file, O_CREAT | O_RDONLY);
 			if (redir->fd < 0)
-				ft_putstr_fd("error in open\n", 2);
-			while (1)
-			{
-				str = readline("heredoc> ");
-				if (!ft_strcmp(str, redir->file))
-				{
-					dup2(redir->fd, 0);
-					free(str);
-					break ;
-				}
-				if (str && ft_strchr(str, '$'))
-				{
-					tm = str;
-					str = ft_replace_dollar(str, env);
-					free(tm);
-				}
-				ft_putstr_fd(str, redir->fd);
-				free(str);
-			}
-			dup2(redir->fd, 1);
-			if (redir->cmd)
-			ft_execution(redir->cmd, env);
-			close(redir->fd);
-			unlink(tmp);
-			redir = redir->next;
-		 continue;
+				printf("erro");
+			dup2(redir->fd, 0);
 		}
 		else if (redir->fd == 1 && redir->mode)
 		{
@@ -447,7 +468,7 @@ void redir_cmd(t_cmd *cmd, t_env_v *env)
 				dup2(redir->fd, 1);
 		}
 		if (redir->cmd)
-		ft_execution(redir->cmd, env);
+			ft_execution(redir->cmd, env);
 		close(redir->fd);
 		redir = redir->next;
 	}
