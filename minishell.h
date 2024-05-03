@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 18:02:20 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/05/01 14:39:23 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/03 18:24:26 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
-#include "./get_next_line_curses-/get_next_line.h"
 # define MAXARGS 100
 # define EXEC 1
 # define REDIR 2
@@ -36,6 +35,7 @@
 # define DL 7
 # define EXIT_FAILUR 127
 # define CTRL_C 130
+
 
 typedef struct s_redircmd t_redircmd;
 typedef struct s_env_v
@@ -122,8 +122,8 @@ char				*ft_convert_0(char *str);
 char				**undo(char **ptr);
 char				**ft_check_syntax(char *str);
 int					ft_strlen_until(char *str, char c);
-char				*ft_replace_dollar(char *ptr, t_env_v *env);
-char				**add_dollar(char **ptr, t_env_v *env);
+char				*ft_replace_dollar(char *ptr, t_env_v **env);
+char				**add_dollar(char **ptr, t_env_v **env);
 char				*expand_or_not(char *ptr);
 int					ft_back(char *str, int index);
 char				*ft_shift(char *ptr);
@@ -135,5 +135,11 @@ char	**ft_parce_env(char **env);
 char **get_path_env(t_env_v *env, char **path, char **argv);
 char **get_envp(t_env_v *env);
 char *ft_cmd_valid(char **env, char **cmd);
+
+
+//builtins
+int	pwd(int ac, char **av);
+int	echo(int ac, char **av);
+
 
 #endif

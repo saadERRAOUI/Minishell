@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   util_2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 17:22:40 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/05/03 14:28:32 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/03 18:23:45 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,7 @@ char	*ft_shift(char *ptr)
 	@DATE: 18-05-20240
 */
 
-char	**add_dollar(char **ptr, t_env_v *env)
+char	**add_dollar(char **ptr, t_env_v **env)
 {
 	int		i;
 	int		token;

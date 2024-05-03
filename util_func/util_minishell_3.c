@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   util_minishell_3.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:23:09 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/04/19 22:57:57 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/03 18:23:04 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ char	*get_measurements(int *index, int *len, char *ptr)
 	@DATE: 18-05-2024
 */
 
-char	*ft_replace_dollar(char *ptr, t_env_v *env)
+char	*ft_replace_dollar(char *ptr, t_env_v **env)
 {
 	char	*s1;
 	char	*s2;
@@ -116,14 +116,14 @@ char	*ft_replace_dollar(char *ptr, t_env_v *env)
 	{
 		s1 = get_measurements(&index, &len, ptr);
 		s1 = ft_substr(ptr, index, len - index);
-		while (env)
+		while ((*env))
 		{
-			if (!ft_strcmp(env->key, s1))
+			if (!ft_strcmp((*env)->key, s1))
 			{
-				s2 = env->value;
+				s2 = (*env)->value;
 				break ;
 			}
-			env = env->next;
+			(*env) = (*env)->next;
 		}
 		free(s1);
 		s1 = ft_modifie(ptr, index, len, s2);

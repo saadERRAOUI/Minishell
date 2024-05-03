@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_parsers.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 02:29:36 by serraoui          #+#    #+#             */
-/*   Updated: 2024/05/02 22:29:14 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/03 20:18:52 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_cmd  *parsexec(char **ps, int *pos, t_env_v *env)
 {
 	int			tok;
 	int			argc;
-	// char *t;
+
 	char **tab;
 	t_execcmd	*cmd;
     t_redircmd  *tmp;
@@ -46,26 +46,22 @@ t_cmd  *parsexec(char **ps, int *pos, t_env_v *env)
 	if (cmd->argv)
 	{
 		cmd->envp = get_envp(env);
-		// 	for (int i = 0; cmd->envp[i]; i++)
-		// printf("%s\n", cmd->envp[i]);
 		if (cmd->envp)
 		{
 			tab = ft_parce_env(cmd->envp);
 			cmd->path = ft_cmd_valid(tab, cmd->argv);
-			// ft_free(ft_strleen(tab), tab);
 			free(tab);
 		}
 	}
 	ft_print_tab(cmd->argv);
-    printf("TEST %p\n", ret);
     if (ret && ret->type == 2)
     {
         tmp = ft_lstlast_(ret);
         tmp->cmd = (t_cmd *)cmd;
     }
-    //!TO REMOVE TESTING PURPOSE
     if (!ret)
         return ((t_cmd *)cmd);
+    //!TO REMOVE TESTING PURPOSE
     // t_redircmd *_t;
     // _t = ret;
     // while (_t)
@@ -119,7 +115,6 @@ int	get_token_type(char *s)
 			ret = 'a';
 			break ;
 	}
-	// printf("ret is :%c\n", (char)ret);
 	return (ret);
 }
 
