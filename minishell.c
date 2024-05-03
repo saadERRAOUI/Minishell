@@ -6,7 +6,7 @@
 /*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 17:15:26 by serraoui          #+#    #+#             */
-/*   Updated: 2024/05/02 22:37:34 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/03 16:06:32 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -271,7 +271,7 @@ void ft_pipe(t_pipecmd *cmd ,t_env_v *env)
 	wait(0);
 	wait(0);
 }
-
+int f
 void ft_execut(t_cmd *cmd, t_env_v *env)
 {
 	t_execcmd *cd;
@@ -285,6 +285,7 @@ void ft_execut(t_cmd *cmd, t_env_v *env)
 			return ;
 		}
 			// printf("---\n");
+		if (is_builtins(cd->argv))
 		if (execve(cd->path, cd->argv, cd->envp) == -1)
 			ft_putstr_fd("error happen in execve\n", 2);
 		// cmd->type = 0;

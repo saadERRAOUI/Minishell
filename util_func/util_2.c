@@ -6,7 +6,7 @@
 /*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 17:22:40 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/04/27 17:20:18 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/03 14:28:32 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,6 +150,8 @@ char	**add_dollar(char **ptr, t_env_v *env)
 		{
 			token = 1;
 		}
+		if (token && i && !ft_strcmp(ptr[i -1], "<<"))
+			token = 0;
 		if (token)
 		{
 			tmp = ft_replace_dollar(ptr[i], env);
