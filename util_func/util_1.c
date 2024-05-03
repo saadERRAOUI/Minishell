@@ -3,23 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   util_1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 23:43:26 by serraoui          #+#    #+#             */
-/*   Updated: 2024/04/21 22:11:39 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/05/03 17:40:06 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./../minishell.h"
-
-t_env_v	*ft_lstlast(t_env_v *lst)
-{
-	if (!lst)
-		return (lst);
-	while (lst->next)
-		lst = lst->next;
-	return (lst);
-}
 
 void	ft_lstadd_back(t_env_v **lst, t_env_v *new)
 {
@@ -37,30 +28,30 @@ void	ft_lstadd_back(t_env_v **lst, t_env_v *new)
 }
 
 t_redircmd	*ft_lstlast_(t_redircmd *lst)
-{   
+{
 	if (!lst)
 		return (lst);
 	while (lst && lst->next)
-    {
+	{
 		lst = lst->next;
-    }
+	}
 	return (lst);
 }
 
 void	ft_lstadd_back_(t_redircmd **lst, t_redircmd *new)
 {
 	t_redircmd	*save;
-    
-    if (!lst)
-        return ;
-    save = *lst;
-    if (!*lst && new)
-    {
-        *lst = new;
-        return ;
-    }
-    save = ft_lstlast_(save);
-    save->next = new;
+
+	if (!lst)
+		return ;
+	save = *lst;
+	if (!*lst && new)
+	{
+		*lst = new;
+		return ;
+	}
+	save = ft_lstlast_(save);
+	save->next = new;
 }
 
 void	ft_list_remove_if(t_env_v **begin_list, void *data_ref,
@@ -82,29 +73,6 @@ void	ft_list_remove_if(t_env_v **begin_list, void *data_ref,
 	{
 		node = (*begin_list);
 		ft_list_remove_if(&(node->next), data_ref, cmp);
-	}
-}
-
-/*
-	@AUTHOR: hicham bouzid
-	@PROTO: void ft_free_stack():
-	@DESC: free the the env alloceted if the programme ended or
-			failed
-	@DATE: 29-03-2024
-*/
-void	ft_free_stack(t_env_v **a)
-{
-	t_env_v	*tmp;
-
-	if (!a || !*a)
-		return ;
-	tmp = *a;
-	while ((*a))
-	{
-		tmp = *a;
-		*a = (*a)->next;
-		free(tmp->key);
-		free(tmp);
 	}
 }
 

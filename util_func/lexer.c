@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 17:53:48 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/04/20 17:00:52 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/03 17:37:07 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,4 +97,63 @@ char	**undo(char **ptr)
 		i++;
 	}
 	return (ptr);
+}
+
+/*
+	@AUTHOR: hicham bouzid
+	@PROTOTYPE: char	**add_dollar(char **ptr, t_env_v *env)
+	@DESC: this function uset to replace env variable by
+			by his value check if containe and call other func
+	@DATE: 18-05-20240
+*/
+
+char	**add_dollar(char **ptr, t_env_v *env)
+{
+	int		i;
+	int		token;
+	char	*tmp;
+
+	i = 0;
+	while (ptr[i])
+	{
+		token = 0;
+		if (ptr[i] && ft_strchr(ptr[i], '$'))
+		{
+			token = 1;
+		}
+		if (token && i && !ft_strcmp(ptr[i - 1], "<<"))
+			token = 0;
+		if (token)
+		{
+			tmp = ft_replace_dollar(ptr[i], env);
+			free(ptr[i]);
+			ptr[i] = tmp;
+			i = 0;
+		}
+		i++;
+	}
+	return (ptr);
+}
+
+/*
+	@AUTHOR: hicham bouzid
+	@PROTO: void ft_free_stack():
+	@DESC: free the the env alloceted if the programme ended or
+			failed
+	@DATE: 29-03-2024
+*/
+void	ft_free_stack(t_env_v **a)
+{
+	t_env_v	*tmp;
+
+	if (!a || !*a)
+		return ;
+	tmp = *a;
+	while ((*a))
+	{
+		tmp = *a;
+		*a = (*a)->next;
+		free(tmp->key);
+		free(tmp);
+	}
 }

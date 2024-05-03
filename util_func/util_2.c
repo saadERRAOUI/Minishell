@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   util_2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 17:22:40 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/05/03 14:28:32 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/03 17:46:26 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,12 @@ char	*ft_charjoin(char *str, char c)
 	char	*ptr;
 
 	if (!str || !*str)
-		{
-			ptr = malloc(sizeof(char) * (2));
-			ptr[0] = c;
-			ptr[1] = 0;
-			// printf("+_=+\n");
-			return (ptr);
-		}
+	{
+		ptr = malloc(sizeof(char) * (2));
+		ptr[0] = c;
+		ptr[1] = 0;
+		return (ptr);
+	}
 	len = (int)ft_strlen(str);
 	ptr = malloc(sizeof(char) * (len + 2));
 	if (!ptr)
@@ -129,50 +128,13 @@ char	*ft_shift(char *ptr)
 }
 
 /*
-	@AUTHOR: hicham bouzid
-	@PROTOTYPE: char	**add_dollar(char **ptr, t_env_v *env)
-	@DESC: this function uset to replace env variable by
-			by his value check if containe and call other func
-	@DATE: 18-05-20240
-*/
-
-char	**add_dollar(char **ptr, t_env_v *env)
-{
-	int		i;
-	int		token;
-	char	*tmp;
-
-	i = 0;
-	while (ptr[i])
-	{
-		token = 0;
-		if (ptr[i] && ft_strchr(ptr[i], '$'))
-		{
-			token = 1;
-		}
-		if (token && i && !ft_strcmp(ptr[i -1], "<<"))
-			token = 0;
-		if (token)
-		{
-			tmp = ft_replace_dollar(ptr[i], env);
-			free(ptr[i]);
-			ptr[i] = tmp;
-			i = 0;
-		}
-		i++;
-	}
-	return (ptr);
-}
-
-/*
 	@AUTHOR: Hicham BOUZID
 	@DESC: function util used just in this file
 	@DATE: 22-04-2024
 */
 
-static int ft_checkk(char **ptr, int index)
+static int	ft_checkk(char **ptr, int index)
 {
-
 	while (ptr[index])
 	{
 		if (ft_strchr("<>|", ptr[index][0]) && ft_strlen(ptr[index]) >= 2)
@@ -182,12 +144,13 @@ static int ft_checkk(char **ptr, int index)
 			if (ptr[index][0] != ptr[index][1])
 				return (0);
 			if (!ptr[index + 1])
-			return (0);
+				return (0);
 		}
-		else if (index && ft_strchr("|<>", ptr[index][0]) &&
-			ft_strchr("|<>", ptr[index - 1][0]))
-		return (0);
-		else if (ft_strchr("|><", ptr[index][0]) && (!ptr[index + 1] || ft_strchr("|><", ptr[index + 1][0])))
+		else if (index && ft_strchr("|<>", ptr[index][0]) && ft_strchr("|<>",
+				ptr[index - 1][0]))
+			return (0);
+		else if (ft_strchr("|><", ptr[index][0]) && (!ptr[index + 1]
+				|| ft_strchr("|><", ptr[index + 1][0])))
 		{
 			if (ptr[index][0] == '|' && ptr[index + 1][0] != '|')
 				return (1);
@@ -205,37 +168,13 @@ static int ft_checkk(char **ptr, int index)
 	DATE: 22-04-2024
 */
 
-char **syntax(char **ptr)
+char	**syntax(char **ptr)
 {
-
-		 if (!ft_checkk(ptr, 0))
-		 {
-			ft_free(ft_strleen(ptr), ptr);
-			ft_putstr_fd("bash: syntax error near unexpected token\n", 2);
-			return (NULL);
-		 }
-		 return (ptr);
-}
-
-// !todo add function to check if the syntax true or not
-
-char	**ft_check_syntax(char *str)
-{
-	char	**ptr;
-	int		i;
-
-	i = 0;
-	str = ft_convert_0(str);
-	str = add_32(str, "|<>");
-	ptr = ft_split(str, " \t");
-	ptr = undo(ptr);
-	i = 0;
-	while (ptr[i])
+	if (!ft_checkk(ptr, 0))
 	{
-		ptr[i] = expand_or_not(ptr[i]);
-		i++;
+		ft_free(ft_strleen(ptr), ptr);
+		ft_putstr_fd("bash: syntax error near unexpected token\n", 2);
+		return (NULL);
 	}
-	ptr = syntax(ptr);
-	// printf("here\n");
 	return (ptr);
 }
