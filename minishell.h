@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 18:02:20 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/04/21 22:12:17 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/05/01 14:39:23 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,14 @@
 # include <limits.h>
 # include <readline/history.h>
 # include <readline/readline.h>
+#include <sys/types.h>
+#include <unistd.h>
 # include <signal.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
-
+#include "./get_next_line_curses-/get_next_line.h"
 # define MAXARGS 100
 # define EXEC 1
 # define REDIR 2
@@ -59,8 +61,16 @@ typedef struct s_execcmd
 {
 	int		type;
 	char	**argv;
+	char *path;
+	char **envp;
+	// char **tab;
 } t_execcmd;
 
+// typedef struct s_elemet
+// {
+// 	char *path;
+// 	char **envp;
+// } t_element;
 typedef struct s_redircmd
 {
 	int				        type;
@@ -85,15 +95,16 @@ void                ft_lstadd_back_(t_redircmd **lst, t_redircmd *new);
 void				ft_unset(t_env_v **env, char *key);
 void				ft_free_stack(t_env_v **a);
 t_env_v				*ft_lstlast(t_env_v *lst);
+int					ft_lst_size(t_env_v *lst);
 t_redircmd          *ft_lstlast_(t_redircmd *lst);
 t_env_v				*env_init(char **env);
 // t_cmd *parseredir(t_cmd *cmd, char **ps, char *es);
 // t_cmd				*parseredir(t_cmd *cmd, char **ps, int *pos);
 void                parseredir(t_redircmd **red, char **ps, int *pos);
-t_cmd				*parsepipe(char **ps, int *pos);
+t_cmd				*parsepipe(char **ps, int *pos, t_env_v *env);
 // t_cmd *parsepipe(char **ps, char *es);
 // t_cmd *parsexec(char **ps, char *es);
-t_cmd				*parsexec(char **ps, int *pos);
+t_cmd				*parsexec(char **ps, int *pos, t_env_v *env);
 // t_cmd				*parsecmd(char *s);
 // t_cmd				*parseline(char **ps, char *es);
 t_cmd				*execcmd(void);
@@ -118,5 +129,11 @@ int					ft_back(char *str, int index);
 char				*ft_shift(char *ptr);
 
 void ft_print_tab(char **s);
+int					ft_strleen(char **ptr);
+char	**ft_free(int index, char **ptr);
+char	**ft_parce_env(char **env);
+char **get_path_env(t_env_v *env, char **path, char **argv);
+char **get_envp(t_env_v *env);
+char *ft_cmd_valid(char **env, char **cmd);
 
 #endif
