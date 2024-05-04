@@ -6,7 +6,7 @@
 /*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 17:15:26 by serraoui          #+#    #+#             */
-/*   Updated: 2024/05/03 21:53:31 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/05/04 23:08:10 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@
 		an each node contains 1 env var defined by a (key, value) params.
 	@DATE	: 25-03-2024
 */
-void ft_execut(t_cmd *cmd, t_env_v *env);
-void ft_execution(t_cmd *cmd, t_env_v *env);
+void ft_execut(t_cmd *cmd, t_env_v *env, t_pwd *wds);
+void ft_execution(t_cmd *cmd, t_env_v *env, t_pwd *wds);
 
 t_env_v	*env_init(char **env)
 {
@@ -151,61 +151,6 @@ static void print_tree(t_cmd *tree)
     }
 }
 
-// void procces(t_execcmd *cmd, int fd, int pip, int mode)
-// {
-// 	char *path;
-// 	if (mode == 0)
-// 	{
-// 		if (dup2(fd, 0) == -1 || dup2(pip, 1) == -1)
-// 			ft_putstr_fd("error in dup function\n", 2);
-// 		close(fd);
-// 		close(pip);
-// 		if (execve(cmd->argv, cmd->path, cmd->envp) == -1)
-// 			ft_putchar_fd("error in execve 1\n", 2);
-
-// 	}
-// 	else if (mode == 1)
-// 	{
-// 		if (dup2(pip, 0) == -1|| dup2(fd, 1) == -1)
-// 			ft_putstr_fd("error in dup function\n", 2);
-// 		close(0);
-// 		close(1);
-// 		if (execve(cmd->argv, cmd->path, cmd->envp) == -1)
-// 			ft_putchar_fd("error in execve 2\n", 2);
-// 	}
-// }
-
-// char *get_path(v)
-// void ft_run(t_cmd *cmd, int pip, t_env_v *env)
-// {
-// 	t_redircmd *cmd1;
-// 	t_element *element;
-// 	int i;
-
-// 	i = 0;
-// 	element = 0;
-// 	if (cmd->type == 2)
-// 	{
-// 		cmd1 = (t_redircmd *)cmd;
-// 		while (cmd1->next)
-// 		{
-// 			i = open(cmd1->file, cmd1->mode);
-// 			if ((i < 0 && cmd1->fd == 0) || (i < 0))
-// 			{
-// 				if (i < 0 && cmd1->fd == 0)
-// 					ft_putstr_fd("no such file or directory\n", 2);
-// 				 else
-// 					ft_putstr_fd("canno't open a file\n", 2);
-// 			}
-// 			else if (cmd1->cmd)
-// 			{
-// 				element = malloc(sizeof(t_element));
-// 				element->path = get_path((t_execcmd *)cmd->argv, env);
-// 			}
-// 		}
-// 	}
-// }
-
 void ft_procces(t_cmd *cmd, int mode, int *pip, t_env_v *env)
 {
 	t_pipecmd *cd;
@@ -217,14 +162,14 @@ void ft_procces(t_cmd *cmd, int mode, int *pip, t_env_v *env)
 		close(pip[0]);
 		dup2(pip[1], 1);
 		close(pip[1]);
-			ft_execution(cd->left, env);
+			ft_execution(cd->left, env, NULL);
 	}
 	else if (mode == 1)
 	{
 		close(pip[0]);
 		dup2(pip[1], 1);
 		close(pip[1]);
-		ft_execution(cd->right, env);
+		ft_execution(cd->right, env, NULL);
 	}
 	close(0);
 	close(1);
@@ -252,7 +197,7 @@ void ft_pipe(t_pipecmd *cmd ,t_env_v *env)
 		dup2(pip[1], 1);
 		close(pip[1]);
 		// ft_procces(cmd, 0, pip, env);
-		ft_execution(cmd->left, env);
+		ft_execution(cmd->left, env, NULL);
 	}
 	pid1 = fork();
 	if (pid1 < 0)
@@ -263,7 +208,7 @@ void ft_pipe(t_pipecmd *cmd ,t_env_v *env)
 		close(pip[1]);
 		dup2(pip[0], 0);
 		close(pip[0]);
-		ft_execution(cmd->right, env);
+		ft_execution(cmd->right, env, NULL);
 		// ft_procces(cmd, 1, pip, env);
 	}
 	close(pip[0]);
@@ -272,37 +217,35 @@ void ft_pipe(t_pipecmd *cmd ,t_env_v *env)
 	wait(0);
 }
 
-int ft_builtin_orch(char **argv, t_execcmd *cmd, t_env_v **env)
+int ft_builtin_orch(char **argv, t_execcmd *cmd, t_env_v **env, t_pwd *wds)
 {
 	if (!argv || !argv[0])
         return (0);
 	
     if (!ft_strcmp("echo", argv[0])) //echo
         return (echo(ft_strleen(cmd->argv), cmd->argv), 1);
-    // else if (!ft_strcmp("cd", argv[0]))
-    //     exit(-1); //!toRemove //Todo :  call cd function;
+    else if (!ft_strcmp("cd", argv[0]))
+        return (cd(cmd->argv, wds), 1);
     else if (!ft_strcmp("pwd", argv[0]))
-        return (pwd(ft_strleen(cmd->argv), cmd->argv), 1);
+        return (pwd(wds), 1);
     else if (!ft_strcmp("export", argv[0]))
         return (ft_export(env, cmd->argv[1]), 1);
     else if (!ft_strcmp("unset", argv[0]))
         return (ft_unset(env, cmd->argv[1]), 1);
     else if (!ft_strcmp("env", argv[0]))
         return (ft_env((*env)), 1);
-    // else if (!ft_strcmp("exit", argv[0]))
-    //     ft_exit(); //*call kill to send exit signal
+    else if (!ft_strcmp("exit", argv[0]))
+        return (ft_exit(ft_strleen(cmd->argv), cmd->argv), 1);
 	return (0);
 }
 
-void ft_execut(t_cmd *cmd, t_env_v *env)
+void ft_execut(t_cmd *cmd, t_env_v *env, t_pwd *wds)
 {
 	t_execcmd *cd;
 	(void)env;
 
 	cd = (t_execcmd *)cmd;
-	if (ft_builtin_orch(cd->argv, cd, &env))        
-		// //Todo : add custom logic for built-ins
-		// ft_builtin_orch(cd->argv, cd, &env);
+	if (ft_builtin_orch(cd->argv, cd, &env, wds))
 		return ;
 	if (!cd->path)
 	{
@@ -318,98 +261,12 @@ void ft_execut(t_cmd *cmd, t_env_v *env)
 	return ;
 }
 
-// int	ft_strncmp(const char *s1, const char *s2, size_t n)
-// {
-// 	size_t	i;
-
-// 	i = 0;
-// 	while ((s1[i] || s2[i]) && (i < n))
-// 	{
-// 		if ((unsigned char)s1[i] != (unsigned char)s2[i])
-// 			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
-// 		i++;
-// 	}
-// 	return (0);
-// }
-/**
-
-void ft_here_doc(t_cmd *cmd, t_env_v *env)
-{
-	int fd[2];
-	char *str;
-	// int in;
-	char *tmp;
-	// int out;
-
-	t_redircmd *cd;
-
-	cd = (t_redircmd *)cmd;
-
-	// int out = dup(1);
-	// // in = dup(0);
-	// if (fork() == 0)
-	// {
-	// 	// close(1);
-	// ¬if (fork() == 0)
-	// {
-		if (pipe(fd) == -1)
-		{
-			ft_putstr_fd("problem in pipe here_doc\n", 2);
-			exit (-1);
-		}
-		// close(fd[0]);
-		if (dup2(fd[1], 1) == -1)
-		{
-			ft_putstr_fd("problem in dup2\n", 2);
-			exit(-1);
-		}
-		close(fd[1]);
-		// close(ou);
-		// printf("here\n");
-		while(1)
-		{
-			str = readline("heredoc> ");
-			// printf("---->> %d\n", (int)ft_strlen(str));
-			if (!ft_strcmp(str, cd->file))
-			{
-			printf("11111111111\n");
-				free(str);
-				dup2(fd[0], 0);
-				// dup2(out, 1);
-				// close(out);
-				// close(fd[1]);
-				exit(0);
-				// exit(0);
-			}
-			if (str && ft_strchr(str, '$'))
-				{
-					printf("2222\n");
-					tmp = str;
-					str = ft_replace_dollar(str, env);
-					free(tmp);
-				}
-			// str = *add_dollar(&str, env);
-			// printf("12121212\n");
-			ft_putstr_fd(str, 1);
-			free(str);
-		}
-		// dup2(fd[0], 0);
-		// close();
-		// close(fd[1]);
-	// }
-	// else
-	// 	return ;
-	// wait(0);
-}
-*/
-
 /*
 	@AUTHOR: BOUZID Hicham
 	@DESC: get a random name for a temporary file
 		for a here_doc
 	@DATE: 02-05-2024
 */
-
 char *get_name(void)
 {
 	char *name;
@@ -476,9 +333,6 @@ void ft_here_doc(t_redircmd **cmd, t_env_v *env)
 	(*cmd)->file = tmp;
 	if ((*cmd)->fd < 0)
 		ft_putstr_fd("error in  open function \n", 2);
-	// dup2((*cmd)->fd, 0);
-	// close();
-	// return ();
 }
 
 void redir_cmd(t_cmd *cmd, t_env_v *env)
@@ -497,7 +351,6 @@ void redir_cmd(t_cmd *cmd, t_env_v *env)
 		 if (redir->fd == 0 && redir->mode)
 		{
 			ft_here_doc(&redir, env);
-			// token = 1;
 			dup2(redir->fd, in);
 		}
 		else if (redir->fd == 0)
@@ -521,14 +374,6 @@ void redir_cmd(t_cmd *cmd, t_env_v *env)
 					ft_putstr_fd("problem in open function\n", 2);
 				dup2(redir->fd, out);
 		}
-		// if (redir->cmd)
-		// {
-			// if (fork() == 0)
-			// wait(0);
-		// }
-		// if (token == 1)
-			// unlink(redir->file);
-		// if (cmd)
 		if (!redir->next)
 			break ;
 		close(redir->fd);
@@ -538,60 +383,33 @@ void redir_cmd(t_cmd *cmd, t_env_v *env)
 	dup2(out, 1);
 	close(in);
 	close(out);
-	ft_execut(redir->cmd, env);
+	ft_execut(redir->cmd, env, NULL);
 }
 
-void ft_execution(t_cmd *cmd, t_env_v *env)
-{        
+void ft_execution(t_cmd *cmd, t_env_v *env, t_pwd *wds)
+{
 	if (cmd->type == 3)
-	{
-		// (t_pipecmd *)cmd;
 		ft_pipe((t_pipecmd *)cmd, env);
-	}
 	else if (cmd->type == 2)
-	{
 		redir_cmd(cmd, env);
-	}
 	else if (cmd->type == 1)
-		ft_execut(cmd, env);
-	wait(0);     
-    // exit(0);
+		ft_execut(cmd, env, wds);
+	wait(0);
 }
-
-// void exec_tree(t_cmd *cmd, t_env_v *env)
-// {
-// 	if (cmd->type == 3)
-// 	{
-// 		// if (fork() == 0)
-// 		// {
-// 		// 	exec_tree(((t_pipecmd *)cmd)->left, env);
-// 		// }
-// 		// else if (((t_pipecmd *)cmd)->right->type , env) == 2)
-// 		// {
-
-// 		// }
-// 	}
-// 	else if (cmd->type == 2)
-// 	{
-
-// 	}
-// 	else if (cmd->type == 1)
-// 	{
-// 		procces();
-// 	}
-// }
-// */
 
 int	ft_run_shell(t_env_v *env)
 {
 	t_cmd	*cmd;
 	char	*str;
-
+    char    buffer[1024];
 	char	**ptr;
 	int		pos;
+	int     i;
+    t_pwd   *wds;
 
-	int i;
-
+    wds = malloc(sizeof(t_pwd));
+    getcwd(buffer, sizeof(buffer));
+    (*wds) = (t_pwd){NULL, ft_strdup(buffer)};   
 	(void)cmd;
 	// pos = 0;
 	while (1)
@@ -620,8 +438,7 @@ int	ft_run_shell(t_env_v *env)
 		printf("====_PRINT_TREE_==== \n");
         printf("==================== \n");
         print_tree(cmd);
-		// if (fork() == 0)
-		ft_execution(cmd, env);
+		ft_execution(cmd, env, wds);
 		wait(0);
 		free(str);
 	}
@@ -637,14 +454,5 @@ int	main(int ac, char **av, char **envp)
 	env = env_init(envp);
 	if (!env)
 		exit(-1);
-	// printf("%lu\n", sizeof(t_execcmd));
-	// printf("%lu\n", sizeof(t_execcmd *));
-	// printf("%lu\n", sizeof(t_cmd));
-	// ft_export(&env, ft_strdup("TEEEEEEST=test-"));
-	// ft_export(&env, ft_strdup("saad=test"));
-	// ft_export(&env, ft_strdup("TEEEEEEST+=saaad+saad+hachmi"));
-	// ft_export(&env, ft_strdup("TEEEEEESTE+="));
-	// ft_export(&env, NULL);
-	// ft_env(env);
 	ft_run_shell(env);
 }

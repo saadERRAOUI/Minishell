@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 06:09:11 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/04/17 11:57:46 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/04 23:15:35 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,20 @@
 	@DATE	: 24-03-2024
 */
 
-int	pwd(int ac, char **av)
+int	pwd(t_pwd *wds)
 {
-	char	buffer[1024];
+	char	*buffer;
 
-	(void)av;
-	if (ac == 1)
-	{
-		printf("%s\n", getcwd(buffer, sizeof(buffer)));
-		return (0);
-	}
-	else
-		ft_putstr_fd("pwd: too many arguments\n", 2);
-	exit(1);
+    buffer = malloc(sizeof(char) * 1024);
+    buffer = getcwd(buffer, sizeof(buffer));
+    if (!buffer && wds)
+        printf("%s\n", wds->curr_wd);
+    else
+        printf("%s\n", getcwd(buffer, sizeof(buffer)));
+    if (buffer)
+    {
+        free(buffer);
+        buffer = NULL;
+    }
+    return (0);
 }

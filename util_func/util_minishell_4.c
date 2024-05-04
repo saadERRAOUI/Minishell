@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   util_minishell_4.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 17:24:26 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/04/27 17:05:55 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/04 23:09:40 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,18 +190,23 @@ char *ft_cmd_valid(char **env, char **cmd)
 	char	*tmp;
 
 	i = 0;
+    if (!env)
+        return (NULL);
 	if ((!ft_strncmp(cmd[i], ".", 1) || !ft_strncmp(cmd[i], "./", 2))
 		|| (!ft_strncmp(cmd[i], "/", 1) && access(cmd[0], X_OK | F_OK)))
 		return (NULL);
-	if (!access(cmd[0], F_OK | X_OK))
+	if (!access(cmd[0], F_OK | X_OK) && ft_strchr(cmd[0], '/'))
+    {
+        printf("here\n");
 		return (ft_strdup(cmd[0]));
+    }
 	while (env[i])
 	{
 		if (env)
 			tmp = ft_strjoin(env[i], cmd[0]);
 		if (tmp && !access(tmp, X_OK | F_OK))
 		{
-			// free(tmp);÷
+			// free(tmp);
 			return (tmp);
 		}
 		if (!access(cmd[0], X_OK | F_OK))

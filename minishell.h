@@ -6,7 +6,7 @@
 /*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 18:02:20 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/05/03 21:20:45 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/05/04 23:03:58 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,9 @@
 # include <limits.h>
 # include <readline/history.h>
 # include <readline/readline.h>
-#include <sys/types.h>
-#include <unistd.h>
+# include <sys/stat.h>
+# include <sys/types.h>
+# include <unistd.h>
 # include <signal.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -37,7 +38,14 @@
 # define CTRL_C 130
 
 
+int s_exit;
+
 typedef struct s_redircmd t_redircmd;
+typedef struct s_pwd
+{
+	char *old_wd;
+    char *curr_wd;
+}   t_pwd;
 typedef struct s_env_v
 {
 	char			*key;
@@ -66,11 +74,7 @@ typedef struct s_execcmd
 	// char **tab;
 } t_execcmd;
 
-// typedef struct s_elemet
-// {
-// 	char *path;
-// 	char **envp;
-// } t_element;
+
 typedef struct s_redircmd
 {
 	int				        type;
@@ -136,10 +140,10 @@ char **get_path_env(t_env_v *env, char **path, char **argv);
 char **get_envp(t_env_v *env);
 char *ft_cmd_valid(char **env, char **cmd);
 
-
 //builtins
-int	pwd(int ac, char **av);
+int	pwd(t_pwd *wds);
 int	echo(int ac, char **av);
-
+void	cd(char **av, t_pwd *wds);
+void	ft_exit(int ac, char **av);
 
 #endif
