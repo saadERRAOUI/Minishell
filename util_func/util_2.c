@@ -6,47 +6,11 @@
 /*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 17:22:40 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/05/03 17:46:26 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/04 23:24:31 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./../minishell.h"
-
-/*
-	@AUTHOR: hicham bouzid
-	@DESC: join a char to an string
-	@PROTOTYPE: char *ft_charjoin(char *str,
-		char c)
-	@DATE: 03-04-2024
-*/
-
-char	*ft_charjoin(char *str, char c)
-{
-	int		len;
-	char	*ptr;
-
-	if (!str || !*str)
-	{
-		ptr = malloc(sizeof(char) * (2));
-		ptr[0] = c;
-		ptr[1] = 0;
-		return (ptr);
-	}
-	len = (int)ft_strlen(str);
-	ptr = malloc(sizeof(char) * (len + 2));
-	if (!ptr)
-		return (NULL);
-	ptr[len + 1] = 0;
-	len = 0;
-	while (str[len])
-	{
-		ptr[len] = str[len];
-		len++;
-	}
-	ptr[len] = c;
-	free(str);
-	return (ptr);
-}
 
 /*
 	@AUTHOR: hicham bouzid
@@ -85,6 +49,24 @@ char	*add_32(char *str, char *sym)
 	return (ptr);
 }
 
+static void	help(char *ptr, int *i, int *j, char *str)
+{
+	char	c;
+
+	c = ptr[*i];
+	(*i)++;
+	while (ptr[*i])
+	{
+		if (ptr[*i] == c)
+		{
+			(*i)++;
+			break ;
+		}
+		else
+			str[(*j)++] = ptr[(*i)++];
+	}
+}
+
 /*
 	@AUTHOR: hicham bouzid
 	@DESC: remove " and ' by shif the string
@@ -96,7 +78,6 @@ char	*ft_shift(char *ptr)
 {
 	int		i;
 	int		j;
-	char	c;
 	char	*str;
 
 	i = 0;
@@ -106,18 +87,7 @@ char	*ft_shift(char *ptr)
 	{
 		if (ptr[i] == '\'' || ptr[i] == '\"')
 		{
-			c = ptr[i];
-			i++;
-			while (ptr[i])
-			{
-				if (ptr[i] == c)
-				{
-					i++;
-					break ;
-				}
-				else
-					str[j++] = ptr[i++];
-			}
+			help(ptr, &i, &j, str);
 		}
 		else
 			str[j++] = ptr[i++];

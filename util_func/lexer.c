@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 17:53:48 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/05/03 21:58:02 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/04 18:25:15 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,39 +33,42 @@ static char	ft_check(char c)
 	return (c);
 }
 
-int help(char *str, int i, char *token, char c)
+int	help(char *str, int *i, char *token)
 {
-	if (str[i] != '\"' && str[i] != '\'')
-		*token = 1;
-	if (str[i] == c && *token)
+	int	c;
+
+	c = 0;
+	*token = 0;
+	if (str[*i] == '\"' || str[*i] == '\'')
+	{
+		c = str[*i];
+		(*i)++;
+		while (str[*i])
+		{
+			if (str[*i] != '\'' && str[*i] != '\"')
+				*token = 1;
+			if (str[*i] == c && token)
+				break ;
+			str[*i] = ft_check(str[*i]);
+			(*i)++;
+		}
+		if (*i < (int)ft_strlen(str))
+			(*i)++;
 		return (1);
+	}
 	return (0);
 }
 
 char	*ft_convert_0(char *str)
 {
 	int		i;
-	char	c;
 	char	token;
 
 	i = 0;
 	while (str[i])
 	{
-		c = 0;
-		token = 0;
-		if (str[i] == '\'' || str[i] == '\"')
-		{
-			c = str[i];
-			i++;
-			while (str[i++])
-			{
-				if (help(str, i, &token, c))
-					break ;
-				str[i] = ft_check(str[i]);
-			}
-			if (i < (int)ft_strlen(str))
-				i++;
-		}
+		if (help(str, &i, &token))
+			continue ;
 		else
 			i++;
 	}
@@ -139,27 +142,4 @@ char	**add_dollar(char **ptr, t_env_v *env)
 		i++;
 	}
 	return (ptr);
-}
-
-/*
-	@AUTHOR: hicham bouzid
-	@PROTO: void ft_free_stack():
-	@DESC: free the the env alloceted if the programme ended or
-			failed
-	@DATE: 29-03-2024
-*/
-void	ft_free_stack(t_env_v **a)
-{
-	t_env_v	*tmp;
-
-	if (!a || !*a)
-		return ;
-	tmp = *a;
-	while ((*a))
-	{
-		tmp = *a;
-		*a = (*a)->next;
-		free(tmp->key);
-		free(tmp);
-	}
 }
