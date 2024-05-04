@@ -6,7 +6,7 @@
 /*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 18:02:20 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/05/03 18:24:26 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/05/03 21:20:45 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,8 +122,8 @@ char				*ft_convert_0(char *str);
 char				**undo(char **ptr);
 char				**ft_check_syntax(char *str);
 int					ft_strlen_until(char *str, char c);
-char				*ft_replace_dollar(char *ptr, t_env_v **env);
-char				**add_dollar(char **ptr, t_env_v **env);
+char				*ft_replace_dollar(char *ptr, t_env_v *env);
+char				**add_dollar(char **ptr, t_env_v *env);
 char				*expand_or_not(char *ptr);
 int					ft_back(char *str, int index);
 char				*ft_shift(char *ptr);

@@ -6,7 +6,7 @@
 /*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 02:29:36 by serraoui          #+#    #+#             */
-/*   Updated: 2024/05/03 20:18:52 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/05/03 22:03:50 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,22 @@ t_cmd  *parsexec(char **ps, int *pos, t_env_v *env)
 		tok = get_token_type(ps[(*pos)]);
 	}
 
-		printf("i'm here\n");
 	cmd->argv[argc] = NULL;
 	if (cmd->argv)
 	{
 		cmd->envp = get_envp(env);
 		if (cmd->envp)
 		{
+			
+			printf("{_TAB} %p\n", env);
+			t_env_v *s = env;
+			while (s)
+			{
+				printf("===> %s=%s\n", s->key, s->value);
+				s = s->next;	
+			}
 			tab = ft_parce_env(cmd->envp);
+			printf("{TAB} %p\n", tab);
 			cmd->path = ft_cmd_valid(tab, cmd->argv);
 			free(tab);
 		}

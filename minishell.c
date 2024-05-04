@@ -6,7 +6,7 @@
 /*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 17:15:26 by serraoui          #+#    #+#             */
-/*   Updated: 2024/05/03 20:20:27 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/05/03 21:53:31 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -272,79 +272,49 @@ void ft_pipe(t_pipecmd *cmd ,t_env_v *env)
 	wait(0);
 }
 
-void ft_builtin_orch(int index, t_execcmd *cmd, t_env_v **env)
+int ft_builtin_orch(char **argv, t_execcmd *cmd, t_env_v **env)
 {
-    if (!index) //echo
-        echo(ft_strleen(cmd->argv), cmd->argv);
-    // else if (index == 1)
+	if (!argv || !argv[0])
+        return (0);
+	
+    if (!ft_strcmp("echo", argv[0])) //echo
+        return (echo(ft_strleen(cmd->argv), cmd->argv), 1);
+    // else if (!ft_strcmp("cd", argv[0]))
     //     exit(-1); //!toRemove //Todo :  call cd function;
-    else if (index == 2)
-        pwd(ft_strleen(cmd->argv), cmd->argv);
-    else if (index == 3)
-        ft_export(env, cmd->argv[1]);
-    else if (index == 4)
-        ft_unset(env, cmd->argv[1]);
-    else if (index == 5)
-        ft_env((*env));
-    // else if (index == 6)
-    //     !call exit
-}
-
-int is_builtin(char **argv, char **bins) //!possible to take first argument (char *);
-{
-    int    flag;
-    int     i;
-
-    i = 0;
-    flag = -1;
-    if (!argv || !argv[0])
-        return (flag);
-    while ((*bins))
-    {
-        if (!ft_strcmp((*bins), argv[0]))
-        {
-            flag = i;
-            return (flag);
-        }
-        bins++;
-        i++;
-    }
-    return (-1);
+    else if (!ft_strcmp("pwd", argv[0]))
+        return (pwd(ft_strleen(cmd->argv), cmd->argv), 1);
+    else if (!ft_strcmp("export", argv[0]))
+        return (ft_export(env, cmd->argv[1]), 1);
+    else if (!ft_strcmp("unset", argv[0]))
+        return (ft_unset(env, cmd->argv[1]), 1);
+    else if (!ft_strcmp("env", argv[0]))
+        return (ft_env((*env)), 1);
+    // else if (!ft_strcmp("exit", argv[0]))
+    //     ft_exit(); //*call kill to send exit signal
+	return (0);
 }
 
 void ft_execut(t_cmd *cmd, t_env_v *env)
 {
 	t_execcmd *cd;
 	(void)env;
-    char **bins = malloc(sizeof(char *) * 7);
-    bins[0]= ft_strdup("echo");
-    bins[1]= ft_strdup("cd");
-    bins[2]= ft_strdup("pwd");
-    bins[3]= ft_strdup("export");
-    bins[4]= ft_strdup("unset");
-    // bins[5]= ft_strdup("env");
-    bins[5]= ft_strdup("exit");
-    bins[6]= 0;
-
 
 	cd = (t_execcmd *)cmd;
-        printf("--- %i\n", is_builtin(cd->argv, bins));
-		if (is_builtin(cd->argv, bins) != -1) {            
-            //Todo : add custom logic for built-ins
-            ft_builtin_orch(is_builtin(cd->argv, bins), cd, env);
-            // printf("-----------------------------\n");
-            // ft_env(*env);
-            return ;
-        }
-		if (!cd->path)
-		{
-			ft_putstr_fd("command not found\n", 2);
-			return ;
-		}
+	if (ft_builtin_orch(cd->argv, cd, &env))        
+		// //Todo : add custom logic for built-ins
+		// ft_builtin_orch(cd->argv, cd, &env);
+		return ;
+	if (!cd->path)
+	{
+		ft_putstr_fd("command not found\n", 2);
+		return ;
+	}
+	else if (fork() == 0)
+	{
 		if (execve(cd->path, cd->argv, cd->envp) == -1)
 			ft_putstr_fd("error happen in execve\n", 2);
-		// cmd->type = 0;
-		// ft_execution(cmd, env);
+		wait(0);
+	}
 	return ;
 }
 
@@ -469,7 +439,7 @@ char *get_name(void)
 }
 
 //! todo  remove expand from delimeter here_doc
-void ft_here_doc(t_redircmd **cmd, t_env_v **env)
+void ft_here_doc(t_redircmd **cmd, t_env_v *env)
 {
 	// int f;
 	char *tmp;
@@ -511,7 +481,7 @@ void ft_here_doc(t_redircmd **cmd, t_env_v **env)
 	// return ();
 }
 
-void redir_cmd(t_cmd *cmd, t_env_v **env)
+void redir_cmd(t_cmd *cmd, t_env_v *env)
 {
 	t_redircmd *redir;
 	int in;
@@ -571,38 +541,21 @@ void redir_cmd(t_cmd *cmd, t_env_v **env)
 	ft_execut(redir->cmd, env);
 }
 
-void ft_execution(t_cmd *cmd, t_env_v **env)
-{
-	// int tab[2];
-    char **bins = malloc(sizeof(char *) * 8);
-    bins[0]= ft_strdup("echo");
-    bins[1]= ft_strdup("cd");
-    bins[2]= ft_strdup("pwd");
-    bins[3]= ft_strdup("export");
-    bins[4]= ft_strdup("unset");
-    bins[5]= ft_strdup("env");
-    bins[6]= ft_strdup("exit");
-    bins[7]= 0;
-    
-    if (cmd->type == 1 && is_builtin(((t_execcmd *)cmd)->argv, bins))
-        ft_builtin_orch(is_builtin(((t_execcmd *)cmd)->argv, bins), (t_execcmd *)cmd, env);
-	else {
-        if (fork() == 0) {            
-            if (cmd->type == 3)
-            {
-                // (t_pipecmd *)cmd;
-                ft_pipe((t_pipecmd *)cmd, env);
-            }
-            else if (cmd->type == 2)
-            {
-                redir_cmd(cmd, env);
-            }
-            else if (cmd->type == 1)
-                ft_execut(cmd, env);
-        } 
-        wait(0);     
-    	exit(0);
-    }
+void ft_execution(t_cmd *cmd, t_env_v *env)
+{        
+	if (cmd->type == 3)
+	{
+		// (t_pipecmd *)cmd;
+		ft_pipe((t_pipecmd *)cmd, env);
+	}
+	else if (cmd->type == 2)
+	{
+		redir_cmd(cmd, env);
+	}
+	else if (cmd->type == 1)
+		ft_execut(cmd, env);
+	wait(0);     
+    // exit(0);
 }
 
 // void exec_tree(t_cmd *cmd, t_env_v *env)
@@ -655,7 +608,7 @@ int	ft_run_shell(t_env_v *env)
 		// printf("--> %p\n", ptr);
 		if (!ptr)
 			continue ;
-		ptr = ft_expand(ptr, &env);
+		ptr = ft_expand(ptr, env);
 		// printf():
 		// pos = 0;
 		for (i = 0; ptr[i]; i++)
@@ -668,7 +621,7 @@ int	ft_run_shell(t_env_v *env)
         printf("==================== \n");
         print_tree(cmd);
 		// if (fork() == 0)
-			ft_execution(cmd, (t_env_v **)&env);
+		ft_execution(cmd, env);
 		wait(0);
 		free(str);
 	}
