@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 17:53:48 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/05/03 17:37:07 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/03 21:58:02 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,15 @@ static char	ft_check(char c)
 	return (c);
 }
 
+int help(char *str, int i, char *token, char c)
+{
+	if (str[i] != '\"' && str[i] != '\'')
+		*token = 1;
+	if (str[i] == c && *token)
+		return (1);
+	return (0);
+}
+
 char	*ft_convert_0(char *str)
 {
 	int		i;
@@ -48,14 +57,11 @@ char	*ft_convert_0(char *str)
 		{
 			c = str[i];
 			i++;
-			while (str[i])
+			while (str[i++])
 			{
-				if (str[i] != '\'' && str[i] != '\"')
-					token = 1;
-				if (str[i] == c && token)
+				if (help(str, i, &token, c))
 					break ;
 				str[i] = ft_check(str[i]);
-				i++;
 			}
 			if (i < (int)ft_strlen(str))
 				i++;
