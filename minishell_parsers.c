@@ -39,14 +39,24 @@ t_cmd	*parsexec(char **ps, int *pos, t_env_v *env)
 		parseredir(&ret, ps, pos);
 		tok = get_token_type(ps[(*pos)]);
 	}
-	printf("i'm here\n");
 	cmd->argv[argc] = NULL;
 	if (cmd->argv)
 	{
 		cmd->envp = get_envp(env);
 		if (cmd->envp)
 		{
+			
+			// printf("{_TAB} %p\n", env);
+			// t_env_v *s = env;
+			// while (s)
+			// {
+			// 	printf("===> %s=%s\n", s->key, s->value);
+			// 	s = s->next;	
+			// }
 			tab = ft_parce_env(cmd->envp);
+			// printf("{TAB} %p\n", tab);
+            // for(int i =0;  tab[i]; i++)
+            //     printf("%s\n", tab[i]);
 			cmd->path = ft_cmd_valid(tab, cmd->argv);
 			free(tab);
 		}

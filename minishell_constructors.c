@@ -38,7 +38,6 @@ t_cmd	*execcmd(void)
 			t_redircmd instance with the correspondant params.
 	@DATE	: 30-03-2024
 */
-// t_cmd	*redircmd(t_cmd *subcmd, char *file, char *efile, int mode, int fd)
 t_redircmd	*redircmd(char *file, int mode, int fd)
 {
 	t_redircmd	*cmd;

@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 18:02:20 by hibouzid          #+#    #+#             */
 /*   Updated: 2024/05/05 15:48:12 by hibouzid         ###   ########.fr       */
@@ -18,14 +18,15 @@
 # include <limits.h>
 # include <readline/history.h>
 # include <readline/readline.h>
+# include <sys/stat.h>
+# include <sys/types.h>
+# include <unistd.h>
 # include <signal.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
 # include <sys/types.h>
 # include <unistd.h>
-# include <unistd.h>
-
 # define MAXARGS 100
 # define EXEC 1
 # define REDIR 2
@@ -37,7 +38,15 @@
 # define EXIT_FAILUR 127
 # define CTRL_C 130
 
-typedef struct s_redircmd	t_redircmd;
+int s_exit;
+
+typedef struct s_redircmd t_redircmd;
+typedef struct s_pwd
+{
+	char *old_wd;
+    char *curr_wd;
+}   t_pwd;
+
 typedef struct s_env_v
 {
 	char					*key;
@@ -124,5 +133,11 @@ char						**syntax(char **ptr);
 
 
 void						ft_free_tree(t_cmd *cmd);
+
+//builtins
+int	pwd(t_pwd *wds);
+int	echo(int ac, char **av);
+void	cd(char **av, t_pwd *wds);
+void	ft_exit(int ac, char **av);
 
 #endif

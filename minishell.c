@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 17:15:26 by serraoui          #+#    #+#             */
 /*   Updated: 2024/05/05 15:53:59 by hibouzid         ###   ########.fr       */
@@ -20,8 +20,8 @@
 		an each node contains 1 env var defined by a (key, value) params.
 	@DATE	: 25-03-2024
 */
-void		ft_execut(t_cmd *cmd, t_env_v *env);
-void		ft_execution(t_cmd *cmd, t_env_v *env);
+void ft_execut(t_cmd *cmd, t_env_v *env, t_pwd *wds);
+void ft_execution(t_cmd *cmd, t_env_v *env, t_pwd *wds);
 
 t_env_v	*env_init(char **env)
 {
@@ -166,14 +166,14 @@ void	ft_procces(t_cmd *cmd, int mode, int *pip, t_env_v *env)
 		close(pip[0]);
 		dup2(pip[1], 1);
 		close(pip[1]);
-		ft_execution(cd->left, env);
+		ft_execution(cd->left, env, NULL);
 	}
 	else if (mode == 1)
 	{
 		close(pip[0]);
 		dup2(pip[1], 1);
 		close(pip[1]);
-		ft_execution(cd->right, env);
+		ft_execution(cd->right, env, NULL);
 	}
 	close(0);
 	close(1);
@@ -199,7 +199,7 @@ void	ft_pipe(t_pipecmd *cmd, t_env_v *env)
 		close(pip[0]);
 		dup2(pip[1], 1);
 		close(pip[1]);
-		ft_execution(cmd->left, env);
+		ft_execution(cmd->left, env, NULL);
 	}
 	pid1 = fork();
 	if (pid1 < 0)
@@ -209,7 +209,7 @@ void	ft_pipe(t_pipecmd *cmd, t_env_v *env)
 		close(pip[1]);
 		dup2(pip[0], 0);
 		close(pip[0]);
-		ft_execution(cmd->right, env);
+		ft_execution(cmd->right, env, NULL);
 	}
 	close(pip[0]);
 	close(pip[1]);
@@ -217,19 +217,47 @@ void	ft_pipe(t_pipecmd *cmd, t_env_v *env)
 	wait(0);
 }
 
-void	ft_execut(t_cmd *cmd, t_env_v *env)
+int ft_builtin_orch(char **argv, t_execcmd *cmd, t_env_v **env, t_pwd *wds)
 {
-	t_execcmd	*cd;
+	if (!argv || !argv[0])
+        return (0);
+	
+    if (!ft_strcmp("echo", argv[0])) //echo
+        return (echo(ft_strleen(cmd->argv), cmd->argv), 1);
+    else if (!ft_strcmp("cd", argv[0]))
+        return (cd(cmd->argv, wds), 1);
+    else if (!ft_strcmp("pwd", argv[0]))
+        return (pwd(wds), 1);
+    else if (!ft_strcmp("export", argv[0]))
+        return (ft_export(env, cmd->argv[1]), 1);
+    else if (!ft_strcmp("unset", argv[0]))
+        return (ft_unset(env, cmd->argv[1]), 1);
+    else if (!ft_strcmp("env", argv[0]))
+        return (ft_env((*env)), 1);
+    else if (!ft_strcmp("exit", argv[0]))
+        return (ft_exit(ft_strleen(cmd->argv), cmd->argv), 1);
+	return (0);
+}
 
+void ft_execut(t_cmd *cmd, t_env_v *env, t_pwd *wds)
+{
+	t_execcmd *cd;
 	(void)env;
+
 	cd = (t_execcmd *)cmd;
+	if (ft_builtin_orch(cd->argv, cd, &env, wds))
+		return ;
 	if (!cd->path)
 	{
 		ft_putstr_fd("command not found\n", 2);
 		return ;
 	}
-	if (execve(cd->path, cd->argv, cd->envp) == -1)
-		ft_putstr_fd("error happen in execve\n", 2);
+	else if (fork() == 0)
+	{
+		if (execve(cd->path, cd->argv, cd->envp) == -1)
+			ft_putstr_fd("error happen in execve\n", 2);
+		wait(0);
+	}
 	return ;
 }
 
@@ -239,7 +267,6 @@ void	ft_execut(t_cmd *cmd, t_env_v *env)
 		for a here_doc
 	@DATE: 02-05-2024
 */
-
 char	*get_name(void)
 {
 	char	*name;
@@ -351,32 +378,35 @@ void	redir_cmd(t_cmd *cmd, t_env_v *env)
 	dup2(out, 1);
 	close(in);
 	close(out);
-	ft_execut(redir->cmd, env);
+	ft_execut(redir->cmd, env, NULL);
 }
 
-void	ft_execution(t_cmd *cmd, t_env_v *env)
+void ft_execution(t_cmd *cmd, t_env_v *env, t_pwd *wds)
 {
 	if (cmd->type == 3)
-	{
 		ft_pipe((t_pipecmd *)cmd, env);
-	}
 	else if (cmd->type == 2)
-	{
 		redir_cmd(cmd, env);
-	}
 	else if (cmd->type == 1)
-		ft_execut(cmd, env);
-	exit(0);
+		ft_execut(cmd, env, wds);
+	wait(0);
 }
 
 int	ft_run_shell(t_env_v *env)
 {
 	t_cmd	*cmd;
 	char	*str;
+   char    buffer[1024];
 	char	**ptr;
-	int 	pos;
+	int		pos;
+	int     i;
+    t_pwd   *wds;
 
-	cmd = NULL;
+    wds = malloc(sizeof(t_pwd));
+    getcwd(buffer, sizeof(buffer));
+    (*wds) = (t_pwd){NULL, ft_strdup(buffer)};   
+	(void)cmd;
+	// pos = 0;
 	while (1)
 	{
 		str = readline("$ ");
@@ -393,8 +423,12 @@ int	ft_run_shell(t_env_v *env)
 		ptr = ft_expand(ptr, env);
 		pos = 0;
 		cmd = parsepipe(ptr, &pos, env);
-		if (fork() == 0)
-			ft_execution(cmd, env);
+		printf("TYPE CREATED TREE %i\n", cmd->type);
+		printf("==================== \n");
+		printf("====_PRINT_TREE_==== \n");
+    printf("==================== \n");
+    print_tree(cmd);
+		ft_execution(cmd, env, wds);
 		wait(0);
 		free(str);
 		ft_free_tree(cmd);
