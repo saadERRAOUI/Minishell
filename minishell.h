@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 18:02:20 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/05/03 20:19:41 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/05 15:48:12 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,5 +121,8 @@ char						**get_path_env(t_env_v *env, char **path,
 char						**get_envp(t_env_v *env);
 char						*ft_cmd_valid(char **env, char **cmd);
 char						**syntax(char **ptr);
+
+
+void						ft_free_tree(t_cmd *cmd);
 
 #endif

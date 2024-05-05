@@ -24,7 +24,7 @@ CFILS =  ./util_func/util_0.c ./util_func/util_1.c  ./libft/ft_atoi.c ./libft/ft
 		minishell_parsers.c ./util_func/util_2.c  ./util_func/lexer.c ./builtins/echo.c\
 		./builtins/export.c ./builtins/unset.c ./builtins/env.c ./builtins/pwd.c\
 		./util_func/util_minishell_3.c ./util_func/util_minishell_4.c ./util_func/util_minishell_5.c\
-		./util_func/util_minishell_6.c
+		./util_func/util_minishell_6.c free_tree.c
 
 OBJS = $(CFILS:.c=.o)
 

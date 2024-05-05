@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 17:15:26 by serraoui          #+#    #+#             */
-/*   Updated: 2024/05/03 20:23:08 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/05 15:53:59 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -397,6 +397,7 @@ int	ft_run_shell(t_env_v *env)
 			ft_execution(cmd, env);
 		wait(0);
 		free(str);
+		ft_free_tree(cmd);
 	}
 	return (0);
 }
@@ -422,4 +423,5 @@ int	main(int ac, char **av, char **envp)
 	if (!env)
 		exit(-1);
 	ft_run_shell(env);
+	// system("leaks min÷ishell");
 }
