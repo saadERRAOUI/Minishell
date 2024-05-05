@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   util_2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 17:22:40 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/04/22 16:15:04 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/03 21:20:56 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,14 @@ char	*ft_charjoin(char *str, char c)
 	int		len;
 	char	*ptr;
 
+	if (!str || !*str)
+		{
+			ptr = malloc(sizeof(char) * (2));
+			ptr[0] = c;
+			ptr[1] = 0;
+			// printf("+_=+\n");
+			return (ptr);
+		}
 	len = (int)ft_strlen(str);
 	ptr = malloc(sizeof(char) * (len + 2));
 	if (!ptr)
@@ -142,6 +150,8 @@ char	**add_dollar(char **ptr, t_env_v *env)
 		{
 			token = 1;
 		}
+		if (token && i && !ft_strcmp(ptr[i -1], "<<"))
+			token = 0;
 		if (token)
 		{
 			tmp = ft_replace_dollar(ptr[i], env);
@@ -178,7 +188,11 @@ static int ft_checkk(char **ptr, int index)
 			ft_strchr("|<>", ptr[index - 1][0]))
 		return (0);
 		else if (ft_strchr("|><", ptr[index][0]) && (!ptr[index + 1] || ft_strchr("|><", ptr[index + 1][0])))
+		{
+			if (ptr[index][0] == '|' && ptr[index + 1][0] != '|')
+				return (1);
 			return (0);
+		}
 		index++;
 	}
 	return (1);
@@ -200,7 +214,7 @@ char **syntax(char **ptr)
 			ft_putstr_fd("bash: syntax error near unexpected token\n", 2);
 			return (NULL);
 		 }
-		 return (ptr); 
+		 return (ptr);
 }
 
 // !todo add function to check if the syntax true or not
