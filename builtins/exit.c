@@ -6,7 +6,7 @@
 /*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 20:14:04 by serraoui          #+#    #+#             */
-/*   Updated: 2024/05/04 22:35:35 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/05/05 14:43:25 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,13 +57,10 @@ static void	exit_ndg(char *s)
 
 void	ft_exit(int ac, char **av)
 {
-	int	i;
 	int	nbr;
 
-	i = 0;
 	if (ac > 2)
 	{
-		//exit status -> 1;
 		s_exit = 1;
 		printf("exit: too many arguments\n"); //!error fd => 2
 		return ;
@@ -72,7 +69,6 @@ void	ft_exit(int ac, char **av)
 	{
 		if (!ft_atoi_check(av[1], &nbr))
 				exit_ndg(av[1]);
-			i++;
 		s_exit = nbr;
 	}
 	exit(s_exit);

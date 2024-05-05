@@ -6,7 +6,7 @@
 /*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 02:29:36 by serraoui          #+#    #+#             */
-/*   Updated: 2024/05/04 18:55:05 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/05/05 14:41:13 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,20 +72,6 @@ t_cmd  *parsexec(char **ps, int *pos, t_env_v *env)
     }
     if (!ret)
         return ((t_cmd *)cmd);
-    //!TO REMOVE TESTING PURPOSE
-    // t_redircmd *_t;
-    // _t = ret;
-    // while (_t)
-    // {
-    //     printf("TYPE__type_____%i\n", ((t_redircmd *)_t)->type);
-    //     printf("TYPE__cmd______%p\n", ((t_redircmd *)_t)->cmd);
-    //     printf("TYPE__file_____%s\n", ((t_redircmd *)_t)->file);
-    //     printf("TYPE__mode_____%i\n", ((t_redircmd *)_t)->mode);
-    //     printf("TYPE__fd_______%i\n", ((t_redircmd *)_t)->fd);
-    //     _t = _t->next;
-    //     printf("===========================\n");
-    // }
-    //!TO REMOVE TESTING PURPOSE
 	return ((t_cmd *)ret);
 }
 

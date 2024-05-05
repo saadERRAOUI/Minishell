@@ -1,6 +1,6 @@
     + Garbage collector to free memory leaks 
     + signals 
-    + fix built-ins
+    + fix built-ins ✅
     + shell level
     + fork here_doc
     + exit status
