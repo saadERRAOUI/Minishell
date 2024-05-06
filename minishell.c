@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 17:15:26 by serraoui          #+#    #+#             */
-/*   Updated: 2024/05/06 16:05:25 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/06 18:49:26 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,6 +159,8 @@ void ft_pipe(t_pipecmd *cmd ,t_env_v *env)
 	pid_t 	pid1;
 	int		pip[2];
 
+	// int in = dup(0);
+	// int out = dup(1);
 	if (pipe(pip) == -1)
 	{
 		ft_putstr_fd("problem in pipe\n", 2);
@@ -173,6 +175,7 @@ void ft_pipe(t_pipecmd *cmd ,t_env_v *env)
 		dup2(pip[1], 1);
 		close(pip[1]);
 		ft_execution(cmd->left, env, NULL);
+		exit(0);
 	}
 	pid1 = fork();
 	if (pid1 < 0)
@@ -183,18 +186,21 @@ void ft_pipe(t_pipecmd *cmd ,t_env_v *env)
 		dup2(pip[0], 0);
 		close(pip[0]);
 		ft_execution(cmd->right, env, NULL);
+		exit(0);
 	}
 	close(pip[0]);
 	close(pip[1]);
+	// waitpid(pid, NULL, 0);
+	// waitpid(pid1, NULL, 0);
 	wait(0);
-	//wait(0);
+	// wait(0);
 }
 
 int ft_builtin_orch(char **argv, t_execcmd *cmd, t_env_v **env, t_pwd *wds)
 {
 	if (!argv || !argv[0])
         return (0);
-	
+
     if (!ft_strcmp("echo", argv[0]))
         return (echo(ft_strleen(cmd->argv), cmd->argv), 1);
     else if (!ft_strcmp("cd", argv[0]))
@@ -312,8 +318,9 @@ void ft_here_doc(t_redircmd **cmd, t_env_v *env)
 	}
 	close((*cmd)->fd);
 	(*cmd)->fd = 0;
+	free((*cmd)->file);
 	(*cmd)->file = tmp;
-	printf("====================== %s\n", tmp);
+	// printf("====================== %s\n", tmp);÷
 }
 
 void redir_cmd(t_cmd *cmd, t_env_v *env)
@@ -338,12 +345,12 @@ void redir_cmd(t_cmd *cmd, t_env_v *env)
 		// }
 		if (redir->fd == 0)
 		{
-			redir->fd = open(redir->file, O_CREAT | O_RDONLY);
+			redir->fd = open(redir->file, O_RDONLY);
 			if (redir->fd < 0)
-				printf("erro");
+				ft_putstr_fd("no such file of directory\n", 2);
 			if (dup2(redir->fd, in) == -1)
 				printf("dup2\n");
-			
+
 		}
 		else if (redir->fd == 1 && redir->mode)
 		{
@@ -380,7 +387,11 @@ void redir_cmd(t_cmd *cmd, t_env_v *env)
 void ft_execution(t_cmd *cmd, t_env_v *env, t_pwd *wds)
 {
 	if (cmd->type == 3)
-		ft_pipe((t_pipecmd *)cmd, env);
+	{
+		// if (fork() == 0)
+			ft_pipe((t_pipecmd *)cmd, env);
+
+	}
 	else if (cmd->type == 2)
 		redir_cmd(cmd, env);
 	else if (cmd->type == 1)
@@ -400,7 +411,7 @@ int	ft_run_shell(t_env_v *env)
 
     wds = malloc(sizeof(t_pwd));
     getcwd(buffer, sizeof(buffer));
-    (*wds) = (t_pwd){NULL, ft_strdup(buffer)};   
+    (*wds) = (t_pwd){NULL, ft_strdup(buffer)};
 	(void)cmd;
 	// pos = 0;
 	while (1)
@@ -433,13 +444,13 @@ int	ft_run_shell(t_env_v *env)
 		// if (cmd->type == 1 || cmd->type == 2)
 		// {
 		// 	ft_execution(cmd, env, wds);
-		// 	continue;	
+		// 	continue;
 		// }
 		// if (fork() == 0) {
 			ft_execution(cmd, env, wds);
 		// }
 		//printf("HERE\n");
-		wait(0);
+		// wait(0);
 		free(str);
 	}
 	return (0);

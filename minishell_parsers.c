@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_parsers.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 02:29:36 by serraoui          #+#    #+#             */
-/*   Updated: 2024/05/06 16:09:55 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/06 16:35:32 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,13 @@ t_cmd  *parsexec(char **ps, int *pos, t_env_v *env)
 		cmd->envp = get_envp(env);
 		if (cmd->envp)
 		{
-			
+
 			// printf("{_TAB} %p\n", env);
 			// t_env_v *s = env;
 			// while (s)
 			// {
 			// 	printf("===> %s=%s\n", s->key, s->value);
-			// 	s = s->next;	
+			// 	s = s->next;
 			// }
 			tab = ft_parce_env(cmd->envp);
 			// printf("{TAB} %p\n", tab);
@@ -157,7 +157,7 @@ void    parseredir(t_redircmd **red, char **ps, int *pos, t_env_v *env)
                 tmp = redircmd(ps[(*pos)], O_WRONLY | O_CREAT | O_TRUNC, 1);
                 (*pos)++;
                 ft_lstadd_back_(red, tmp);
-                break;            
+                break;
 			case '-':
                 (*pos)++;
                 tmp = redircmd(ps[(*pos)], O_RDWR | O_CREAT, 0);
@@ -168,7 +168,8 @@ void    parseredir(t_redircmd **red, char **ps, int *pos, t_env_v *env)
 					}
 					wait(0);
                 (*pos)++;
-				// if (unlink(tmp->file)
+				// if (unlink(tmp->file) == -1)
+				// printf("hello mtf\n");
                 ft_lstadd_back_(red, tmp);
                 break;
         }
