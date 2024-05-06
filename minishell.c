@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 17:15:26 by serraoui          #+#    #+#             */
-/*   Updated: 2024/05/06 18:49:26 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/06 20:53:27 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -390,6 +390,16 @@ void ft_execution(t_cmd *cmd, t_env_v *env, t_pwd *wds)
 	// wait(0);
 }
 
+void	handler(int sig)
+{
+	sig = 0;
+	g_var = 1;
+	rl_replace_line("", 0);
+	rl_on_new_line();
+	write(1, "\n", 1);
+	rl_redisplay();
+}
+
 int	ft_run_shell(t_env_v *env)
 {
 	t_cmd	*cmd;
@@ -407,8 +417,8 @@ int	ft_run_shell(t_env_v *env)
 	// pos = 0;
 	while (1)
 	{
-		// signal(SIGQUIT, SIG_IGN);
-		// signal(SIGINT, handler);
+		signal(SIGQUIT, SIG_IGN);
+		signal(SIGINT, handler);
 		str = readline("$ ");
 		if (!str)
 		{
