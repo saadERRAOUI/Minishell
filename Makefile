@@ -23,15 +23,16 @@ CFILS =  ./util_func/util_0.c ./util_func/util_1.c  ./libft/ft_atoi.c ./libft/ft
 		./libft/ft_tolower.c ./libft/ft_toupper.c  minishell.c minishell_constructors.c\
 		minishell_parsers.c ./util_func/util_2.c  ./util_func/lexer.c ./builtins/echo.c\
 		./builtins/export.c ./builtins/cd.c ./builtins/exit.c ./builtins/unset.c ./builtins/env.c ./builtins/pwd.c\
-		./util_func/util_minishell_3.c ./util_func/util_minishell_4.c 
-#minishell.c minishell_constructors.c minishell_parsers.c $(LIB./libft/FT_C_SOURCES) \
+		./util_func/util_minishell_3.c ./util_func/util_minishell_4.c ./util_func/util_minishell_5.c\
+		./util_func/util_minishell_6.c free_tree.c
+
 
 OBJS = $(CFILS:.c=.o)
 
  # without -lreadline flag the compilation will be failed
 
 $(NAME): $(OBJS)
-	cc -fsanitize=address -g3  -lreadline $(OBJS) -o $(NAME) 
+	cc -fsanitize=address -g3  -lreadline $(OBJS) -o $(NAME)
 
 all: $(NAME)
 	clear

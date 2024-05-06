@@ -25,6 +25,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
+# include <sys/types.h>
 # include <unistd.h>
 # define MAXARGS 100
 # define EXEC 1
@@ -37,7 +38,6 @@
 # define EXIT_FAILUR 127
 # define CTRL_C 130
 
-
 int s_exit;
 
 typedef struct s_redircmd t_redircmd;
@@ -46,44 +46,43 @@ typedef struct s_pwd
 	char *old_wd;
     char *curr_wd;
 }   t_pwd;
+
 typedef struct s_env_v
 {
-	char			*key;
-	char			*value;
-	struct s_env_v	*next;
-}					t_env_v;
+	char					*key;
+	char					*value;
+	struct s_env_v			*next;
+}							t_env_v;
 
 typedef struct s_cmd
 {
-	int				type;
-}					t_cmd;
+	int						type;
+}							t_cmd;
 
 typedef struct s_pipecmd
 {
-	int				type;
-	t_cmd			*left;
-	t_cmd			*right;
-}					t_pipecmd;
+	int						type;
+	t_cmd					*left;
+	t_cmd					*right;
+}							t_pipecmd;
 
 typedef struct s_execcmd
 {
-	int		type;
-	char	**argv;
-	char *path;
-	char **envp;
-	// char **tab;
-} t_execcmd;
-
+	int						type;
+	char					**argv;
+	char					*path;
+	char					**envp;
+}							t_execcmd;
 
 typedef struct s_redircmd
 {
-	int				        type;
-	t_cmd			        *cmd;
-	char			        *file;
-	int				        mode;
-	int				        fd;
-    t_redircmd       *next;
-}					t_redircmd;
+	int						type;
+	t_cmd					*cmd;
+	char					*file;
+	int						mode;
+	int						fd;
+	t_redircmd				*next;
+}							t_redircmd;
 
 int					ft_strcmp(char *s1, char *s2);
 int					count_words(char const *s, char c);
@@ -132,13 +131,8 @@ char				*expand_or_not(char *ptr);
 int					ft_back(char *str, int index);
 char				*ft_shift(char *ptr);
 
-void ft_print_tab(char **s);
-int					ft_strleen(char **ptr);
-char	**ft_free(int index, char **ptr);
-char	**ft_parce_env(char **env);
-char **get_path_env(t_env_v *env, char **path, char **argv);
-char **get_envp(t_env_v *env);
-char *ft_cmd_valid(char **env, char **cmd);
+
+void						ft_free_tree(t_cmd *cmd);
 
 //builtins
 int	pwd(t_pwd *wds);

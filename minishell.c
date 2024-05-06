@@ -38,7 +38,7 @@ t_env_v	*env_init(char **env)
 	{
 		node = (t_env_v *)malloc(sizeof(t_env_v));
 		s = ft_split_2(env[i], '=');
-		if (s) //! fix else case !
+		if (s)
 			(*node) = (t_env_v){s[0], s[1], NULL};
 		ft_lstadd_back(&envs, node);
 		free(s);
@@ -99,9 +99,11 @@ char	**ft_expand(char **ptr, t_env_v *env)
 	return (ptr);
 }
 
-void ft_print_tab(char **s)
+void	ft_print_tab(char **s)
 {
-	int i = 0;
+	int	i;
+
+	i = 0;
 	if (!s)
 		return ;
 	while (s[i])
@@ -115,48 +117,49 @@ void ft_print_tab(char **s)
 /*
 static void print_tree(t_cmd *tree)
 {
-    printf("TREE____ %p\n", tree);
-    if (tree && tree->type == 1)
-    {
-        printf("EXEC_NODE => %i\n", tree->type);
-        printf("EXEC_NODE_argv\n");
-        ft_print_tab(((t_execcmd *)tree)->argv);
+		t_redircmd *_t;
+
+	printf("TREE____ %p\n", tree);
+	if (tree && tree->type == 1)
+	{
+		printf("EXEC_NODE => %i\n", tree->type);
+		printf("EXEC_NODE_argv\n");
+		ft_print_tab(((t_execcmd *)tree)->argv);
 		if (((t_execcmd *)tree)->path)
 			printf("path: %s\n", ((t_execcmd *)tree)->path);
-    }
-    else if (tree && tree->type == 2)
-    {
-        t_redircmd *_t;
-        _t = (t_redircmd *)tree;
-        printf("REDIR_NODE => %i\n", tree->type);
-        while (_t)
-        {
-            printf("TYPE__type_____%i\n", ((t_redircmd *)_t)->type);
-            printf("TYPE__cmd______%p\n", ((t_redircmd *)_t)->cmd);
-            printf("TYPE__file_____%s\n", ((t_redircmd *)_t)->file);
-            printf("TYPE__mode_____%i\n", ((t_redircmd *)_t)->mode);
-            printf("TYPE__fd_______%i\n", ((t_redircmd *)_t)->fd);
-            if (!_t->next)
-                print_tree(_t->cmd);
-            _t = _t->next;
-            printf("===========================\n");
-        }
-    }
-    else if (tree && tree->type == 3)
-    {
-        printf("PIPE_NODE => %i\n", tree->type);
-        printf("==================== LEFT\n");
-        print_tree(((t_pipecmd *)tree)->left);
-        printf("==================== RIGHT\n");
-        print_tree(((t_pipecmd *)tree)->right);
-    }
+	}
+	else if (tree && tree->type == 2)
+	{
+		_t = (t_redircmd *)tree;
+		printf("REDIR_NODE => %i\n", tree->type);
+		while (_t)
+		{
+			printf("TYPE__type_____%i\n", ((t_redircmd *)_t)->type);
+			printf("TYPE__cmd______%p\n", ((t_redircmd *)_t)->cmd);
+			printf("TYPE__file_____%s\n", ((t_redircmd *)_t)->file);
+			printf("TYPE__mode_____%i\n", ((t_redircmd *)_t)->mode);
+			printf("TYPE__fd_______%i\n", ((t_redircmd *)_t)->fd);
+			if (!_t->next)
+				print_tree(_t->cmd);
+			_t = _t->next;
+			printf("===========================\n");
+		}
+	}
+	else if (tree && tree->type == 3)
+	{
+		printf("PIPE_NODE => %i\n", tree->type);
+		printf("==================== LEFT\n");
+		print_tree(((t_pipecmd *)tree)->left);
+		printf("==================== RIGHT\n");
+		print_tree(((t_pipecmd *)tree)->right);
+	}
 }
 */
 
-void ft_pipe(t_pipecmd *cmd ,t_env_v *env)
+void	ft_pipe(t_pipecmd *cmd, t_env_v *env)
 {
-	pid_t 	pid;
-	pid_t 	pid1;
+	pid_t	pid;
+	pid_t	pid1;
 	int		pip[2];
 
 	// int in = dup(0);
@@ -247,13 +250,13 @@ void ft_execut(t_cmd *cmd, t_env_v *env, t_pwd *wds)
 		for a here_doc
 	@DATE: 02-05-2024
 */
-char *get_name(void)
+char	*get_name(void)
 {
-	char *name;
-	char c;
-	char *tmp;
-	int fd;
-	int i;
+	char	*name;
+	char	c;
+	char	*tmp;
+	int		fd;
+	int		i;
 
 	i = 0;
 	fd = open("/dev/random", O_RDONLY);
@@ -274,25 +277,14 @@ char *get_name(void)
 	return (name);
 }
 
-// void	handler(int sig)
-// {
-// 	sig = 0;
-// 	printf("SIG_ %i\n", sig);
-// 	s_exit = 1;
-// 	rl_replace_line("", 0);
-// 	rl_on_new_line();
-// 	write(1, "\n", 1);
-// 	rl_redisplay();
-// }
-
 //! todo  remove expand from delimeter here_doc
 void ft_here_doc(t_redircmd **cmd, t_env_v *env)
 {
-	// int f;
-	char *tmp;
-	char *str;
-	char *tm;
+	char	*tmp;
+	char	*str;
+	char	*tm;
 
+	// int f;
 	tmp = get_name();
 	(*cmd)->fd = open(tmp, O_CREAT | O_RDWR, 0777);
 	if ((*cmd)->fd < 0)
@@ -301,17 +293,16 @@ void ft_here_doc(t_redircmd **cmd, t_env_v *env)
 	{
 		str = readline("> ");
 		if (!ft_strcmp(str, (*cmd)->file))
-			{
-				// dup2(redir->fd, 0);
-				free(str);
-				break ;
-			}
+		{
+			free(str);
+			break ;
+		}
 		if (str && ft_strchr(str, '$'))
-			{
-				tm = str;
-				str = ft_replace_dollar(str, env);
-				free(tm);
-			}
+		{
+			tm = str;
+			str = ft_replace_dollar(str, env);
+			free(tm);
+		}
 		ft_putstr_fd(str, (*cmd)->fd);
 		ft_putstr_fd("\n", (*cmd)->fd);
 		free(str);
@@ -323,13 +314,13 @@ void ft_here_doc(t_redircmd **cmd, t_env_v *env)
 	// printf("====================== %s\n", tmp);÷
 }
 
-void redir_cmd(t_cmd *cmd, t_env_v *env)
+void	redir_cmd(t_cmd *cmd, t_env_v *env)
 {
-	t_redircmd *redir;
-	int in;
-	int out;
-	// int token;
+	t_redircmd	*redir;
+	int			in;
+	int			out;
 
+	// int token;
 	redir = (t_redircmd *)cmd;
 	in = dup(0);
 	out = dup(1);
@@ -403,10 +394,10 @@ int	ft_run_shell(t_env_v *env)
 {
 	t_cmd	*cmd;
 	char	*str;
-    char    buffer[1024];
+   char    buffer[1024];
 	char	**ptr;
 	int		pos;
-	int     i;
+	// int     i;
     t_pwd   *wds;
 
     wds = malloc(sizeof(t_pwd));
@@ -430,10 +421,6 @@ int	ft_run_shell(t_env_v *env)
 		if (!ptr)
 			continue ;
 		ptr = ft_expand(ptr, env);
-		// printf():
-		// pos = 0;
-		for (i = 0; ptr[i]; i++)
-			printf("--> %s\n", ptr[i]);
 		pos = 0;
 		cmd = parsepipe(ptr, &pos, env);
 		// printf("TYPE CREATED TREE %i\n", cmd->type);
@@ -452,10 +439,22 @@ int	ft_run_shell(t_env_v *env)
 		//printf("HERE\n");
 		// wait(0);
 		free(str);
+		ft_free_tree(cmd);
 	}
 	return (0);
 }
 
+/**
+		for (i = 0; ptr[i]; i++)
+			printf("--> %s\n", ptr[i]);
+		pos = 0;
+		cmd = parsepipe(ptr, &pos, env);
+		printf("TYPE CREATED TREE %i\n", cmd->type);
+		printf("==================== \n");
+		printf("====_PRINT_TREE_==== \n");
+		printf("==================== \n");
+		print_tree(cmd);
+*/
 int	main(int ac, char **av, char **envp)
 {
 	t_env_v	*env;
@@ -466,4 +465,5 @@ int	main(int ac, char **av, char **envp)
 	if (!env)
 		exit(-1);
 	ft_run_shell(env);
+	// system("leaks min÷ishell");
 }

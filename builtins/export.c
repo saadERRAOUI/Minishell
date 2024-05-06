@@ -33,7 +33,7 @@ static t_env_v	*ft_content_equal(t_env_v **env, char *s)
 	return (NULL);
 }
 
-static void ft_export_envs(t_env_v **env)
+static void	ft_export_envs(t_env_v **env)
 {
 	t_env_v	*tmp;
 
@@ -62,8 +62,8 @@ static void	ft_hdl_case(t_env_v **env, char **_s, t_env_v *node)
 
 void	ft_export(t_env_v **env, char *s)
 {
-	char		**_s;
-	t_env_v		*node;
+	char	**_s;
+	t_env_v	*node;
 
 	if (!s)
 		return (ft_export_envs(env));

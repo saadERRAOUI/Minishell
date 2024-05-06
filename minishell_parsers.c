@@ -12,35 +12,33 @@
 
 #include "minishell.h"
 
-t_cmd  *parsexec(char **ps, int *pos, t_env_v *env)
+t_cmd	*parsexec(char **ps, int *pos, t_env_v *env)
 {
 	int			tok;
 	int			argc;
-
-	char **tab;
+	char		**tab;
 	t_execcmd	*cmd;
-    t_redircmd  *tmp;
-	t_redircmd  *ret;
+	t_redircmd	*tmp;
+	t_redircmd	*ret;
 
-    (void)env;
+	(void)env;
 	cmd = (t_execcmd *)execcmd();
-    ret = NULL;
+	ret = NULL;
 	argc = 0;
 	parseredir(&ret, ps, pos, env);
 	tok = get_token_type(ps[(*pos)]);
 	while (ps[*pos] && tok && tok != '|')
 	{
 		if (tok != 'a')
-			exit (-1); //! handle erro path
+			exit(-1);
 		cmd->argv[argc] = ps[(*pos)];
 		argc++;
-		if(argc >= MAXARGS)
-			exit(1); 	//! too many args
+		if (argc >= MAXARGS)
+			exit(1);
 		(*pos)++;
 		parseredir(&ret, ps, pos, env);
 		tok = get_token_type(ps[(*pos)]);
 	}
-
 	cmd->argv[argc] = NULL;
 	if (cmd->argv)
 	{
@@ -60,27 +58,26 @@ t_cmd  *parsexec(char **ps, int *pos, t_env_v *env)
             // for(int i =0;  tab[i]; i++)
             //     printf("%s\n", tab[i]);
 			cmd->path = ft_cmd_valid(tab, cmd->argv);
-            printf("===%s\n", cmd->path);
 			free(tab);
 		}
 	}
 	ft_print_tab(cmd->argv);
-    if (ret && ret->type == 2)
-    {
-        tmp = ft_lstlast_(ret);
-        tmp->cmd = (t_cmd *)cmd;
-    }
-    if (!ret)
-        return ((t_cmd *)cmd);
+	if (ret && ret->type == 2)
+	{
+		tmp = ft_lstlast_(ret);
+		tmp->cmd = (t_cmd *)cmd;
+	}
+	if (!ret)
+		return ((t_cmd *)cmd);
 	return ((t_cmd *)ret);
 }
 
-t_cmd  *parsepipe(char **ps, int *pos, t_env_v *env)
+t_cmd	*parsepipe(char **ps, int *pos, t_env_v *env)
 {
-	t_cmd *cmd;
+	t_cmd	*cmd;
 
 	cmd = parsexec(ps, pos, env);
-	if(get_token_type(ps[(*pos)]) == '|')
+	if (get_token_type(ps[(*pos)]) == '|')
 	{
 		(*pos)++;
 		cmd = pipecmd(cmd, parsepipe(ps, pos, env));
@@ -98,28 +95,27 @@ int	get_token_type(char *s)
 	ret = (int)*s;
 	switch (*s)
 	{
-		case '|':
-			break ;
-		case '>':
-			if (*(s + 1) == '>')
-				ret = '+';
-			break ;
-		case '<':
-			if (*(s + 1) == '<')
-				ret = '-';
-			break ;
-		default :
-			ret = 'a';
-			break ;
+	case '|':
+		break ;
+	case '>':
+		if (*(s + 1) == '>')
+			ret = '+';
+		break ;
+	case '<':
+		if (*(s + 1) == '<')
+			ret = '-';
+		break ;
+	default:
+		ret = 'a';
+		break ;
 	}
 	return (ret);
 }
 
 void    parseredir(t_redircmd **red, char **ps, int *pos, t_env_v *env)
 {
-	int         tok;
-    t_redircmd  *tmp;
-
+	int			tok;
+	t_redircmd	*tmp;
 
 	tok = get_token_type(ps[(*pos)]);
     while (tok == '>' || tok == '+' || tok == '<' || tok == '-')
