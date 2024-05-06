@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 17:15:26 by serraoui          #+#    #+#             */
-/*   Updated: 2024/05/06 15:39:14 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/06 18:49:26 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,8 +114,8 @@ void	ft_print_tab(char **s)
 	}
 }
 
-/**
-static void	print_tree(t_cmd *tree)
+/*
+static void print_tree(t_cmd *tree)
 {
 		t_redircmd *_t;
 
@@ -156,40 +156,18 @@ static void	print_tree(t_cmd *tree)
 }
 */
 
-void	ft_procces(t_cmd *cmd, int mode, int *pip, t_env_v *env)
-{
-	t_pipecmd	*cd;
-
-	cd = (t_pipecmd *)cmd;
-	if (mode == 0)
-	{
-		close(pip[0]);
-		dup2(pip[1], 1);
-		close(pip[1]);
-		ft_execution(cd->left, env, NULL);
-	}
-	else if (mode == 1)
-	{
-		close(pip[0]);
-		dup2(pip[1], 1);
-		close(pip[1]);
-		ft_execution(cd->right, env, NULL);
-	}
-	close(0);
-	close(1);
-	return ;
-}
-
 void	ft_pipe(t_pipecmd *cmd, t_env_v *env)
 {
 	pid_t	pid;
 	pid_t	pid1;
 	int		pip[2];
 
+	// int in = dup(0);
+	// int out = dup(1);
 	if (pipe(pip) == -1)
 	{
 		ft_putstr_fd("problem in pipe\n", 2);
-		exit(-1);
+		exit(-1); //check exit status
 	}
 	pid = fork();
 	if (pid < 0)
@@ -200,6 +178,7 @@ void	ft_pipe(t_pipecmd *cmd, t_env_v *env)
 		dup2(pip[1], 1);
 		close(pip[1]);
 		ft_execution(cmd->left, env, NULL);
+		exit(0);
 	}
 	pid1 = fork();
 	if (pid1 < 0)
@@ -210,9 +189,12 @@ void	ft_pipe(t_pipecmd *cmd, t_env_v *env)
 		dup2(pip[0], 0);
 		close(pip[0]);
 		ft_execution(cmd->right, env, NULL);
+		exit(0);
 	}
 	close(pip[0]);
 	close(pip[1]);
+	// waitpid(pid, NULL, 0);
+	// waitpid(pid1, NULL, 0);
 	wait(0);
 	// wait(0);
 }
@@ -221,8 +203,8 @@ int ft_builtin_orch(char **argv, t_execcmd *cmd, t_env_v **env, t_pwd *wds)
 {
 	if (!argv || !argv[0])
         return (0);
-	
-    if (!ft_strcmp("echo", argv[0])) //echo
+
+    if (!ft_strcmp("echo", argv[0]))
         return (echo(ft_strleen(cmd->argv), cmd->argv), 1);
     else if (!ft_strcmp("cd", argv[0]))
         return (cd(cmd->argv, wds), 1);
@@ -252,8 +234,9 @@ void ft_execut(t_cmd *cmd, t_env_v *env, t_pwd *wds)
 		ft_putstr_fd("command not found\n", 2);
 		return ;
 	}
-	else if (fork() == 0)
+	else
 	{
+		if (fork() == 0)
 		if (execve(cd->path, cd->argv, cd->envp) == -1)
 			ft_putstr_fd("error happen in execve\n", 2);
 		wait(0);
@@ -294,7 +277,8 @@ char	*get_name(void)
 	return (name);
 }
 
-void	ft_here_doc(t_redircmd **cmd, t_env_v *env)
+//! todo  remove expand from delimeter here_doc
+void ft_here_doc(t_redircmd **cmd, t_env_v *env)
 {
 	char	*tmp;
 	char	*str;
@@ -302,7 +286,6 @@ void	ft_here_doc(t_redircmd **cmd, t_env_v *env)
 
 	// int f;
 	tmp = get_name();
-	printf("--->%s\n", tmp);
 	(*cmd)->fd = open(tmp, O_CREAT | O_RDWR, 0777);
 	if ((*cmd)->fd < 0)
 		ft_putstr_fd("Error in open function\n", 2);
@@ -325,11 +308,10 @@ void	ft_here_doc(t_redircmd **cmd, t_env_v *env)
 		free(str);
 	}
 	close((*cmd)->fd);
-	(*cmd)->fd = open(tmp, O_RDONLY);
+	(*cmd)->fd = 0;
 	free((*cmd)->file);
 	(*cmd)->file = tmp;
-	if ((*cmd)->fd < 0)
-		ft_putstr_fd("error in  open function \n", 2);
+	// printf("====================== %s\n", tmp);÷
 }
 
 void	redir_cmd(t_cmd *cmd, t_env_v *env)
@@ -346,31 +328,36 @@ void	redir_cmd(t_cmd *cmd, t_env_v *env)
 	int out_ = dup(1);
 	while (redir)
 	{
-		// if (redir->fd == 0 && redir->mode)
+		//  if (redir->fd == 0 && redir->mode)
 		// {
 		// 	ft_here_doc(&redir, env);
-		// 	dup2(redir->fd, in);
+		// 	if (dup2(redir->fd, in) == -1)
+		// 		printf("dup1\n");
 		// }
 		if (redir->fd == 0)
 		{
-			redir->fd = open(redir->file, O_CREAT | O_RDONLY);
+			redir->fd = open(redir->file, O_RDONLY);
 			if (redir->fd < 0)
-				printf("erro");
-			dup2(redir->fd, in);
+				ft_putstr_fd("no such file of directory\n", 2);
+			if (dup2(redir->fd, in) == -1)
+				printf("dup2\n");
+
 		}
 		else if (redir->fd == 1 && redir->mode)
 		{
 			redir->fd = open(redir->file, O_CREAT | O_RDWR | O_APPEND, 0664);
-			if (redir->fd < 0)
-				ft_putstr_fd("problem in open function\n", 2);
-			dup2(redir->fd, out);
+				if (redir->fd < 0)
+					ft_putstr_fd("problem in open function\n", 2);
+				if (dup2(redir->fd, out) == -1)
+				printf("dup3\n");
 		}
 		else if (redir->fd == 1)
 		{
 			redir->fd = open(redir->file, O_CREAT | O_RDWR | O_TRUNC, 0664);
 			if (redir->fd < 0)
 				ft_putstr_fd("problem in open function\n", 2);
-			dup2(redir->fd, out);
+			if (dup2(redir->fd, out) == -1)
+			printf("dup4\n");
 		}
 		close(redir->fd);
 		if (!redir->next)
@@ -391,7 +378,11 @@ void	redir_cmd(t_cmd *cmd, t_env_v *env)
 void ft_execution(t_cmd *cmd, t_env_v *env, t_pwd *wds)
 {
 	if (cmd->type == 3)
-		ft_pipe((t_pipecmd *)cmd, env);
+	{
+		// if (fork() == 0)
+			ft_pipe((t_pipecmd *)cmd, env);
+
+	}
 	else if (cmd->type == 2)
 		redir_cmd(cmd, env);
 	else if (cmd->type == 1)
@@ -411,11 +402,13 @@ int	ft_run_shell(t_env_v *env)
 
     wds = malloc(sizeof(t_pwd));
     getcwd(buffer, sizeof(buffer));
-    (*wds) = (t_pwd){NULL, ft_strdup(buffer)};   
+    (*wds) = (t_pwd){NULL, ft_strdup(buffer)};
 	(void)cmd;
 	// pos = 0;
 	while (1)
 	{
+		// signal(SIGQUIT, SIG_IGN);
+		// signal(SIGINT, handler);
 		str = readline("$ ");
 		if (!str)
 		{
@@ -430,13 +423,21 @@ int	ft_run_shell(t_env_v *env)
 		ptr = ft_expand(ptr, env);
 		pos = 0;
 		cmd = parsepipe(ptr, &pos, env);
-		printf("TYPE CREATED TREE %i\n", cmd->type);
-		printf("==================== \n");
-		printf("====_PRINT_TREE_==== \n");
-    	printf("==================== \n");
-    // print_tree(cmd);
-		ft_execution(cmd, env, wds);
-		wait(0);
+		// printf("TYPE CREATED TREE %i\n", cmd->type);
+		// printf("==================== \n");
+		// printf("====_PRINT_TREE_==== \n");
+        // printf("==================== \n");
+        // print_tree(cmd);
+		// if (cmd->type == 1 || cmd->type == 2)
+		// {
+		// 	ft_execution(cmd, env, wds);
+		// 	continue;
+		// }
+		// if (fork() == 0) {
+			ft_execution(cmd, env, wds);
+		// }
+		//printf("HERE\n");
+		// wait(0);
 		free(str);
 		ft_free_tree(cmd);
 	}
