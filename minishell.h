@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 18:02:20 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/05/06 15:56:46 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/06 20:56:48 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,14 @@ int	pwd(t_pwd *wds);
 int	echo(int ac, char **av);
 void	cd(char **av, t_pwd *wds);
 void	ft_exit(int ac, char **av);
-void ft_here_doc(t_redircmd **cmd, t_env_v *env);
+
+void	ft_here_doc(t_redircmd **cmd, t_env_v *env);
+char    ft_parce_env(char env);
+char	get_envp(t_env_v env);
+char	ft_cmd_valid(char env, char cmd);
+void	ft_print_tab(char s);
+char    ft_free(int index, char ptr);
+void    ft_free_tree(t_cmd *cmd);
+char    syntax(char ptr);
 
 #endif
