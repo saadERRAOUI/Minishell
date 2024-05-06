@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 17:15:26 by serraoui          #+#    #+#             */
-/*   Updated: 2024/05/05 23:43:27 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/05/06 16:05:25 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,9 +227,10 @@ void ft_execut(t_cmd *cmd, t_env_v *env, t_pwd *wds)
 	}
 	else
 	{
+		if (fork() == 0)
 		if (execve(cd->path, cd->argv, cd->envp) == -1)
 			ft_putstr_fd("error happen in execve\n", 2);
-		// wait(0);
+		wait(0);
 	}
 	return ;
 }
@@ -310,10 +311,9 @@ void ft_here_doc(t_redircmd **cmd, t_env_v *env)
 		free(str);
 	}
 	close((*cmd)->fd);
-	(*cmd)->fd = open(tmp, O_RDONLY);
+	(*cmd)->fd = 0;
 	(*cmd)->file = tmp;
-	if ((*cmd)->fd < 0)
-		ft_putstr_fd("error in  open function \n", 2);
+	printf("====================== %s\n", tmp);
 }
 
 void redir_cmd(t_cmd *cmd, t_env_v *env)
@@ -330,13 +330,13 @@ void redir_cmd(t_cmd *cmd, t_env_v *env)
 	int out_ = dup(1);
 	while (redir)
 	{
-		 if (redir->fd == 0 && redir->mode)
-		{
-			ft_here_doc(&redir, env);
-			if (dup2(redir->fd, in) == -1)
-				printf("dup1\n");
-		}
-		else if (redir->fd == 0)
+		//  if (redir->fd == 0 && redir->mode)
+		// {
+		// 	ft_here_doc(&redir, env);
+		// 	if (dup2(redir->fd, in) == -1)
+		// 		printf("dup1\n");
+		// }
+		if (redir->fd == 0)
 		{
 			redir->fd = open(redir->file, O_CREAT | O_RDONLY);
 			if (redir->fd < 0)
@@ -435,9 +435,9 @@ int	ft_run_shell(t_env_v *env)
 		// 	ft_execution(cmd, env, wds);
 		// 	continue;	
 		// }
-		if (fork() == 0) {
+		// if (fork() == 0) {
 			ft_execution(cmd, env, wds);
-		}
+		// }
 		//printf("HERE\n");
 		wait(0);
 		free(str);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 18:02:20 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/05/04 23:03:58 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/05/06 15:56:46 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ t_redircmd          *ft_lstlast_(t_redircmd *lst);
 t_env_v				*env_init(char **env);
 // t_cmd *parseredir(t_cmd *cmd, char **ps, char *es);
 // t_cmd				*parseredir(t_cmd *cmd, char **ps, int *pos);
-void                parseredir(t_redircmd **red, char **ps, int *pos);
+void                parseredir(t_redircmd **red, char **ps, int *pos, t_env_v *env);
 t_cmd				*parsepipe(char **ps, int *pos, t_env_v *env);
 // t_cmd *parsepipe(char **ps, char *es);
 // t_cmd *parsexec(char **ps, char *es);
@@ -145,5 +145,6 @@ int	pwd(t_pwd *wds);
 int	echo(int ac, char **av);
 void	cd(char **av, t_pwd *wds);
 void	ft_exit(int ac, char **av);
+void ft_here_doc(t_redircmd **cmd, t_env_v *env);
 
 #endif

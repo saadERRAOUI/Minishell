@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_parsers.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 02:29:36 by serraoui          #+#    #+#             */
-/*   Updated: 2024/05/05 14:41:13 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/05/06 16:09:55 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ t_cmd  *parsexec(char **ps, int *pos, t_env_v *env)
 	cmd = (t_execcmd *)execcmd();
     ret = NULL;
 	argc = 0;
-	parseredir(&ret, ps, pos);
+	parseredir(&ret, ps, pos, env);
 	tok = get_token_type(ps[(*pos)]);
 	while (ps[*pos] && tok && tok != '|')
 	{
@@ -37,7 +37,7 @@ t_cmd  *parsexec(char **ps, int *pos, t_env_v *env)
 		if(argc >= MAXARGS)
 			exit(1); 	//! too many args
 		(*pos)++;
-		parseredir(&ret, ps, pos);
+		parseredir(&ret, ps, pos, env);
 		tok = get_token_type(ps[(*pos)]);
 	}
 
@@ -115,7 +115,7 @@ int	get_token_type(char *s)
 	return (ret);
 }
 
-void    parseredir(t_redircmd **red, char **ps, int *pos)
+void    parseredir(t_redircmd **red, char **ps, int *pos, t_env_v *env)
 {
 	int         tok;
     t_redircmd  *tmp;
@@ -162,7 +162,13 @@ void    parseredir(t_redircmd **red, char **ps, int *pos)
                 (*pos)++;
                 tmp = redircmd(ps[(*pos)], O_RDWR | O_CREAT, 0);
 				//TODO : fork and call ft_here_doc();
+				if (fork() == 0)
+					{
+						ft_here_doc(&tmp, env);
+					}
+					wait(0);
                 (*pos)++;
+				// if (unlink(tmp->file)
                 ft_lstadd_back_(red, tmp);
                 break;
         }
