@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 17:15:26 by serraoui          #+#    #+#             */
-/*   Updated: 2024/05/05 15:53:59 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/06 15:39:14 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,7 +214,7 @@ void	ft_pipe(t_pipecmd *cmd, t_env_v *env)
 	close(pip[0]);
 	close(pip[1]);
 	wait(0);
-	wait(0);
+	// wait(0);
 }
 
 int ft_builtin_orch(char **argv, t_execcmd *cmd, t_env_v **env, t_pwd *wds)
@@ -326,6 +326,7 @@ void	ft_here_doc(t_redircmd **cmd, t_env_v *env)
 	}
 	close((*cmd)->fd);
 	(*cmd)->fd = open(tmp, O_RDONLY);
+	free((*cmd)->file);
 	(*cmd)->file = tmp;
 	if ((*cmd)->fd < 0)
 		ft_putstr_fd("error in  open function \n", 2);
@@ -341,14 +342,16 @@ void	redir_cmd(t_cmd *cmd, t_env_v *env)
 	redir = (t_redircmd *)cmd;
 	in = dup(0);
 	out = dup(1);
+	int in_ = dup(0);
+	int out_ = dup(1);
 	while (redir)
 	{
-		if (redir->fd == 0 && redir->mode)
-		{
-			ft_here_doc(&redir, env);
-			dup2(redir->fd, in);
-		}
-		else if (redir->fd == 0)
+		// if (redir->fd == 0 && redir->mode)
+		// {
+		// 	ft_here_doc(&redir, env);
+		// 	dup2(redir->fd, in);
+		// }
+		if (redir->fd == 0)
 		{
 			redir->fd = open(redir->file, O_CREAT | O_RDONLY);
 			if (redir->fd < 0)
@@ -369,9 +372,9 @@ void	redir_cmd(t_cmd *cmd, t_env_v *env)
 				ft_putstr_fd("problem in open function\n", 2);
 			dup2(redir->fd, out);
 		}
+		close(redir->fd);
 		if (!redir->next)
 			break ;
-		close(redir->fd);
 		redir = redir->next;
 	}
 	dup2(in, 0);
@@ -379,6 +382,10 @@ void	redir_cmd(t_cmd *cmd, t_env_v *env)
 	close(in);
 	close(out);
 	ft_execut(redir->cmd, env, NULL);
+	dup2(in_, 0);
+	dup2(out_, 1);
+	close(in_);
+	close(out_);
 }
 
 void ft_execution(t_cmd *cmd, t_env_v *env, t_pwd *wds)
@@ -389,7 +396,7 @@ void ft_execution(t_cmd *cmd, t_env_v *env, t_pwd *wds)
 		redir_cmd(cmd, env);
 	else if (cmd->type == 1)
 		ft_execut(cmd, env, wds);
-	wait(0);
+	// wait(0);
 }
 
 int	ft_run_shell(t_env_v *env)
@@ -399,7 +406,7 @@ int	ft_run_shell(t_env_v *env)
    char    buffer[1024];
 	char	**ptr;
 	int		pos;
-	int     i;
+	// int     i;
     t_pwd   *wds;
 
     wds = malloc(sizeof(t_pwd));
@@ -426,8 +433,8 @@ int	ft_run_shell(t_env_v *env)
 		printf("TYPE CREATED TREE %i\n", cmd->type);
 		printf("==================== \n");
 		printf("====_PRINT_TREE_==== \n");
-    printf("==================== \n");
-    print_tree(cmd);
+    	printf("==================== \n");
+    // print_tree(cmd);
 		ft_execution(cmd, env, wds);
 		wait(0);
 		free(str);
