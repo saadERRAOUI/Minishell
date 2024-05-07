@@ -6,7 +6,7 @@
 /*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 17:15:26 by serraoui          #+#    #+#             */
-/*   Updated: 2024/05/06 20:53:27 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/05/07 22:21:24 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,9 +161,13 @@ void	ft_pipe(t_pipecmd *cmd, t_env_v *env)
 	pid_t	pid;
 	pid_t	pid1;
 	int		pip[2];
+    int     s;
 
 	// int in = dup(0);
 	// int out = dup(1);
+    // signal(SIGQUIT, SIG_IGN);
+    // signal(SIGINT, SIG_IGN);
+    child_signal_def(2);
 	if (pipe(pip) == -1)
 	{
 		ft_putstr_fd("problem in pipe\n", 2);
@@ -174,6 +178,9 @@ void	ft_pipe(t_pipecmd *cmd, t_env_v *env)
 		ft_putstr_fd("error in fork child 1\n", 2);
 	if (pid == 0)
 	{
+        // signal(SIGQUIT, SIG_DFL);
+        // signal(SIGINT, SIG_DFL);
+        child_signal_def(1);
 		close(pip[0]);
 		dup2(pip[1], 1);
 		close(pip[1]);
@@ -185,6 +192,9 @@ void	ft_pipe(t_pipecmd *cmd, t_env_v *env)
 		ft_putstr_fd("error in fork child 2\n", 2);
 	if (pid1 == 0)
 	{
+        // signal(SIGQUIT, SIG_DFL);
+        // signal(SIGINT, SIG_DFL);
+        child_signal_def(1);
 		close(pip[1]);
 		dup2(pip[0], 0);
 		close(pip[0]);
@@ -195,7 +205,8 @@ void	ft_pipe(t_pipecmd *cmd, t_env_v *env)
 	close(pip[1]);
 	// waitpid(pid, NULL, 0);
 	// waitpid(pid1, NULL, 0);
-	wait(0);
+	wait(&s);
+    child_exit(s);
 	// wait(0);
 }
 
@@ -224,9 +235,13 @@ int ft_builtin_orch(char **argv, t_execcmd *cmd, t_env_v **env, t_pwd *wds)
 void ft_execut(t_cmd *cmd, t_env_v *env, t_pwd *wds)
 {
 	t_execcmd *cd;
+    int         s;
 	(void)env;
 
 	cd = (t_execcmd *)cmd;
+    // signal(SIGQUIT, SIG_IGN);
+    // signal(SIGINT, SIG_IGN);
+    child_signal_def(2);
 	if (ft_builtin_orch(cd->argv, cd, &env, wds))
 		return ;
 	if (!cd->path)
@@ -236,10 +251,18 @@ void ft_execut(t_cmd *cmd, t_env_v *env, t_pwd *wds)
 	}
 	else
 	{
-		if (fork() == 0)
-		if (execve(cd->path, cd->argv, cd->envp) == -1)
-			ft_putstr_fd("error happen in execve\n", 2);
-		wait(0);
+		if (fork() == 0) {
+            // signal(SIGQUIT, SIG_DFL);
+            // signal(SIGINT, SIG_DFL);
+            child_signal_def(1);
+            if (execve(cd->path, cd->argv, cd->envp) == -1)
+                ft_putstr_fd("error happen in execve\n", 2);
+            //exit(-1); //!todo : add errno
+        }
+        else {
+		    wait(&s);
+            child_exit(s);
+        }        
 	}
 	return ;
 }
@@ -283,8 +306,8 @@ void ft_here_doc(t_redircmd **cmd, t_env_v *env)
 	char	*tmp;
 	char	*str;
 	char	*tm;
+    int     flag;
 
-	// int f;
 	tmp = get_name();
 	(*cmd)->fd = open(tmp, O_CREAT | O_RDWR, 0777);
 	if ((*cmd)->fd < 0)
@@ -292,6 +315,8 @@ void ft_here_doc(t_redircmd **cmd, t_env_v *env)
 	while (1)
 	{
 		str = readline("> ");
+        if (!str)
+            printf("DELIM_NOT_DONE\n");
 		if (!ft_strcmp(str, (*cmd)->file))
 		{
 			free(str);
@@ -311,7 +336,6 @@ void ft_here_doc(t_redircmd **cmd, t_env_v *env)
 	(*cmd)->fd = 0;
 	free((*cmd)->file);
 	(*cmd)->file = tmp;
-	// printf("====================== %s\n", tmp);÷
 }
 
 void	redir_cmd(t_cmd *cmd, t_env_v *env)
@@ -320,7 +344,6 @@ void	redir_cmd(t_cmd *cmd, t_env_v *env)
 	int			in;
 	int			out;
 
-	// int token;
 	redir = (t_redircmd *)cmd;
 	in = dup(0);
 	out = dup(1);
@@ -328,15 +351,13 @@ void	redir_cmd(t_cmd *cmd, t_env_v *env)
 	int out_ = dup(1);
 	while (redir)
 	{
-		//  if (redir->fd == 0 && redir->mode)
-		// {
-		// 	ft_here_doc(&redir, env);
-		// 	if (dup2(redir->fd, in) == -1)
-		// 		printf("dup1\n");
-		// }
 		if (redir->fd == 0)
 		{
 			redir->fd = open(redir->file, O_RDONLY);
+            printf("[CMD-HERE] %i\n", cmd->type);
+            printf("[CMD-HERE] %s\n", ((t_redircmd *)cmd)->file);
+            printf("[CMD-HERE] %p\n", ((t_redircmd *)cmd)->cmd);
+            printf("[CMD-HERE] %d\n", ((t_redircmd *)cmd)->mode);
 			if (redir->fd < 0)
 				ft_putstr_fd("no such file of directory\n", 2);
 			if (dup2(redir->fd, in) == -1)
@@ -377,48 +398,46 @@ void	redir_cmd(t_cmd *cmd, t_env_v *env)
 
 void ft_execution(t_cmd *cmd, t_env_v *env, t_pwd *wds)
 {
+    int     s;
 	if (cmd->type == 3)
-	{
-		// if (fork() == 0)
-			ft_pipe((t_pipecmd *)cmd, env);
-
-	}
+        ft_pipe((t_pipecmd *)cmd, env);
 	else if (cmd->type == 2)
 		redir_cmd(cmd, env);
 	else if (cmd->type == 1)
 		ft_execut(cmd, env, wds);
-	// wait(0);
+    wait(&s);
+    child_exit(s);
 }
 
-void	handler(int sig)
+void    disable_raw_mode(void)
 {
-	sig = 0;
-	g_var = 1;
-	rl_replace_line("", 0);
-	rl_on_new_line();
-	write(1, "\n", 1);
-	rl_redisplay();
+    struct termios    new_termios;
+    struct termios    orig_termios;
+
+    tcgetattr(0, &orig_termios);
+    new_termios = orig_termios;
+    new_termios.c_lflag &= ~ECHOCTL;
+    tcsetattr(0, TCSANOW, &new_termios);
 }
 
 int	ft_run_shell(t_env_v *env)
 {
 	t_cmd	*cmd;
 	char	*str;
-   char    buffer[1024];
+    char    buffer[1024];
 	char	**ptr;
 	int		pos;
-	// int     i;
     t_pwd   *wds;
 
     wds = malloc(sizeof(t_pwd));
     getcwd(buffer, sizeof(buffer));
     (*wds) = (t_pwd){NULL, ft_strdup(buffer)};
 	(void)cmd;
-	// pos = 0;
+    // signal(SIGQUIT, handler);
+    // signal(SIGINT, handler);
+    child_signal_def(0);
 	while (1)
 	{
-		signal(SIGQUIT, SIG_IGN);
-		signal(SIGINT, handler);
 		str = readline("$ ");
 		if (!str)
 		{
@@ -433,23 +452,8 @@ int	ft_run_shell(t_env_v *env)
 		ptr = ft_expand(ptr, env);
 		pos = 0;
 		cmd = parsepipe(ptr, &pos, env);
-		// printf("TYPE CREATED TREE %i\n", cmd->type);
-		// printf("==================== \n");
-		// printf("====_PRINT_TREE_==== \n");
-        // printf("==================== \n");
-        // print_tree(cmd);
-		// if (cmd->type == 1 || cmd->type == 2)
-		// {
-		// 	ft_execution(cmd, env, wds);
-		// 	continue;
-		// }
-		// if (fork() == 0) {
-			ft_execution(cmd, env, wds);
-		// }
-		//printf("HERE\n");
-		// wait(0);
+        ft_execution(cmd, env, wds);;
 		free(str);
-		ft_free_tree(cmd);
 	}
 	return (0);
 }
@@ -472,8 +476,9 @@ int	main(int ac, char **av, char **envp)
 	(void)ac;
 	(void)av;
 	env = env_init(envp);
-	if (!env)
-		exit(-1);
+	// if (!env)
+	// 	exit(-1);
+    // disable_raw_mode();
 	ft_run_shell(env);
 	// system("leaks min÷ishell");
 }

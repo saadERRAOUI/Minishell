@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 17:53:48 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/05/04 18:25:15 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/06 21:09:43 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static char	ft_check(char c)
 	else if (c == '>')
 		c = RIGHT;
 	else if (c == 32 || (c >= 9 && c <= 13))
-		c = SPACE;
+		c = SPACE2;
 	return (c);
 }
 
@@ -99,7 +99,7 @@ char	**undo(char **ptr)
 				ptr[i][j] = '>';
 			else if (ptr[i][j] == LEFT)
 				ptr[i][j] = '<';
-			else if (ptr[i][j] == SPACE)
+			else if (ptr[i][j] == SPACE2)
 				ptr[i][j] = ' ';
 			j++;
 		}

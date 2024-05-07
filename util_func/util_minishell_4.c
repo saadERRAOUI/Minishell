@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   util_minishell_4.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 17:24:26 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/05/04 23:04:34 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/07 21:59:09 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ char	*expand_or_not(char *ptr)
 			i++;
 			while (ptr[i] && ptr[i] != '\"')
 			{
+                // if (ptr[i] == '$' && ptr[i + 1] && ptr[i + 1] == '?')
+                //     ptr[i] = 
 				if (ptr[i] == '$')
 					ptr[i] = DL;
 				i++;

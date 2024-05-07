@@ -6,7 +6,7 @@
 /*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 18:02:20 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/05/06 20:56:48 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/05/07 21:38:51 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,24 +16,26 @@
 # include "./libft/libft.h"
 # include <fcntl.h>
 # include <limits.h>
+# include <stdio.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <sys/stat.h>
 # include <sys/types.h>
 # include <unistd.h>
 # include <signal.h>
-# include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
 # include <sys/types.h>
+# include <termios.h>
 # include <unistd.h>
+
 # define MAXARGS 100
 # define EXEC 1
 # define REDIR 2
 # define PIPE 3
 # define LEFT 4
 # define RIGHT 5
-# define SPACE 6
+# define SPACE2 6
 # define DL 7
 # define EXIT_FAILUR 127
 # define CTRL_C 130
@@ -86,67 +88,57 @@ typedef struct s_redircmd
 
 int					ft_strcmp(char *s1, char *s2);
 int					count_words(char const *s, char c);
-// int					getToken(char **ps, char *es, char **q, char **eq);
 int					peek(char **ps, char *es, char *toks);
-char				**ft_split_2(char *s, char c);
 void				ft_export(t_env_v **env, char *s);
 void				ft_env(t_env_v *env);
 void				ft_list_remove_if(t_env_v **begin_list, void *data_ref,
-						int (*cmp)(char *, char *));
+                        int (*cmp)(char *, char *));
 void				ft_lstadd_back(t_env_v **lst, t_env_v *new);
 void                ft_lstadd_back_(t_redircmd **lst, t_redircmd *new);
 void				ft_unset(t_env_v **env, char *key);
 void				ft_free_stack(t_env_v **a);
 t_env_v				*ft_lstlast(t_env_v *lst);
-int					ft_lst_size(t_env_v *lst);
-t_redircmd          *ft_lstlast_(t_redircmd *lst);
 t_env_v				*env_init(char **env);
-// t_cmd *parseredir(t_cmd *cmd, char **ps, char *es);
-// t_cmd				*parseredir(t_cmd *cmd, char **ps, int *pos);
-void                parseredir(t_redircmd **red, char **ps, int *pos, t_env_v *env);
 t_cmd				*parsepipe(char **ps, int *pos, t_env_v *env);
-// t_cmd *parsepipe(char **ps, char *es);
-// t_cmd *parsexec(char **ps, char *es);
 t_cmd				*parsexec(char **ps, int *pos, t_env_v *env);
-// t_cmd				*parsecmd(char *s);
-// t_cmd				*parseline(char **ps, char *es);
 t_cmd				*execcmd(void);
-// t_cmd				*redircmd(t_cmd *subcmd, char *file, int mode, int fd, t_redircmd *red);
-t_redircmd	            *redircmd(char *file, int mode, int fd);
-// t_cmd *redircmd(t_cmd *subcmd, char *file, char *efile, int mode, int fd);
 t_cmd				*pipecmd(t_cmd *left, t_cmd *right);
-int					get_token_type(char *s);
-int					ft_handel_line(char *str);
+t_redircmd          *ft_lstlast_(t_redircmd *lst);
+t_redircmd          *redircmd(char *file, int mode, int fd);
 char				*ft_charjoin(char *str, char c);
 char				*add_32(char *str, char *sym);
-int					ft_quotes(char *str);
-int					ft_util_quotes(char *av, char q, int *index);
 char				*ft_convert_0(char *str);
 char				**undo(char **ptr);
+char				**ft_split_2(char *s, char c);
 char				**ft_check_syntax(char *str);
-int					ft_strlen_until(char *str, char c);
 char				*ft_replace_dollar(char *ptr, t_env_v *env);
 char				**add_dollar(char **ptr, t_env_v *env);
 char				*expand_or_not(char *ptr);
-int					ft_back(char *str, int index);
 char				*ft_shift(char *ptr);
-
-
-void						ft_free_tree(t_cmd *cmd);
-
-//builtins
-int	pwd(t_pwd *wds);
-int	echo(int ac, char **av);
-void	cd(char **av, t_pwd *wds);
-void	ft_exit(int ac, char **av);
-
-void	ft_here_doc(t_redircmd **cmd, t_env_v *env);
-char    ft_parce_env(char env);
-char	get_envp(t_env_v env);
-char	ft_cmd_valid(char env, char cmd);
-void	ft_print_tab(char s);
-char    ft_free(int index, char ptr);
-void    ft_free_tree(t_cmd *cmd);
-char    syntax(char ptr);
+char                **ft_parce_env(char **env);
+char                **get_envp(t_env_v *env);
+char                *ft_cmd_valid(char **env, char **cmd);
+char                **ft_free(int index, char **ptr);
+char                **syntax(char **ptr);
+int					ft_lst_size(t_env_v *lst);
+int					get_token_type(char *s);
+int					ft_handel_line(char *str);
+int					ft_util_quotes(char *av, char q, int *index);
+int					ft_quotes(char *str);
+int					ft_strlen_until(char *str, char c);
+int					ft_back(char *str, int index);
+int                 pwd(t_pwd *wds);
+int                 echo(int ac, char **av);
+int                 ft_strleen(char **ptr);
+void                signal_handler(int sig);
+void                parseredir(t_redircmd **red, char **ps, int *pos, t_env_v *env);
+void                ft_free_tree(t_cmd *cmd);
+void                ft_exit(int ac, char **av);
+void                cd(char **av, t_pwd *wds);
+void                ft_here_doc(t_redircmd **cmd, t_env_v *env);
+void                ft_print_tab(char **s);
+void                ft_free_tree(t_cmd *cmd);
+void                child_exit(int status);
+void                child_signal_def(int flag);
 
 #endif

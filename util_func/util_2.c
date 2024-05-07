@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   util_2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 17:22:40 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/05/04 23:24:31 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/06 22:08:08 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,9 @@ char	*ft_shift(char *ptr)
 
 static int	ft_checkk(char **ptr, int index)
 {
+    printf("INDEX__%d\n", ft_strleen(ptr));
+    if ( !ptr || !(*ptr))
+        return (0);
 	while (ptr[index])
 	{
 		if (ft_strchr("<>|", ptr[index][0]) && ft_strlen(ptr[index]) >= 2)
@@ -122,7 +125,7 @@ static int	ft_checkk(char **ptr, int index)
 		else if (ft_strchr("|><", ptr[index][0]) && (!ptr[index + 1]
 				|| ft_strchr("|><", ptr[index + 1][0])))
 		{
-			if (ptr[index][0] == '|' && ptr[index + 1][0] != '|')
+			if (ptr[index][0] == '|' && ptr[index + 1] && ptr[index + 1][0] != '|')
 				return (1);
 			return (0);
 		}
