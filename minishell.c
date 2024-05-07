@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 17:15:26 by serraoui          #+#    #+#             */
-/*   Updated: 2024/05/06 18:49:26 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/07 15:37:27 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ void	ft_print_tab(char **s)
 	}
 }
 
-/*
+
 static void print_tree(t_cmd *tree)
 {
 		t_redircmd *_t;
@@ -126,7 +126,10 @@ static void print_tree(t_cmd *tree)
 		printf("EXEC_NODE_argv\n");
 		ft_print_tab(((t_execcmd *)tree)->argv);
 		if (((t_execcmd *)tree)->path)
+		{
+			printf("-------%d--------\n", (int)ft_strleen(((t_execcmd *)tree)->argv));
 			printf("path: %s\n", ((t_execcmd *)tree)->path);
+		}
 	}
 	else if (tree && tree->type == 2)
 	{
@@ -154,7 +157,7 @@ static void print_tree(t_cmd *tree)
 		print_tree(((t_pipecmd *)tree)->right);
 	}
 }
-*/
+
 
 void	ft_pipe(t_pipecmd *cmd, t_env_v *env)
 {
@@ -231,11 +234,14 @@ void ft_execut(t_cmd *cmd, t_env_v *env, t_pwd *wds)
 		return ;
 	if (!cd->path)
 	{
+		if (fork() == 0)
+			if (execve(cd->path, cd->argv, cd->envp) == -1)
 		ft_putstr_fd("command not found\n", 2);
-		return ;
+		wait(0);
 	}
 	else
 	{
+		printf("_=-+%s\n", cd->path);
 		if (fork() == 0)
 		if (execve(cd->path, cd->argv, cd->envp) == -1)
 			ft_putstr_fd("error happen in execve\n", 2);
@@ -423,11 +429,11 @@ int	ft_run_shell(t_env_v *env)
 		ptr = ft_expand(ptr, env);
 		pos = 0;
 		cmd = parsepipe(ptr, &pos, env);
-		// printf("TYPE CREATED TREE %i\n", cmd->type);
-		// printf("==================== \n");
-		// printf("====_PRINT_TREE_==== \n");
-        // printf("==================== \n");
-        // print_tree(cmd);
+		printf("TYPE CREATED TREE %i\n", cmd->type);
+		printf("==================== \n");
+		printf("====_PRINT_TREE_==== \n");
+        printf("==================== \n");
+        print_tree(cmd);
 		// if (cmd->type == 1 || cmd->type == 2)
 		// {
 		// 	ft_execution(cmd, env, wds);
@@ -439,6 +445,7 @@ int	ft_run_shell(t_env_v *env)
 		//printf("HERE\n");
 		// wait(0);
 		free(str);
+		if (cmd)
 		ft_free_tree(cmd);
 	}
 	return (0);
@@ -462,8 +469,8 @@ int	main(int ac, char **av, char **envp)
 	(void)ac;
 	(void)av;
 	env = env_init(envp);
-	if (!env)
-		exit(-1);
+	// if (!env)
+	// 	exit(-1);
 	ft_run_shell(env);
 	// system("leaks min÷ishell");
 }
