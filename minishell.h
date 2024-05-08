@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 18:02:20 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/05/07 21:38:51 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/05/08 15:56:27 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,10 +135,11 @@ void                parseredir(t_redircmd **red, char **ps, int *pos, t_env_v *e
 void                ft_free_tree(t_cmd *cmd);
 void                ft_exit(int ac, char **av);
 void                cd(char **av, t_pwd *wds);
-void                ft_here_doc(t_redircmd **cmd, t_env_v *env);
+void                ft_here_doc(t_redircmd **cmd, t_env_v *env, char *delimeter);
 void                ft_print_tab(char **s);
 void                ft_free_tree(t_cmd *cmd);
 void                child_exit(int status);
 void                child_signal_def(int flag);
+char				*get_name(void);
 
 #endif

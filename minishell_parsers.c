@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_parsers.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 02:29:36 by serraoui          #+#    #+#             */
-/*   Updated: 2024/05/07 22:03:06 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/05/08 15:53:53 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ void    parseredir(t_redircmd **red, char **ps, int *pos, t_env_v *env)
 {
 	int			tok;
 	t_redircmd	*tmp;
+	char *f;
 
 	tok = get_token_type(ps[(*pos)]);
     while (tok == '>' || tok == '+' || tok == '<' || tok == '-')
@@ -135,6 +136,8 @@ void    parseredir(t_redircmd **red, char **ps, int *pos, t_env_v *env)
 			case '-':
                 (*pos)++;
                 tmp = redircmd(ps[(*pos)], O_RDWR | O_CREAT, 0);
+				f = tmp->file;
+				tmp->file = get_name();
 				//TODO : fork and call ft_here_doc(); //done
                 child_signal_def(2);
 				if (fork() == 0)
@@ -142,7 +145,7 @@ void    parseredir(t_redircmd **red, char **ps, int *pos, t_env_v *env)
                     // signal(SIGQUIT, SIG_DFL);
                     // signal(SIGINT, SIG_DFL);
                     child_signal_def(1);
-                    ft_here_doc(&tmp, env);
+                    ft_here_doc(&tmp, env, f);
                 }
 				wait(&tok);
                 child_exit(tok);

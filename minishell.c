@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 17:15:26 by serraoui          #+#    #+#             */
-/*   Updated: 2024/05/07 22:21:24 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/05/08 16:24:51 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -301,15 +301,15 @@ char	*get_name(void)
 }
 
 //! todo  remove expand from delimeter here_doc
-void ft_here_doc(t_redircmd **cmd, t_env_v *env)
+void ft_here_doc(t_redircmd **cmd, t_env_v *env, char *delimeter)
 {
-	char	*tmp;
+	// char	*tmp;
 	char	*str;
 	char	*tm;
-    int     flag;
+    // int     flag;
 
-	tmp = get_name();
-	(*cmd)->fd = open(tmp, O_CREAT | O_RDWR, 0777);
+	// tmp = get_name();
+	(*cmd)->fd = open((*cmd)->file, O_CREAT | O_RDWR, 0777);
 	if ((*cmd)->fd < 0)
 		ft_putstr_fd("Error in open function\n", 2);
 	while (1)
@@ -317,7 +317,7 @@ void ft_here_doc(t_redircmd **cmd, t_env_v *env)
 		str = readline("> ");
         if (!str)
             printf("DELIM_NOT_DONE\n");
-		if (!ft_strcmp(str, (*cmd)->file))
+		if (!ft_strcmp(str, delimeter))
 		{
 			free(str);
 			break ;
@@ -334,8 +334,8 @@ void ft_here_doc(t_redircmd **cmd, t_env_v *env)
 	}
 	close((*cmd)->fd);
 	(*cmd)->fd = 0;
-	free((*cmd)->file);
-	(*cmd)->file = tmp;
+	// free((*cmd)->file);
+	// (*cmd)->file = tmp;
 }
 
 void	redir_cmd(t_cmd *cmd, t_env_v *env)
@@ -420,6 +420,12 @@ void    disable_raw_mode(void)
     tcsetattr(0, TCSANOW, &new_termios);
 }
 
+static void ft_here(void)
+{
+	
+	system("leaks minishell");
+}
+
 int	ft_run_shell(t_env_v *env)
 {
 	t_cmd	*cmd;
@@ -452,8 +458,10 @@ int	ft_run_shell(t_env_v *env)
 		ptr = ft_expand(ptr, env);
 		pos = 0;
 		cmd = parsepipe(ptr, &pos, env);
-        ft_execution(cmd, env, wds);;
+        ft_execution(cmd, env, wds);
+		ft_free_tree(cmd);
 		free(str);
+		ft_here();
 	}
 	return (0);
 }
@@ -480,5 +488,4 @@ int	main(int ac, char **av, char **envp)
 	// 	exit(-1);
     // disable_raw_mode();
 	ft_run_shell(env);
-	// system("leaks min÷ishell");
 }
