@@ -6,7 +6,7 @@
 /*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 17:15:26 by serraoui          #+#    #+#             */
-/*   Updated: 2024/05/07 15:37:27 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/08 16:37:09 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -381,6 +381,11 @@ void	redir_cmd(t_cmd *cmd, t_env_v *env)
 	close(out_);
 }
 
+// static void ft_here(void)
+// {
+// 	system("leaks minishell");
+// }
+
 void ft_execution(t_cmd *cmd, t_env_v *env, t_pwd *wds)
 {
 	if (cmd->type == 3)
@@ -393,7 +398,7 @@ void ft_execution(t_cmd *cmd, t_env_v *env, t_pwd *wds)
 		redir_cmd(cmd, env);
 	else if (cmd->type == 1)
 		ft_execut(cmd, env, wds);
-	// wait(0);
+	wait(0);
 }
 
 int	ft_run_shell(t_env_v *env)
