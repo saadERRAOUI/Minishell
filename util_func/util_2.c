@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   util_2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 17:22:40 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/05/06 22:08:08 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/05/09 14:33:31 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ char	*add_32(char *str, char *sym)
 			ptr = ft_charjoin(ptr, str[i]);
 		i++;
 	}
+	free(str);
 	return (ptr);
 }
 

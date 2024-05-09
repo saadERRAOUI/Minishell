@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 17:15:26 by serraoui          #+#    #+#             */
-/*   Updated: 2024/05/08 16:24:51 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/09 14:31:46 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -262,7 +262,7 @@ void ft_execut(t_cmd *cmd, t_env_v *env, t_pwd *wds)
         else {
 		    wait(&s);
             child_exit(s);
-        }        
+        }
 	}
 	return ;
 }
@@ -422,7 +422,7 @@ void    disable_raw_mode(void)
 
 static void ft_here(void)
 {
-	
+
 	system("leaks minishell");
 }
 
@@ -445,6 +445,7 @@ int	ft_run_shell(t_env_v *env)
 	while (1)
 	{
 		str = readline("$ ");
+		printf("ft_strleen %d:\n", (int)ft_strlen(str));
 		if (!str)
 		{
 			ft_free_stack(&env);

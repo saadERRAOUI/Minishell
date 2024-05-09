@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   util_minishell_5.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 17:15:28 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/05/06 22:03:47 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/05/09 14:29:22 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ char	*ft_cmd_valid(char **env, char **cmd)
 	while (env[i])
 	{
 		if (env)
-			tmp = ft_strjoin(env[i], cmd[0]);
+			tmp = ft_strjoin(ft_strdup(env[i]), cmd[0]);
 		if (tmp && !access(tmp, X_OK | F_OK))
 			return (tmp);
 		if (!access(cmd[0], X_OK | F_OK))
@@ -108,7 +108,7 @@ char	**ft_parce_env(char **env)
 	i = 0;
 	while (tab[i])
 	{
-		tab[i] = ft_strjoin(ft_strdup(tab[i]), "/");
+		tab[i] = ft_strjoin(tab[i], "/");
 		i++;
 	}
 	return (tab);

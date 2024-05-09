@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_parsers.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 02:29:36 by serraoui          #+#    #+#             */
-/*   Updated: 2024/05/08 15:53:53 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/09 14:28:35 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ t_cmd	*parsexec(char **ps, int *pos, t_env_v *env)
 		{
 			tab = ft_parce_env(cmd->envp);
 			cmd->path = ft_cmd_valid(tab, cmd->argv);
-			free(tab);
+			ft_free(ft_strleen(tab), tab);
 		}
 	}
 	ft_print_tab(cmd->argv);
