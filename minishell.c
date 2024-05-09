@@ -6,7 +6,7 @@
 /*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 17:15:26 by serraoui          #+#    #+#             */
-/*   Updated: 2024/05/09 14:31:46 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/09 15:18:59 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -422,7 +422,7 @@ void    disable_raw_mode(void)
 
 static void ft_here(void)
 {
-
+	// return ;
 	system("leaks minishell");
 }
 
@@ -430,22 +430,22 @@ int	ft_run_shell(t_env_v *env)
 {
 	t_cmd	*cmd;
 	char	*str;
-    char    buffer[1024];
+    // char    buffer[1024];
 	char	**ptr;
 	int		pos;
-    t_pwd   *wds;
+    // t_pwd   *wds;
 
-    wds = malloc(sizeof(t_pwd));
-    getcwd(buffer, sizeof(buffer));
-    (*wds) = (t_pwd){NULL, ft_strdup(buffer)};
-	(void)cmd;
+    // wds = malloc(sizeof(t_pwd));
+    // getcwd(buffer, sizeof(buffer));
+    // (*wds) = (t_pwd){NULL, ft_strdup(buffer)};
+	// (void)cmd;
     // signal(SIGQUIT, handler);
     // signal(SIGINT, handler);
     child_signal_def(0);
 	while (1)
 	{
 		str = readline("$ ");
-		printf("ft_strleen %d:\n", (int)ft_strlen(str));
+		// printf("ft_strleen %d:\n", (int)ft_strlen(str));
 		if (!str)
 		{
 			ft_free_stack(&env);
@@ -459,8 +459,9 @@ int	ft_run_shell(t_env_v *env)
 		ptr = ft_expand(ptr, env);
 		pos = 0;
 		cmd = parsepipe(ptr, &pos, env);
-        ft_execution(cmd, env, wds);
+        ft_execution(cmd, env, NULL);
 		ft_free_tree(cmd);
+		printf("sizeof :%lu\n", sizeof());
 		free(str);
 		ft_here();
 	}

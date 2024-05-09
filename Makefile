@@ -1,6 +1,6 @@
 NAME = minishell
 
-CFLAGS = -Wall -Wextra -Werror -I/Users/serraoui/.brew/opt/readline/include
+CFLAGS = -Wall -Wextra -Werror  -I/Users/serraoui/.brew/opt/readline/include
 LDFLAGS =  -lreadline -L/Users/serraoui/.brew/opt/readline/lib
 
 CFILS = ./util_func/util_0.c ./util_func/util_1.c ./libft/ft_atoi.c ./libft/ft_bzero.c\
@@ -21,8 +21,10 @@ CFILS = ./util_func/util_0.c ./util_func/util_1.c ./libft/ft_atoi.c ./libft/ft_b
 
 OBJS = $(CFILS:.c=.o)
 
+#-fsanitize=address -g3
+
 $(NAME): $(OBJS)
-	cc $(OBJS) $(LDFLAGS) -o $(NAME)
+	cc   $(OBJS)  $(LDFLAGS) -o $(NAME)
 
 all: $(NAME)
 

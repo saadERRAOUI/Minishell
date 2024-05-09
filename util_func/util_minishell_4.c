@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   util_minishell_4.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 17:24:26 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/05/07 21:59:09 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/05/09 15:13:49 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ char	*expand_or_not(char *ptr)
 			while (ptr[i] && ptr[i] != '\"')
 			{
                 // if (ptr[i] == '$' && ptr[i + 1] && ptr[i + 1] == '?')
-                //     ptr[i] = 
+                //     ptr[i] =
 				if (ptr[i] == '$')
 					ptr[i] = DL;
 				i++;
@@ -105,6 +105,7 @@ char	**ft_check_syntax(char *str)
 	str = ft_convert_0(str);
 	str = add_32(str, "|<>");
 	ptr = ft_split(str, " \t");
+	free(str);
 	ptr = undo(ptr);
 	i = 0;
 	while (ptr[i])

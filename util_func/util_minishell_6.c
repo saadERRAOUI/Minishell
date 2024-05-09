@@ -6,7 +6,7 @@
 /*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 18:21:26 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/05/04 23:24:37 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/09 15:12:41 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ char	*ft_charjoin(char *str, char c)
 	int		len;
 	char	*ptr;
 
-	if (!str || !*str)
+	if (!str)
 	{
 		ptr = malloc(sizeof(char) * (2));
 		ptr[0] = c;
