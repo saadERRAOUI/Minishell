@@ -6,7 +6,7 @@
 /*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 18:02:20 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/05/08 15:56:27 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/09 15:48:36 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,5 +141,6 @@ void                ft_free_tree(t_cmd *cmd);
 void                child_exit(int status);
 void                child_signal_def(int flag);
 char				*get_name(void);
+void				ft_free2(char **ptr);
 
 #endif

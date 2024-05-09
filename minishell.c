@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 17:15:26 by serraoui          #+#    #+#             */
-/*   Updated: 2024/05/09 15:18:59 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/09 17:07:38 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,23 +47,6 @@ t_env_v	*env_init(char **env)
 	return (envs);
 }
 
-/*
-	@AUTHOR	: Saad ERRAOUI
-	@PROTO	: int	peek(char **ps, char *es, char *toks);
-	@DESC	: utility function that seeks the next none whitespace char
-		and tells weither it exists and included in the toks chars.
-	@DATE	: 30-03-2024
-*/
-int	peek(char **ps, char *es, char *toks)
-{
-	char	*s;
-
-	s = *ps;
-	while (s < es && ft_strchr(" \t\r\n\v", *s))
-		s++;
-	*ps = s;
-	return (*s && ft_strchr(toks, *s));
-}
 
 /*
 	@AUTHOR: Hicham BOUZID
@@ -432,6 +415,7 @@ int	ft_run_shell(t_env_v *env)
 	char	*str;
     // char    buffer[1024];
 	char	**ptr;
+	// char **ff;
 	int		pos;
     // t_pwd   *wds;
 
@@ -455,13 +439,21 @@ int	ft_run_shell(t_env_v *env)
 			continue ;
 		ptr = ft_check_syntax(str);
 		if (!ptr)
+		{
+			free(str);
 			continue ;
+		}
 		ptr = ft_expand(ptr, env);
 		pos = 0;
+		ft_print_tab(ptr);
 		cmd = parsepipe(ptr, &pos, env);
         ft_execution(cmd, env, NULL);
 		ft_free_tree(cmd);
-		printf("sizeof :%lu\n", sizeof());
+		// ft_print_tab(ff);
+		// ft_free(ft_strleen(ff), ff);
+		 free(ptr);
+		//ft_free2(ptr);
+		// printf("sizeof :%lu\n", sizeof());
 		free(str);
 		ft_here();
 	}
@@ -490,4 +482,5 @@ int	main(int ac, char **av, char **envp)
 	// 	exit(-1);
     // disable_raw_mode();
 	ft_run_shell(env);
+
 }

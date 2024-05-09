@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_parsers.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 02:29:36 by serraoui          #+#    #+#             */
-/*   Updated: 2024/05/09 14:28:35 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/09 16:09:57 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ t_cmd	*parsepipe(char **ps, int *pos, t_env_v *env)
 	cmd = parsexec(ps, pos, env);
 	if (get_token_type(ps[(*pos)]) == '|')
 	{
+		free(ps[*pos]);
 		(*pos)++;
 		cmd = pipecmd(cmd, parsepipe(ps, pos, env));
         s_exit = 0; //TODO : test !!
@@ -116,24 +117,28 @@ void    parseredir(t_redircmd **red, char **ps, int *pos, t_env_v *env)
         switch(tok)
         {
             case '<':
+				free(ps[*pos]);
                 (*pos)++;
                 tmp = redircmd(ps[(*pos)], O_RDONLY, 0);
                 (*pos)++;
                 ft_lstadd_back_(red, tmp);
                 break;
             case '>':
+				free(ps[*pos]);
                 (*pos)++;
                 tmp = redircmd(ps[(*pos)], O_RDONLY, 1);
                 (*pos)++;
                 ft_lstadd_back_(red, tmp);
                 break;
             case '+':
+				free(ps[*pos]);
                 (*pos)++;
                 tmp = redircmd(ps[(*pos)], O_WRONLY | O_CREAT | O_TRUNC, 1);
                 (*pos)++;
                 ft_lstadd_back_(red, tmp);
                 break;
 			case '-':
+				free(ps[*pos]);
                 (*pos)++;
                 tmp = redircmd(ps[(*pos)], O_RDWR | O_CREAT, 0);
 				f = tmp->file;
