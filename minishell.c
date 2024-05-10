@@ -6,7 +6,7 @@
 /*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 17:15:26 by serraoui          #+#    #+#             */
-/*   Updated: 2024/05/09 17:07:38 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/10 11:08:18 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ t_env_v	*env_init(char **env)
 		and replacet at the last remove ' & "
 	@DATE: 19-04-2024
 */
+
 char	**ft_expand(char **ptr, t_env_v *env)
 {
 	int	i;
@@ -317,6 +318,7 @@ void ft_here_doc(t_redircmd **cmd, t_env_v *env, char *delimeter)
 	}
 	close((*cmd)->fd);
 	(*cmd)->fd = 0;
+	(*cmd)->token = 0;
 	// free((*cmd)->file);
 	// (*cmd)->file = tmp;
 }
@@ -336,6 +338,8 @@ void	redir_cmd(t_cmd *cmd, t_env_v *env)
 	{
 		if (redir->fd == 0)
 		{
+			if (redir->mode == 514 && redir->token == 1)
+				return ;
 			redir->fd = open(redir->file, O_RDONLY);
             printf("[CMD-HERE] %i\n", cmd->type);
             printf("[CMD-HERE] %s\n", ((t_redircmd *)cmd)->file);
@@ -405,8 +409,8 @@ void    disable_raw_mode(void)
 
 static void ft_here(void)
 {
-	// return ;
-	system("leaks minishell");
+	return ;
+	// system("leaks minishell");
 }
 
 int	ft_run_shell(t_env_v *env)

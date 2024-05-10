@@ -6,7 +6,7 @@
 /*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 02:29:36 by serraoui          #+#    #+#             */
-/*   Updated: 2024/05/09 16:09:57 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/10 11:03:31 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,7 @@ void    parseredir(t_redircmd **red, char **ps, int *pos, t_env_v *env)
                 tmp = redircmd(ps[(*pos)], O_RDWR | O_CREAT, 0);
 				f = tmp->file;
 				tmp->file = get_name();
+				tmp->token = 1;
 				//TODO : fork and call ft_here_doc(); //done
                 child_signal_def(2);
 				if (fork() == 0)

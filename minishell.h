@@ -6,7 +6,11 @@
 /*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 18:02:20 by hibouzid          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2024/05/09 21:44:08 by serraoui         ###   ########.fr       */
+=======
+/*   Updated: 2024/05/10 11:02:42 by hibouzid         ###   ########.fr       */
+>>>>>>> d7e500a (PUSH-H-0.3.8: fix here_doc.)
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +87,7 @@ typedef struct s_redircmd
 	t_cmd					*cmd;
 	char					*file;
 	int						mode;
+	int token;
 	int						fd;
 	t_redircmd				*next;
 }							t_redircmd;
