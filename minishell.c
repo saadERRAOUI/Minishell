@@ -6,7 +6,7 @@
 /*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 17:15:26 by serraoui          #+#    #+#             */
-/*   Updated: 2024/05/10 19:53:14 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/05/10 22:25:10 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ void	ft_print_tab(char **s)
 	}
 }
 
-
+/*
 static void print_tree(t_cmd *tree)
 {
 		t_redircmd *_t;
@@ -141,6 +141,7 @@ static void print_tree(t_cmd *tree)
 		print_tree(((t_pipecmd *)tree)->right);
 	}
 }
+*/
 
 
 void	ft_pipe(t_pipecmd *cmd, t_env_v *env)
@@ -229,20 +230,28 @@ void ft_execut(t_cmd *cmd, t_env_v *env, t_pwd *wds)
     child_signal_def(2);
 	if (ft_builtin_orch(cd->argv, cd, &env, wds))
 		return ;
-	if (!cd->path)
-	{
-		if (fork() == 0)
-			if (execve(cd->path, cd->argv, cd->envp) == -1)
-		ft_putstr_fd("command not found\n", 2);
-		s_exit = 127;
-		return ;
-	}
+	// if (!cd->path)
+	// {
+	// 	if (fork() == 0)
+    //     {            
+	// 		if (execve(cd->path, cd->argv, cd->envp) == -1)
+    //         {
+	// 	        ft_putstr_fd("command not found\n", 2);
+	// 	        s_exit = 127;
+    //             exit(s_exit);
+    //         }
+    //     }
+	// 	return ;
+	// }
 	else
 	{
 		if (fork() == 0) {
             child_signal_def(1);
             if (execve(cd->path, cd->argv, cd->envp) == -1)
-                ft_putstr_fd("command not found\n", 2);
+            {
+		        ft_putstr_fd("command not found\n", 2);
+                exit(s_exit);
+            }
         }
         else {
 		    wait(&s);
@@ -434,9 +443,9 @@ int	ft_run_shell(t_env_v *env)
 	// (void)cmd;
     // signal(SIGQUIT, handler);
     // signal(SIGINT, handler);
-    child_signal_def(0);
 	while (1)
 	{
+        child_signal_def(0);
 		str = readline("$ ");
 		// printf("ft_strleen %d:\n", (int)ft_strlen(str));
 		if (!str)
@@ -490,5 +499,4 @@ int	main(int ac, char **av, char **envp)
 	// if (!env)
 	// 	exit(-1);
 	ft_run_shell(env);
-
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   util_minishell_4.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 17:24:26 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/05/09 15:48:20 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/10 21:51:08 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,8 @@ void	ft_free2(char **ptr)
 		*ptr = NULL;
 		ptr++;
 	}
-	free(ptr);
+	// free(ptr);
+    printf("======\n");
 }
 
 char	*get_value(t_env_v *env, char *str)

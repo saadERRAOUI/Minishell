@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   util_minishell_5.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 17:15:28 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/05/09 14:29:22 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/10 22:25:53 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ char	*ft_cmd_valid(char **env, char **cmd)
 		return (NULL);
 	if (!access(cmd[0], F_OK | X_OK))
 		return (ft_strdup(cmd[0]));
-	 printf("imk %d here\n", (int)ft_strlen(*cmd));
 	while (env[i])
 	{
 		if (env)
