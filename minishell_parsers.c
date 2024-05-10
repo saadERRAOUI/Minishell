@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_parsers.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 02:29:36 by serraoui          #+#    #+#             */
-/*   Updated: 2024/05/06 16:35:32 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/07 15:59:36 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ t_cmd	*parsexec(char **ps, int *pos, t_env_v *env)
 	cmd->argv[argc] = NULL;
 	if (cmd->argv)
 	{
+		printf("=============----------\n");
 		cmd->envp = get_envp(env);
 		if (cmd->envp)
 		{
@@ -60,6 +61,8 @@ t_cmd	*parsexec(char **ps, int *pos, t_env_v *env)
 			cmd->path = ft_cmd_valid(tab, cmd->argv);
 			free(tab);
 		}
+		else
+			cmd->path = ft_cmd_valid(NULL, cmd->argv);
 	}
 	ft_print_tab(cmd->argv);
 	if (ret && ret->type == 2)

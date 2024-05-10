@@ -6,7 +6,7 @@
 /*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 18:02:20 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/05/06 15:56:46 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/06 20:06:12 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,10 +130,14 @@ char				**add_dollar(char **ptr, t_env_v *env);
 char				*expand_or_not(char *ptr);
 int					ft_back(char *str, int index);
 char				*ft_shift(char *ptr);
-
-
+int					ft_strleen(char **ptr);
+char	**ft_parce_env(char **env);
+char **get_envp(t_env_v *env);
+char *ft_cmd_valid(char **env, char **cmd);
+void ft_print_tab(char **s);
+char	**ft_free(int index, char **ptr);
 void						ft_free_tree(t_cmd *cmd);
-
+char	**syntax(char **ptr);
 //builtins
 int	pwd(t_pwd *wds);
 int	echo(int ac, char **av);
