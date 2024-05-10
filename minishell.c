@@ -6,7 +6,7 @@
 /*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 17:15:26 by serraoui          #+#    #+#             */
-/*   Updated: 2024/05/08 16:37:09 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/10 17:07:47 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -230,6 +230,9 @@ void ft_execut(t_cmd *cmd, t_env_v *env, t_pwd *wds)
 	(void)env;
 
 	cd = (t_execcmd *)cmd;
+	printf("-----------------> %d\n", (int)ft_strlen(cd->argv[0]));
+	if (!cd->path[0] && !cd->argv[0])
+		return ;
 	if (ft_builtin_orch(cd->argv, cd, &env, wds))
 		return ;
 	if (!cd->path)
@@ -244,7 +247,7 @@ void ft_execut(t_cmd *cmd, t_env_v *env, t_pwd *wds)
 		printf("_=-+%s\n", cd->path);
 		if (fork() == 0)
 		if (execve(cd->path, cd->argv, cd->envp) == -1)
-			ft_putstr_fd("error happen in execve\n", 2);
+			ft_putstr_fd("command not found\n", 2);
 		wait(0);
 	}
 	return ;
