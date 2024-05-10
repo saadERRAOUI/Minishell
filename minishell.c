@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 17:15:26 by serraoui          #+#    #+#             */
-/*   Updated: 2024/05/10 11:08:18 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/10 19:53:14 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,7 +206,7 @@ int ft_builtin_orch(char **argv, t_execcmd *cmd, t_env_v **env, t_pwd *wds)
     else if (!ft_strcmp("pwd", argv[0]))
         return (pwd(wds), 1);
     else if (!ft_strcmp("export", argv[0]))
-        return (ft_export(env, cmd->argv[1]), 1);
+        return (ft_export(env, cmd->argv), 1);
     else if (!ft_strcmp("unset", argv[0]))
         return (ft_unset(env, cmd->argv[1]), 1);
     else if (!ft_strcmp("env", argv[0]))
@@ -223,25 +223,21 @@ void ft_execut(t_cmd *cmd, t_env_v *env, t_pwd *wds)
 	(void)env;
 
 	cd = (t_execcmd *)cmd;
-    // signal(SIGQUIT, SIG_IGN);
-    // signal(SIGINT, SIG_IGN);
     child_signal_def(2);
 	if (ft_builtin_orch(cd->argv, cd, &env, wds))
 		return ;
 	if (!cd->path)
 	{
 		ft_putstr_fd("command not found\n", 2);
+		s_exit = 127;
 		return ;
 	}
 	else
 	{
 		if (fork() == 0) {
-            // signal(SIGQUIT, SIG_DFL);
-            // signal(SIGINT, SIG_DFL);
             child_signal_def(1);
             if (execve(cd->path, cd->argv, cd->envp) == -1)
                 ft_putstr_fd("error happen in execve\n", 2);
-            //exit(-1); //!todo : add errno
         }
         else {
 		    wait(&s);
@@ -341,10 +337,10 @@ void	redir_cmd(t_cmd *cmd, t_env_v *env)
 			if (redir->mode == 514 && redir->token == 1)
 				return ;
 			redir->fd = open(redir->file, O_RDONLY);
-            printf("[CMD-HERE] %i\n", cmd->type);
-            printf("[CMD-HERE] %s\n", ((t_redircmd *)cmd)->file);
-            printf("[CMD-HERE] %p\n", ((t_redircmd *)cmd)->cmd);
-            printf("[CMD-HERE] %d\n", ((t_redircmd *)cmd)->mode);
+            // printf("[CMD-HERE] %i\n", cmd->type);
+            // printf("[CMD-HERE] %s\n", ((t_redircmd *)cmd)->file);
+            // printf("[CMD-HERE] %p\n", ((t_redircmd *)cmd)->cmd);
+            // printf("[CMD-HERE] %d\n", ((t_redircmd *)cmd)->mode);
 			if (redir->fd < 0)
 				ft_putstr_fd("no such file of directory\n", 2);
 			if (dup2(redir->fd, in) == -1)
@@ -357,7 +353,7 @@ void	redir_cmd(t_cmd *cmd, t_env_v *env)
 				if (redir->fd < 0)
 					ft_putstr_fd("problem in open function\n", 2);
 				if (dup2(redir->fd, out) == -1)
-				printf("dup3\n");
+					printf("dup3\n");
 		}
 		else if (redir->fd == 1)
 		{
@@ -417,15 +413,14 @@ int	ft_run_shell(t_env_v *env)
 {
 	t_cmd	*cmd;
 	char	*str;
-    // char    buffer[1024];
+    char    buffer[1024];
 	char	**ptr;
-	// char **ff;
 	int		pos;
-    // t_pwd   *wds;
+    t_pwd   *wds;
 
-    // wds = malloc(sizeof(t_pwd));
-    // getcwd(buffer, sizeof(buffer));
-    // (*wds) = (t_pwd){NULL, ft_strdup(buffer)};
+    wds = malloc(sizeof(t_pwd));
+    getcwd(buffer, sizeof(buffer));
+    (*wds) = (t_pwd){NULL, ft_strdup(buffer)};
 	// (void)cmd;
     // signal(SIGQUIT, handler);
     // signal(SIGINT, handler);
@@ -451,7 +446,7 @@ int	ft_run_shell(t_env_v *env)
 		pos = 0;
 		ft_print_tab(ptr);
 		cmd = parsepipe(ptr, &pos, env);
-        ft_execution(cmd, env, NULL);
+        ft_execution(cmd, env, wds);
 		ft_free_tree(cmd);
 		// ft_print_tab(ff);
 		// ft_free(ft_strleen(ff), ff);

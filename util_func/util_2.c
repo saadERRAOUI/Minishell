@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   util_2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 17:22:40 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/05/09 17:06:40 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/10 19:40:43 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,6 @@ static int	ft_checkk(char **ptr, int index)
 	@PROTOTYPE: char **syntax(char **ptr)
 	DATE: 22-04-2024
 */
-
 char	**syntax(char **ptr)
 {
 	if (!ft_checkk(ptr, 0))
@@ -153,6 +152,7 @@ char	**syntax(char **ptr)
 		ft_free(ft_strleen(ptr), ptr);
 		// free(ptr);
 		ft_putstr_fd("bash: syntax error near unexpected token\n", 2);
+		s_exit = 258;
 		return (NULL);
 	}
 	return (ptr);

@@ -6,7 +6,7 @@
 /*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 17:04:14 by serraoui          #+#    #+#             */
-/*   Updated: 2024/05/04 23:07:21 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/05/10 19:41:15 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,10 @@ void	cd(char **av, t_pwd *wds)
         wds->curr_wd = ft_strdup(buffer);
     }
 	else
+	{
+		s_exit = 1;
 		printf("bash: cd: %s: No such file or directory\n", av[1]);
+	}
 }
 
 

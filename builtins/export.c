@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 01:40:47 by serraoui          #+#    #+#             */
-/*   Updated: 2024/04/25 11:06:55 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/10 18:08:57 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,47 +45,98 @@ static void	ft_export_envs(t_env_v **env)
 	}
 }
 
-static void	ft_hdl_case(t_env_v **env, char **_s, t_env_v *node)
+static int	is_valid_name(char *s)
 {
-	if (_s[0][ft_strlen(_s[0]) - 1] == '+')
-	{
-		_s[0][ft_strlen(_s[0]) - 1] = '\0';
-		node = ft_content_equal(env, _s[0]);
-		node->value = ft_strjoin(ft_strdup(node->value), _s[1]);
-	}
-	else
-	{
-		(*node) = (t_env_v){_s[0], _s[1], NULL};
-		ft_lstadd_back(env, node);
-	}
-}
-
-void	ft_export(t_env_v **env, char *s)
-{
-	char	**_s;
-	t_env_v	*node;
+	int		i;
+	char	*s_rep;
 
 	if (!s)
-		return (ft_export_envs(env));
-	_s = ft_split_2(s, '=');
-	if (!_s)
-		return ;
-	node = malloc(sizeof(t_env_v));
-	if (count_words(s, '=') >= 2)
-		ft_hdl_case(env, _s, node);
-	else if (count_words(s, '=') == 1 && ft_strchr(s, '='))
+		return (0);
+	i = 0;
+	s_rep = ft_strdup(s);
+	if (s_rep[ft_strlen(s) - 1] == '+')
+		s_rep[ft_strlen(s) - 1] = '\0';
+	if (!ft_isalpha(s_rep[0]) && s_rep[0] != '_')
+		return (0);
+	while (s_rep[i])
 	{
-		if (_s[0][ft_strlen(_s[0]) - 1] == '+')
-			_s[0][ft_strlen(_s[0]) - 1] = '\0';
-		if (ft_content_equal(env, _s[0]))
-			return (ft_free(0, _s), free(node));
-		(*node) = (t_env_v){_s[0], " ", NULL};
+		if (!ft_isalnum(s_rep[i]) && s_rep[i] != '_')
+			return (free(s_rep), 0);
+		i++;
+	}
+	return (free(s_rep), 1);
+}
+
+static int	util_export(t_env_v **env, t_env_v *node, char **s, int flag)
+{
+	if (ft_content_equal(env, s[0]) && flag && s[1])
+	{
+		node = ft_content_equal(env, s[0]);
+		node->value = ft_strjoin(ft_strdup(node->value), s[1]);
+	}
+	else if (!ft_content_equal(env, s[0]))
+	{
+		if (s[1])
+			(*node) = (t_env_v){s[0], s[1], NULL};
+		else
+			(*node) = (t_env_v){s[0], " ", NULL};
 		ft_lstadd_back(env, node);
 	}
 	else
+		return (0);
+	return (1);
+}
+
+static int	export_arg_value(t_env_v **env, char **s)
+{
+	t_env_v *node;
+	int		flag;
+
+	flag = 0;
+	node = (t_env_v *)malloc(sizeof(t_env_v));
+	if (!node)
+		return (0);
+	if (s[0] && s[0][ft_strlen(s[0]) - 1] == '+')
 	{
-		free(_s[0]);
-		free(node);
+		s[0][ft_strlen(s[0]) - 1] = '\0';
+		flag = 1;
 	}
-	free(_s);
+	if (!util_export(env, node, s, flag))
+		free(node);
+	free(s[0]);
+	return (1);
+}
+
+static int	export_argument(t_env_v **env, char *av)
+{
+	char		**s;
+
+	s = ft_split_2(av, '=');
+	if (!s)
+		return (0);
+	if (!is_valid_name(s[0]))
+	{
+		s_exit = 2; //!-2 ?
+		ft_putstr_fd("bash: export: '", 2);
+		ft_putstr_fd(av, 2);
+		ft_putstr_fd("': not a valid identifier\n", 2);
+		return (free(s[0]), free(s), 0);
+	}
+	if (!export_arg_value(env, s))
+		return (free(s), 0);
+	s_exit = 0;
+	return (free(s), 1);
+}
+
+void	ft_export(t_env_v **env, char **av)
+{
+	if (av && !av[1])
+		return (ft_export_envs(env));
+	av++;
+	while (*av)
+	{
+		if (!export_argument(env, (*av)))
+			break ;
+		av++;
+	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 18:02:20 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/05/10 11:57:30 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/10 19:53:29 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@
 # define CTRL_C 130
 
 //error files Command errors Signal  Syntax error
-int s_exit;
+extern int s_exit;
 
 typedef struct s_redircmd t_redircmd;
 typedef struct s_pwd
@@ -91,7 +91,8 @@ typedef struct s_redircmd
 int					ft_strcmp(char *s1, char *s2);
 int					count_words(char const *s, char c);
 int					peek(char **ps, char *es, char *toks);
-void				ft_export(t_env_v **env, char *s);
+// void				ft_export(t_env_v **env, char *s);
+void				ft_export(t_env_v **env, char **av);
 void				ft_env(t_env_v *env);
 void				ft_list_remove_if(t_env_v **begin_list, void *data_ref,
                         int (*cmp)(char *, char *));
