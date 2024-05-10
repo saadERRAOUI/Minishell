@@ -5,3 +5,31 @@
     + fork here_doc
     + exit status
     + norm / clean code
+
+
+bash-3.2$ echo $? | echo $?
+0
+bash: syntax error near unexpected token `<>'
+bash-3.2$ echo $?
+258
+
+bash: kdfksjh: command not found
+bash-3.2$ echo $?
+127
+
+cat: mouad: No such file or directory
+bash-3.2$ echo $?
+1
+
+<< "" << "" << "" << ""
+
+> out ls
+
+line with only tabs or spaces
+-nnnnnnnnnnnnnnn -nnnnnnnnnnnnnnn -n -nnnnnnnnnnnn hello
+ ls > $USERtest
+ a=ls -la
+a=b c d e f
+
+ unset TERM_SESSION_ID
+  $jkfdjkafldjaklfja
