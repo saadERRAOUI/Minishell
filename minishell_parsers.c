@@ -42,6 +42,7 @@ t_cmd	*parsexec(char **ps, int *pos, t_env_v *env)
 	cmd->argv[argc] = NULL;
 	if (cmd->argv)
 	{
+		printf("=============----------\n");
 		cmd->envp = get_envp(env);
 		if (cmd->envp)
 		{
@@ -49,6 +50,8 @@ t_cmd	*parsexec(char **ps, int *pos, t_env_v *env)
 			cmd->path = ft_cmd_valid(tab, cmd->argv);
 			ft_free(ft_strleen(tab), tab);
 		}
+		else
+			cmd->path = ft_cmd_valid(NULL, cmd->argv);
 	}
 	ft_print_tab(cmd->argv);
 	if (ret && ret->type == 2)

@@ -98,7 +98,7 @@ void	ft_print_tab(char **s)
 	}
 }
 
-/*
+
 static void print_tree(t_cmd *tree)
 {
 		t_redircmd *_t;
@@ -110,7 +110,10 @@ static void print_tree(t_cmd *tree)
 		printf("EXEC_NODE_argv\n");
 		ft_print_tab(((t_execcmd *)tree)->argv);
 		if (((t_execcmd *)tree)->path)
+		{
+			printf("-------%d--------\n", (int)ft_strleen(((t_execcmd *)tree)->argv));
 			printf("path: %s\n", ((t_execcmd *)tree)->path);
+		}
 	}
 	else if (tree && tree->type == 2)
 	{
@@ -138,7 +141,7 @@ static void print_tree(t_cmd *tree)
 		print_tree(((t_pipecmd *)tree)->right);
 	}
 }
-*/
+
 
 void	ft_pipe(t_pipecmd *cmd, t_env_v *env)
 {
@@ -228,6 +231,8 @@ void ft_execut(t_cmd *cmd, t_env_v *env, t_pwd *wds)
 		return ;
 	if (!cd->path)
 	{
+		if (fork() == 0)
+			if (execve(cd->path, cd->argv, cd->envp) == -1)
 		ft_putstr_fd("command not found\n", 2);
 		s_exit = 127;
 		return ;
@@ -237,7 +242,7 @@ void ft_execut(t_cmd *cmd, t_env_v *env, t_pwd *wds)
 		if (fork() == 0) {
             child_signal_def(1);
             if (execve(cd->path, cd->argv, cd->envp) == -1)
-                ft_putstr_fd("error happen in execve\n", 2);
+                ft_putstr_fd("command not found\n", 2);
         }
         else {
 		    wait(&s);
@@ -379,6 +384,11 @@ void	redir_cmd(t_cmd *cmd, t_env_v *env)
 	close(out_);
 }
 
+// static void ft_here(void)
+// {
+// 	system("leaks minishell");
+// }
+
 void ft_execution(t_cmd *cmd, t_env_v *env, t_pwd *wds)
 {
     int     s;
@@ -479,7 +489,6 @@ int	main(int ac, char **av, char **envp)
 	env = env_init(envp);
 	// if (!env)
 	// 	exit(-1);
-    // disable_raw_mode();
 	ft_run_shell(env);
 
 }

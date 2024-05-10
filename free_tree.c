@@ -17,7 +17,8 @@ void ft_free_execcmd(t_execcmd *cmd)
 {
 	ft_free(ft_strleen(cmd->argv), cmd->argv);
 	free(cmd->path);
-	ft_free(ft_strleen(cmd->envp), cmd->envp);
+	if (cmd->envp)
+		ft_free(ft_strleen(cmd->envp), cmd->envp);
 	free(cmd);
 	cmd = NULL;
 }
