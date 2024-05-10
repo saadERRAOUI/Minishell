@@ -6,7 +6,7 @@
 /*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 02:29:36 by serraoui          #+#    #+#             */
-/*   Updated: 2024/05/07 15:59:36 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/10 11:03:31 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,20 +46,9 @@ t_cmd	*parsexec(char **ps, int *pos, t_env_v *env)
 		cmd->envp = get_envp(env);
 		if (cmd->envp)
 		{
-
-			// printf("{_TAB} %p\n", env);
-			// t_env_v *s = env;
-			// while (s)
-			// {
-			// 	printf("===> %s=%s\n", s->key, s->value);
-			// 	s = s->next;
-			// }
 			tab = ft_parce_env(cmd->envp);
-			// printf("{TAB} %p\n", tab);
-            // for(int i =0;  tab[i]; i++)
-            //     printf("%s\n", tab[i]);
 			cmd->path = ft_cmd_valid(tab, cmd->argv);
-			free(tab);
+			ft_free(ft_strleen(tab), tab);
 		}
 		else
 			cmd->path = ft_cmd_valid(NULL, cmd->argv);
@@ -82,8 +71,10 @@ t_cmd	*parsepipe(char **ps, int *pos, t_env_v *env)
 	cmd = parsexec(ps, pos, env);
 	if (get_token_type(ps[(*pos)]) == '|')
 	{
+		free(ps[*pos]);
 		(*pos)++;
 		cmd = pipecmd(cmd, parsepipe(ps, pos, env));
+        s_exit = 0; //TODO : test !!
 	}
 	return (cmd);
 }
@@ -98,19 +89,19 @@ int	get_token_type(char *s)
 	ret = (int)*s;
 	switch (*s)
 	{
-	case '|':
-		break ;
-	case '>':
-		if (*(s + 1) == '>')
-			ret = '+';
-		break ;
-	case '<':
-		if (*(s + 1) == '<')
-			ret = '-';
-		break ;
-	default:
-		ret = 'a';
-		break ;
+        case '|':
+            break ;
+        case '>':
+            if (*(s + 1) == '>')
+                ret = '+';
+            break ;
+        case '<':
+            if (*(s + 1) == '<')
+                ret = '-';
+            break ;
+        default:
+            ret = 'a';
+            break ;
 	}
 	return (ret);
 }
@@ -119,6 +110,7 @@ void    parseredir(t_redircmd **red, char **ps, int *pos, t_env_v *env)
 {
 	int			tok;
 	t_redircmd	*tmp;
+	char *f;
 
 	tok = get_token_type(ps[(*pos)]);
     while (tok == '>' || tok == '+' || tok == '<' || tok == '-')
@@ -128,47 +120,45 @@ void    parseredir(t_redircmd **red, char **ps, int *pos, t_env_v *env)
         switch(tok)
         {
             case '<':
+				free(ps[*pos]);
                 (*pos)++;
                 tmp = redircmd(ps[(*pos)], O_RDONLY, 0);
                 (*pos)++;
                 ft_lstadd_back_(red, tmp);
                 break;
             case '>':
+				free(ps[*pos]);
                 (*pos)++;
                 tmp = redircmd(ps[(*pos)], O_RDONLY, 1);
                 (*pos)++;
-
-                //!TO REMOVE TESTING PURPOSE
-                // printf("TMP__ %p\n", tmp);
-                // printf("TMP__ %p\n", tmp->next);
-                // printf("TMP__ %s\n", tmp->file);
-                // if((*red)) {
-                //     printf("TMP_TMP__ %p\n", (*red));
-                //     printf("TMP_TMP__ %p\n", (*red)->next);
-                //     printf("TMP_TMP__ %s\n", (*red)->file);
-                // }
-                //!TO REMOVE TESTING PURPOSE
-
                 ft_lstadd_back_(red, tmp);
                 break;
             case '+':
+				free(ps[*pos]);
                 (*pos)++;
                 tmp = redircmd(ps[(*pos)], O_WRONLY | O_CREAT | O_TRUNC, 1);
                 (*pos)++;
                 ft_lstadd_back_(red, tmp);
                 break;
 			case '-':
+				free(ps[*pos]);
                 (*pos)++;
                 tmp = redircmd(ps[(*pos)], O_RDWR | O_CREAT, 0);
-				//TODO : fork and call ft_here_doc();
+				f = tmp->file;
+				tmp->file = get_name();
+				tmp->token = 1;
+				//TODO : fork and call ft_here_doc(); //done
+                child_signal_def(2);
 				if (fork() == 0)
-					{
-						ft_here_doc(&tmp, env);
-					}
-					wait(0);
+                {
+                    // signal(SIGQUIT, SIG_DFL);
+                    // signal(SIGINT, SIG_DFL);
+                    child_signal_def(1);
+                    ft_here_doc(&tmp, env, f);
+                }
+				wait(&tok);
+                child_exit(tok);
                 (*pos)++;
-				// if (unlink(tmp->file) == -1)
-				// printf("hello mtf\n");
                 ft_lstadd_back_(red, tmp);
                 break;
         }

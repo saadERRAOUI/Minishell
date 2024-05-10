@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   util_minishell_4.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 17:24:26 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/05/04 23:04:34 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/09 15:48:20 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ char	*expand_or_not(char *ptr)
 			i++;
 			while (ptr[i] && ptr[i] != '\"')
 			{
+                // if (ptr[i] == '$' && ptr[i + 1] && ptr[i + 1] == '?')
+                //     ptr[i] =
 				if (ptr[i] == '$')
 					ptr[i] = DL;
 				i++;
@@ -83,6 +85,17 @@ char	**ft_free(int index, char **ptr)
 	return (0);
 }
 
+void	ft_free2(char **ptr)
+{
+	while ((*ptr))
+	{
+		free(*ptr);
+		*ptr = NULL;
+		ptr++;
+	}
+	free(ptr);
+}
+
 char	*get_value(t_env_v *env, char *str)
 {
 	while (env)
@@ -103,6 +116,7 @@ char	**ft_check_syntax(char *str)
 	str = ft_convert_0(str);
 	str = add_32(str, "|<>");
 	ptr = ft_split(str, " \t");
+	free(str);
 	ptr = undo(ptr);
 	i = 0;
 	while (ptr[i])

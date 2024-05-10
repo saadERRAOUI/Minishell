@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   util_2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 17:22:40 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/05/04 23:24:31 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/10 19:40:43 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ char	*add_32(char *str, char *sym)
 				&& ft_strchr(sym, str[i + 1])) || (ft_strchr(sym, str[i])
 				&& i < (int)ft_strlen(str) && !ft_strchr(sym, str[i + 1])))
 		{
+			printf("-------\n");
 			ptr = ft_charjoin(ptr, str[i]);
 			ptr = ft_charjoin(ptr, 32);
 		}
@@ -46,6 +47,10 @@ char	*add_32(char *str, char *sym)
 			ptr = ft_charjoin(ptr, str[i]);
 		i++;
 	}
+	// printf("ft_strleen %d:\n", (int)ft_strlen(ptr));
+	// free(str);
+	// if (i == 0)
+	// 	free(ptr);
 	return (ptr);
 }
 
@@ -105,6 +110,9 @@ char	*ft_shift(char *ptr)
 
 static int	ft_checkk(char **ptr, int index)
 {
+    printf("INDEX__%d\n", ft_strleen(ptr));
+    if ( !ptr || !(*ptr))
+        return (0);
 	while (ptr[index])
 	{
 		if (ft_strchr("<>|", ptr[index][0]) && ft_strlen(ptr[index]) >= 2)
@@ -122,7 +130,7 @@ static int	ft_checkk(char **ptr, int index)
 		else if (ft_strchr("|><", ptr[index][0]) && (!ptr[index + 1]
 				|| ft_strchr("|><", ptr[index + 1][0])))
 		{
-			if (ptr[index][0] == '|' && ptr[index + 1][0] != '|')
+			if (ptr[index][0] == '|' && ptr[index + 1] && ptr[index + 1][0] != '|')
 				return (1);
 			return (0);
 		}
@@ -137,13 +145,14 @@ static int	ft_checkk(char **ptr, int index)
 	@PROTOTYPE: char **syntax(char **ptr)
 	DATE: 22-04-2024
 */
-
 char	**syntax(char **ptr)
 {
 	if (!ft_checkk(ptr, 0))
 	{
 		ft_free(ft_strleen(ptr), ptr);
+		// free(ptr);
 		ft_putstr_fd("bash: syntax error near unexpected token\n", 2);
+		s_exit = 258;
 		return (NULL);
 	}
 	return (ptr);

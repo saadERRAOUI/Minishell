@@ -6,7 +6,7 @@
 /*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 17:15:28 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/05/10 17:05:16 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/09 14:29:22 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ char	*ft_cmd_valid(char **env, char **cmd)
 	char	*tmp;
 
 	i = 0;
-	if (!cmd || !*cmd[0])
-		return (NULL);
+    if (!env)
+        return (NULL);
 	if ((!ft_strncmp(cmd[i], ".", 1) || !ft_strncmp(cmd[i], "./", 2))
 		|| (!ft_strncmp(cmd[i], "/", 1) && access(cmd[0], X_OK | F_OK)))
 		return (NULL);
@@ -43,7 +43,7 @@ char	*ft_cmd_valid(char **env, char **cmd)
 	while (env[i])
 	{
 		if (env)
-			tmp = ft_strjoin(env[i], cmd[0]);
+			tmp = ft_strjoin(ft_strdup(env[i]), cmd[0]);
 		if (tmp && !access(tmp, X_OK | F_OK))
 			return (tmp);
 		if (!access(cmd[0], X_OK | F_OK))
@@ -109,7 +109,7 @@ char	**ft_parce_env(char **env)
 	i = 0;
 	while (tab[i])
 	{
-		tab[i] = ft_strjoin(ft_strdup(tab[i]), "/");
+		tab[i] = ft_strjoin(tab[i], "/");
 		i++;
 	}
 	return (tab);
