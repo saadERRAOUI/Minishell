@@ -6,7 +6,7 @@
 /*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 17:15:26 by serraoui          #+#    #+#             */
-/*   Updated: 2024/05/11 17:17:00 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/11 22:24:29 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,6 @@
 		an each node contains 1 env var defined by a (key, value) params.
 	@DATE	: 25-03-2024
 */
-void ft_execut(t_cmd *cmd, t_env_v *env, t_pwd *wds);
-void ft_execution(t_cmd *cmd, t_env_v *env, t_pwd *wds);
-
 t_env_v	*env_init(char **env)
 {
 	t_env_v	*envs;
@@ -55,7 +52,6 @@ t_env_v	*env_init(char **env)
 		and replacet at the last remove ' & "
 	@DATE: 19-04-2024
 */
-
 char	**ft_expand(char **ptr, t_env_v *env)
 {
 	int	i;
@@ -98,7 +94,7 @@ void	ft_print_tab(char **s)
 	}
 }
 
-/**
+/*
 static void print_tree(t_cmd *tree)
 {
 		t_redircmd *_t;
@@ -150,23 +146,17 @@ void	ft_pipe(t_pipecmd *cmd, t_env_v *env)
 	int		pip[2];
     int     s;
 
-	// int in = dup(0);
-	// int out = dup(1);
-    // signal(SIGQUIT, SIG_IGN);
-    // signal(SIGINT, SIG_IGN);
     child_signal_def(2);
 	if (pipe(pip) == -1)
 	{
 		ft_putstr_fd("problem in pipe\n", 2);
-		exit(-1); //check exit status
+		exit(EXIT_FAILURE);
 	}
 	pid = fork();
 	if (pid < 0)
 		ft_putstr_fd("error in fork child 1\n", 2);
 	if (pid == 0)
 	{
-        // signal(SIGQUIT, SIG_DFL);
-        // signal(SIGINT, SIG_DFL);
         child_signal_def(1);
 		close(pip[0]);
 		dup2(pip[1], 1);
@@ -179,8 +169,6 @@ void	ft_pipe(t_pipecmd *cmd, t_env_v *env)
 		ft_putstr_fd("error in fork child 2\n", 2);
 	if (pid1 == 0)
 	{
-        // signal(SIGQUIT, SIG_DFL);
-        // signal(SIGINT, SIG_DFL);
         child_signal_def(1);
 		close(pip[1]);
 		dup2(pip[0], 0);
@@ -190,11 +178,8 @@ void	ft_pipe(t_pipecmd *cmd, t_env_v *env)
 	}
 	close(pip[0]);
 	close(pip[1]);
-	// waitpid(pid, NULL, 0);
-	// waitpid(pid1, NULL, 0);
 	wait(&s);
     child_exit(s);
-	// wait(0);
 }
 
 int ft_builtin_orch(char **argv, t_execcmd *cmd, t_env_v **env, t_pwd *wds)
@@ -211,7 +196,7 @@ int ft_builtin_orch(char **argv, t_execcmd *cmd, t_env_v **env, t_pwd *wds)
     else if (!ft_strcmp("export", argv[0]))
         return (ft_export(env, cmd->argv), 1);
     else if (!ft_strcmp("unset", argv[0]))
-        return (ft_unset(env, cmd->argv[1]), 1);
+        return (ft_unset(env, cmd->argv), 1);
     else if (!ft_strcmp("env", argv[0]))
         return (ft_env((*env)), 1);
     else if (!ft_strcmp("exit", argv[0]))
@@ -229,22 +214,28 @@ void ft_execut(t_cmd *cmd, t_env_v *env, t_pwd *wds)
     child_signal_def(2);
 	if (ft_builtin_orch(cd->argv, cd, &env, wds))
 		return ;
-	if (!cd->argv[0])
-		return ;
-	if (!cd->path)
-	{
-		if (fork() == 0)
-			if (execve(cd->path, cd->argv, cd->envp) == -1)
-		ft_putstr_fd("command not found\n", 2);
-		s_exit = 127;
-		return ;
-	}
+	// if (!cd->path)
+	// {
+	// 	if (fork() == 0)
+    //     {
+	// 		if (execve(cd->path, cd->argv, cd->envp) == -1)
+    //         {
+	// 	        ft_putstr_fd("command not found\n", 2);
+	// 	        s_exit = 127;
+    //             exit(s_exit);
+    //         }
+    //     }
+	// 	return ;
+	// }
 	else
 	{
 		if (fork() == 0) {
             child_signal_def(1);
             if (execve(cd->path, cd->argv, cd->envp) == -1)
-                ft_putstr_fd("command not found\n", 2);
+            {
+		        ft_putstr_fd("command not found\n", 2);
+                exit(s_exit);
+            }
         }
         else {
 		    wait(&s);
@@ -436,9 +427,9 @@ int	ft_run_shell(t_env_v *env)
 	// (void)cmd;
     // signal(SIGQUIT, handler);
     // signal(SIGINT, handler);
-    child_signal_def(0);
 	while (1)
 	{
+        child_signal_def(0);
 		str = readline("$ ");
 		// printf("ft_strleen %d:\n", (int)ft_strlen(str));
 		if (!str)
@@ -456,13 +447,13 @@ int	ft_run_shell(t_env_v *env)
 		}
 		ptr = ft_expand(ptr, env);
 		pos = 0;
-		ft_print_tab(ptr);
+		//ft_print_tab(ptr);
 		cmd = parsepipe(ptr, &pos, env);
         ft_execution(cmd, env, wds);
 		ft_free_tree(cmd);
-		// ft_print_tab(ff);
+		//ft_print_tab(ff);
 		// ft_free(ft_strleen(ff), ff);
-		 free(ptr);
+		free(ptr);
 		//ft_free2(ptr);
 		// printf("sizeof :%lu\n", sizeof());
 		free(str);
@@ -492,5 +483,4 @@ int	main(int ac, char **av, char **envp)
 	// if (!env)
 	// 	exit(-1);
 	ft_run_shell(env);
-
 }

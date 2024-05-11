@@ -6,7 +6,7 @@
 /*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 17:24:26 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/05/11 17:25:41 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/11 22:22:46 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,18 @@ char	**ft_free(int index, char **ptr)
 	}
 	free(ptr);
 	return (0);
+}
+
+void	ft_free2(char **ptr)
+{
+	while ((*ptr))
+	{
+		free(*ptr);
+		*ptr = NULL;
+		ptr++;
+	}
+	// free(ptr);
+    printf("======\n");
 }
 
 char	*get_value(t_env_v *env, char *str)

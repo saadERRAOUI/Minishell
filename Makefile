@@ -24,7 +24,7 @@ OBJS = $(CFILS:.c=.o)
 #-fsanitize=address -g3
 
 $(NAME): $(OBJS)
-	cc  $(OBJS)  $(LDFLAGS) -o $(NAME)
+	cc    $(OBJS)  $(LDFLAGS) -o $(NAME)
 
 all: $(NAME)
 

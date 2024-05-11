@@ -6,7 +6,7 @@
 /*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 17:15:28 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/05/11 17:31:28 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/11 22:21:54 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,6 @@ char	*ft_cmd_valid(char **env, char **cmd)
 		return (NULL);
 	if (!access(cmd[0], F_OK | X_OK))
 		return (ft_strdup(cmd[0]));
-	if ((!ft_strncmp(cmd[i], ".", 1) || !ft_strncmp(cmd[i], "./", 2))
-		|| (!ft_strncmp(cmd[i], "/", 1) && access(cmd[0], X_OK | F_OK)))
-		return (NULL);
-	printf("imk %d here\n", (int)ft_strlen(*cmd));
 	while (env[i])
 	{
 		if (env)
