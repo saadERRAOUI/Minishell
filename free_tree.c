@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_tree.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 15:37:01 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/05/08 16:23:10 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/11 16:23:35 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 void ft_free_execcmd(t_execcmd *cmd)
 {
+	printf("--------> %s\n", cmd->argv[1]);
 	ft_free(ft_strleen(cmd->argv), cmd->argv);
 	free(cmd->path);
 	if (cmd->envp)
@@ -46,7 +47,7 @@ void ft_free_redir(t_redircmd *cmd)
 void ft_free_pipe(t_cmd *cmd)
 {
 	t_cmd *tmp;
-	
+
 	tmp = cmd;
 	if (((t_pipecmd *)cmd)->left)
 		ft_free_tree(((t_pipecmd *)cmd)->left);

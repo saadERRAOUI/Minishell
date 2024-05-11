@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_parsers.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 02:29:36 by serraoui          #+#    #+#             */
-/*   Updated: 2024/05/10 11:03:31 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/11 16:07:45 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ t_cmd	*parsexec(char **ps, int *pos, t_env_v *env)
 	cmd->argv[argc] = NULL;
 	if (cmd->argv)
 	{
-		printf("=============----------\n");
+		// printf("=============----------\n");
 		cmd->envp = get_envp(env);
 		if (cmd->envp)
 		{

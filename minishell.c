@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 17:15:26 by serraoui          #+#    #+#             */
-/*   Updated: 2024/05/10 19:53:14 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/05/11 17:17:00 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ void	ft_print_tab(char **s)
 	}
 }
 
-
+/**
 static void print_tree(t_cmd *tree)
 {
 		t_redircmd *_t;
@@ -141,7 +141,7 @@ static void print_tree(t_cmd *tree)
 		print_tree(((t_pipecmd *)tree)->right);
 	}
 }
-
+*/
 
 void	ft_pipe(t_pipecmd *cmd, t_env_v *env)
 {
@@ -228,6 +228,8 @@ void ft_execut(t_cmd *cmd, t_env_v *env, t_pwd *wds)
 	cd = (t_execcmd *)cmd;
     child_signal_def(2);
 	if (ft_builtin_orch(cd->argv, cd, &env, wds))
+		return ;
+	if (!cd->argv[0])
 		return ;
 	if (!cd->path)
 	{

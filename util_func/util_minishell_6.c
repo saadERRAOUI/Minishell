@@ -6,7 +6,7 @@
 /*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 18:21:26 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/05/09 15:12:41 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/11 17:25:34 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,4 +86,16 @@ char	*ft_charjoin(char *str, char c)
 	ptr[len] = c;
 	free(str);
 	return (ptr);
+}
+
+
+void	ft_free2(char **ptr)
+{
+	while ((*ptr))
+	{
+		free(*ptr);
+		*ptr = NULL;
+		ptr++;
+	}
+	free(ptr);
 }

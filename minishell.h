@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 18:02:20 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/05/10 19:53:29 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/05/11 16:04:43 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@
 # define CTRL_C 130
 
 //error files Command errors Signal  Syntax error
-extern int s_exit;
+//extern
+int s_exit;
 
 typedef struct s_redircmd t_redircmd;
 typedef struct s_pwd

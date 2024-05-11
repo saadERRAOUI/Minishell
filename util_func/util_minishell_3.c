@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   util_minishell_3.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:23:09 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/05/08 21:49:06 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/11 17:10:17 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,11 +62,8 @@ char	*ft_modifie(char *ptr, int start, int end, char *t)
 	j = 0;
 	while (i < len)
 	{
-		while (i < start - 1)
-		{
+		while (i++ < start - 1)
 			str[i] = ptr[i];
-			i++;
-		}
 		while (t && t[j])
 			str[i++] = t[j++];
 		while (i < len && end < (int)ft_strlen(ptr))
@@ -97,7 +94,6 @@ char	*get_measurements(int *index, int *len, char *ptr)
 	return (ft_substr(ptr, *index, *len - *index));
 }
 
-
 /*
 	@AUTOR: hicham bouzid
 	@PRORTOTYPE: char	*ft_replace_dollar(char *ptr, t_env_v *env)
@@ -112,6 +108,7 @@ char	*ft_replace_dollar(char *ptr, t_env_v *env)
 	char	*s2;
 	int		index;
 	int		len;
+	char	*tmp;
 
 	s2 = NULL;
 	s1 = 0;
@@ -120,8 +117,10 @@ char	*ft_replace_dollar(char *ptr, t_env_v *env)
 		s1 = get_measurements(&index, &len, ptr);
 		if (!s1)
 		{
-			s2 = ft_itoa(s_exit);
-			 return (ft_modifie(ptr, index, index + 1, s2));
+			tmp = ft_itoa(s_exit);
+			s2 = ft_modifie(ptr, index, index + 1, tmp);
+			free(tmp);
+			return (s2);
 		}
 		s1 = ft_substr(ptr, index, len - index);
 		while (env)
