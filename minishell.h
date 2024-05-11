@@ -6,7 +6,7 @@
 /*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 18:02:20 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/05/10 19:53:29 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/05/11 20:10:07 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@
 # define CTRL_C 130
 
 //error files Command errors Signal  Syntax error
-extern int s_exit;
+// extern 
+int s_exit;
 
 typedef struct s_redircmd t_redircmd;
 typedef struct s_pwd
@@ -88,17 +89,26 @@ typedef struct s_redircmd
 	t_redircmd				*next;
 }							t_redircmd;
 
-int					ft_strcmp(char *s1, char *s2);
-int					count_words(char const *s, char c);
-int					peek(char **ps, char *es, char *toks);
-// void				ft_export(t_env_v **env, char *s);
 void				ft_export(t_env_v **env, char **av);
 void				ft_env(t_env_v *env);
 void				ft_list_remove_if(t_env_v **begin_list, void *data_ref,
                         int (*cmp)(char *, char *));
 void				ft_lstadd_back(t_env_v **lst, t_env_v *new);
 void                ft_lstadd_back_(t_redircmd **lst, t_redircmd *new);
-void				ft_unset(t_env_v **env, char *key);
+void                signal_handler(int sig);
+void                parseredir(t_redircmd **red, char **ps, int *pos, t_env_v *env);
+void                ft_free_tree(t_cmd *cmd);
+void                ft_exit(int ac, char **av);
+void                cd(char **av, t_pwd *wds);
+void                ft_here_doc(t_redircmd **cmd, t_env_v *env, char *delimeter);
+void                ft_print_tab(char **s);
+void                ft_free_tree(t_cmd *cmd);
+void                child_exit(int status);
+void                child_signal_def(int flag);
+void				ft_free2(char **ptr);
+void                ft_execut(t_cmd *cmd, t_env_v *env, t_pwd *wds);
+void                ft_execution(t_cmd *cmd, t_env_v *env, t_pwd *wds);
+void				ft_unset(t_env_v **env, char **key);
 void				ft_free_stack(t_env_v **a);
 t_env_v				*ft_lstlast(t_env_v *lst);
 t_env_v				*env_init(char **env);
@@ -122,6 +132,7 @@ char                **ft_parce_env(char **env);
 char                **get_envp(t_env_v *env);
 char                *ft_cmd_valid(char **env, char **cmd);
 char                **ft_free(int index, char **ptr);
+char				*get_name(void);
 char                **syntax(char **ptr);
 int					ft_lst_size(t_env_v *lst);
 int					get_token_type(char *s);
@@ -130,20 +141,9 @@ int					ft_util_quotes(char *av, char q, int *index);
 int					ft_quotes(char *str);
 int					ft_strlen_until(char *str, char c);
 int					ft_back(char *str, int index);
+int					ft_strcmp(char *s1, char *s2);
+int					count_words(char const *s, char c);
 int                 pwd(t_pwd *wds);
 int                 echo(int ac, char **av);
 int                 ft_strleen(char **ptr);
-void                signal_handler(int sig);
-void                parseredir(t_redircmd **red, char **ps, int *pos, t_env_v *env);
-void                ft_free_tree(t_cmd *cmd);
-void                ft_exit(int ac, char **av);
-void                cd(char **av, t_pwd *wds);
-void                ft_here_doc(t_redircmd **cmd, t_env_v *env, char *delimeter);
-void                ft_print_tab(char **s);
-void                ft_free_tree(t_cmd *cmd);
-void                child_exit(int status);
-void                child_signal_def(int flag);
-char				*get_name(void);
-void				ft_free2(char **ptr);
-
 #endif

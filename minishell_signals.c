@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_signals.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 19:41:59 by serraoui          #+#    #+#             */
-/*   Updated: 2024/05/08 15:58:07 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/11 20:10:19 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,22 +17,23 @@ void	signal_handler(int sig)
     if (sig == SIGINT)
     {
         s_exit = 1;
-        // rl_replace_line("", 0);
-        // rl_on_new_line();
-        // write(1, "\n", 1);
-        // rl_redisplay();
+        rl_replace_line("", 0);
+        rl_on_new_line();
+        write(1, "\n", 1);
+        rl_redisplay();
     }
     else if (sig == SIGQUIT)
-		return ;
-        // rl_redisplay();
+        rl_redisplay();
 }
 
 void    child_exit(int status)
 {
+    if (WIFEXITED(status))
+        s_exit = WEXITSTATUS(status);
     if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
     {
         s_exit = 131;
-        printf("Quit 3\n");
+        ft_putstr_fd("Quit: 3\n", 2);
     }
     if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
         s_exit = 130;
