@@ -6,7 +6,7 @@
 /*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 01:40:47 by serraoui          #+#    #+#             */
-/*   Updated: 2024/05/10 21:57:47 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/05/11 20:14:40 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ static int	export_argument(t_env_v **env, char *av)
 	if (!s)
 		return (0);
     printf("<----------------->\n");
-    ft_print_tab(s);
+    //ft_print_tab(s);
 	if (!is_valid_name(s[0]))
 	{
 		s_exit = 2; //!-2 ?

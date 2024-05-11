@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_parsers.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 02:29:36 by serraoui          #+#    #+#             */
-/*   Updated: 2024/05/10 11:03:31 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/11 20:10:34 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ t_cmd	*parsexec(char **ps, int *pos, t_env_v *env)
 		else
 			cmd->path = ft_cmd_valid(NULL, cmd->argv);
 	}
-	ft_print_tab(cmd->argv);
+	//ft_print_tab(cmd->argv);
 	if (ret && ret->type == 2)
 	{
 		tmp = ft_lstlast_(ret);
