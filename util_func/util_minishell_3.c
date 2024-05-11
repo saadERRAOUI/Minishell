@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   util_minishell_3.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:23:09 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/05/08 21:49:06 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/11 20:13:00 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,15 +146,16 @@ char	**ft_split_2(char *s, char c)
 	char	*str;
 
 	(void)c;
-	ptr = malloc(sizeof(char *) * 2);
+	ptr = malloc(sizeof(char *) * 3);
 	if (!ptr)
 		return (NULL);
 	str = ft_strdup(s);
 	i = 0;
 	while (str[i] != '=' && str[i])
 		i++;
-	ptr[0] = str;
 	str[i++] = 0;
-	ptr[1] = (str + i);
-	return (ptr);
+	ptr[0] = ft_strdup(str);
+	ptr[1] = ft_strdup(str + i);
+    ptr[2] = NULL;
+	return (free(str), ptr);
 }
