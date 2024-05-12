@@ -32,10 +32,13 @@ char	*ft_cmd_valid(char **env, char **cmd)
 	char	*tmp;
 
 	i = 0;
-	if (!*cmd || !cmd || !env)
-		return (NULL);
+  if (!env || !cmd || !*cmd)
+        return (NULL);
 	if (!access(cmd[0], F_OK | X_OK))
 		return (ft_strdup(cmd[0]));
+	if ((!ft_strncmp(cmd[i], ".", 1) || !ft_strncmp(cmd[i], "./", 2))
+		|| (!ft_strncmp(cmd[i], "/", 1) && access(cmd[0], X_OK | F_OK)))
+		return (NULL);
 	while (env[i])
 	{
 		if (env)
