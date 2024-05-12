@@ -24,16 +24,16 @@ int	pwd(t_pwd *wds)
 {
 	char	*buffer;
 
-    buffer = malloc(sizeof(char) * 1024);
-    buffer = getcwd(buffer, sizeof(buffer));
-    if (!buffer && wds)
-        printf("%s\n", wds->curr_wd);
-    else
-        printf("%s\n", getcwd(buffer, sizeof(buffer)));
-    if (buffer)
-    {
-        free(buffer);
-        buffer = NULL;
-    }
-    return (0);
+	buffer = malloc(sizeof(char) * 1024);
+	buffer = getcwd(buffer, sizeof(buffer));
+	if (!buffer && wds)
+		printf("%s\n", wds->curr_wd);
+	else
+		printf("%s\n", getcwd(buffer, sizeof(buffer)));
+	if (buffer)
+	{
+		free(buffer);
+		buffer = NULL;
+	}
+	return (0);
 }

@@ -16,10 +16,10 @@ void	ft_unset(t_env_v **env, char **key)
 {
 	if (!key || !env)
 		return ;
-    key++;
-    while (*key)
-    {
-        ft_list_remove_if(env, *key, ft_strcmp);
-        key++;
-    }
+	key++;
+	while (*key)
+	{
+		ft_list_remove_if(env, *key, ft_strcmp);
+		key++;
+	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 17:04:14 by serraoui          #+#    #+#             */
-/*   Updated: 2024/05/11 20:08:53 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/05/12 01:09:31 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static void	ft_cd_user(t_pwd *wds)
 
 static void	ft_cd_error(char *s, int flag)
 {
-	s_exit = 1;
+	g_exit = 1;
 	ft_putstr_fd("bash: cd: ", 2);
 	ft_putstr_fd(s, 2);
 	if (!flag)
@@ -59,7 +59,7 @@ static void	ft_cd_access(t_pwd *wds, char *s)
 static void	ft_cd_parent(t_pwd *wds)
 {
 	wds->curr_wd = ft_strjoin(wds->curr_wd, "/..");
-	s_exit = 0;
+	g_exit = 0;
 	ft_putstr_fd("bash: cd: can't access parent directories\n", 2);
 }
 
@@ -71,17 +71,12 @@ void	cd(char **av, t_pwd *wds)
 		return ;
 	if (!av[1])
 		ft_cd_user(wds);
-	else if (stat(av[1], &path_stat) == 0
-		&& S_ISREG(path_stat.st_mode)
-	)
+	else if (stat(av[1], &path_stat) == 0 && S_ISREG(path_stat.st_mode))
 		ft_cd_error(av[1], 0);
 	else if (((!ft_strcmp(av[1], "..") && wds && wds->old_wd
-				&& ft_strnstr(wds->curr_wd,
-					wds->old_wd,
-					ft_strlen(wds->curr_wd)))
-			|| (wds && !ft_strcmp(av[1], wds->old_wd)))
-		&& access(wds->old_wd, F_OK) == -1
-	)
+				&& ft_strnstr(wds->curr_wd, wds->old_wd,
+					ft_strlen(wds->curr_wd))) || (wds && !ft_strcmp(av[1],
+					wds->old_wd))) && access(wds->old_wd, F_OK) == -1)
 		ft_cd_parent(wds);
 	else if (!access(av[1], F_OK))
 		ft_cd_access(wds, av[1]);

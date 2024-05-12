@@ -12,8 +12,7 @@
 
 #include "minishell.h"
 
-
-void ft_free_execcmd(t_execcmd *cmd)
+void	ft_free_execcmd(t_execcmd *cmd)
 {
 	printf("--------> %s\n", cmd->argv[1]);
 	ft_free(ft_strleen(cmd->argv), cmd->argv);
@@ -24,9 +23,9 @@ void ft_free_execcmd(t_execcmd *cmd)
 	cmd = NULL;
 }
 
-void ft_free_redir(t_redircmd *cmd)
+void	ft_free_redir(t_redircmd *cmd)
 {
-	t_redircmd *tmp;
+	t_redircmd	*tmp;
 
 	while (cmd)
 	{
@@ -44,9 +43,9 @@ void ft_free_redir(t_redircmd *cmd)
 	}
 }
 
-void ft_free_pipe(t_cmd *cmd)
+void	ft_free_pipe(t_cmd *cmd)
 {
-	t_cmd *tmp;
+	t_cmd	*tmp;
 
 	tmp = cmd;
 	if (((t_pipecmd *)cmd)->left)
@@ -64,7 +63,7 @@ void ft_free_pipe(t_cmd *cmd)
 	}
 }
 
-void ft_free_tree(t_cmd *cmd)
+void	ft_free_tree(t_cmd *cmd)
 {
 	if (cmd->type == 1)
 		ft_free_execcmd((t_execcmd *)cmd);

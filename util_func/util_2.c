@@ -6,7 +6,7 @@
 /*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 17:22:40 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/05/11 17:04:52 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/12 01:10:13 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,7 +144,7 @@ char	**syntax(char **ptr)
 	{
 		ft_free(ft_strleen(ptr), ptr);
 		ft_putstr_fd("bash: syntax error near unexpected token\n", 2);
-		s_exit = 258;
+		g_exit = 258;
 		return (NULL);
 	}
 	return (ptr);

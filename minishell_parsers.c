@@ -6,7 +6,7 @@
 /*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 02:29:36 by serraoui          #+#    #+#             */
-/*   Updated: 2024/05/11 22:24:40 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/12 01:32:13 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ t_cmd	*parsexec(char **ps, int *pos, t_env_v *env)
 	cmd->argv[argc] = NULL;
 	if (cmd->argv)
 	{
-		// printf("=============----------\n");
 		cmd->envp = get_envp(env);
 		if (cmd->envp)
 		{
@@ -53,7 +52,6 @@ t_cmd	*parsexec(char **ps, int *pos, t_env_v *env)
 		else
 			cmd->path = ft_cmd_valid(NULL, cmd->argv);
 	}
-	//ft_print_tab(cmd->argv);
 	if (ret && ret->type == 2)
 	{
 		tmp = ft_lstlast_(ret);
@@ -74,7 +72,7 @@ t_cmd	*parsepipe(char **ps, int *pos, t_env_v *env)
 		free(ps[*pos]);
 		(*pos)++;
 		cmd = pipecmd(cmd, parsepipe(ps, pos, env));
-        s_exit = 0; //TODO : test !!
+		g_exit = 0;
 	}
 	return (cmd);
 }
@@ -89,79 +87,77 @@ int	get_token_type(char *s)
 	ret = (int)*s;
 	switch (*s)
 	{
-        case '|':
-            break ;
-        case '>':
-            if (*(s + 1) == '>')
-                ret = '+';
-            break ;
-        case '<':
-            if (*(s + 1) == '<')
-                ret = '-';
-            break ;
-        default:
-            ret = 'a';
-            break ;
+	case '|':
+		break ;
+	case '>':
+		if (*(s + 1) == '>')
+			ret = '+';
+		break ;
+	case '<':
+		if (*(s + 1) == '<')
+			ret = '-';
+		break ;
+	default:
+		ret = 'a';
+		break ;
 	}
 	return (ret);
 }
 
-void    parseredir(t_redircmd **red, char **ps, int *pos, t_env_v *env)
+void	parseredir(t_redircmd **red, char **ps, int *pos, t_env_v *env)
 {
 	int			tok;
 	t_redircmd	*tmp;
-	char *f;
+	char		*f;
 
 	tok = get_token_type(ps[(*pos)]);
-    while (tok == '>' || tok == '+' || tok == '<' || tok == '-')
-    {
-        if (tok != 'a' && tok != '|' && tok != '0' && get_token_type(ps[*pos + 1]) != 'a')
-            exit(-1); //!to change to error "redirection file doesn't exist"
-        switch(tok)
-        {
-            case '<':
-				free(ps[*pos]);
-                (*pos)++;
-                tmp = redircmd(ps[(*pos)], O_RDONLY, 0);
-                (*pos)++;
-                ft_lstadd_back_(red, tmp);
-                break;
-            case '>':
-				free(ps[*pos]);
-                (*pos)++;
-                tmp = redircmd(ps[(*pos)], O_RDONLY, 1);
-                (*pos)++;
-                ft_lstadd_back_(red, tmp);
-                break;
-            case '+':
-				free(ps[*pos]);
-                (*pos)++;
-                tmp = redircmd(ps[(*pos)], O_WRONLY | O_CREAT | O_TRUNC, 1);
-                (*pos)++;
-                ft_lstadd_back_(red, tmp);
-                break;
-			case '-':
-				free(ps[*pos]);
-                (*pos)++;
-                tmp = redircmd(ps[(*pos)], O_RDWR | O_CREAT, 0);
-				f = tmp->file;
-				tmp->file = get_name();
-				tmp->token = 1;
-				//TODO : fork and call ft_here_doc(); //done
-                child_signal_def(2);
-				if (fork() == 0)
-                {
-                    // signal(SIGQUIT, SIG_DFL);
-                    // signal(SIGINT, SIG_DFL);
-                    child_signal_def(1);
-                    ft_here_doc(&tmp, env, f);
-                }
-				wait(&tok);
-                child_exit(tok);
-                (*pos)++;
-                ft_lstadd_back_(red, tmp);
-                break;
-        }
-        tok = get_token_type(ps[(*pos)]);
-    }
+	while (tok == '>' || tok == '+' || tok == '<' || tok == '-')
+	{
+		if (tok != 'a' && tok != '|' && tok != '0' && get_token_type(ps[*pos
+				+ 1]) != 'a')
+			exit(-1);
+		switch (tok)
+		{
+		case '<':
+			free(ps[*pos]);
+			(*pos)++;
+			tmp = redircmd(ps[(*pos)], O_RDONLY, 0);
+			(*pos)++;
+			ft_lstadd_back_(red, tmp);
+			break ;
+		case '>':
+			free(ps[*pos]);
+			(*pos)++;
+			tmp = redircmd(ps[(*pos)], O_RDONLY, 1);
+			(*pos)++;
+			ft_lstadd_back_(red, tmp);
+			break ;
+		case '+':
+			free(ps[*pos]);
+			(*pos)++;
+			tmp = redircmd(ps[(*pos)], O_WRONLY | O_CREAT | O_TRUNC, 1);
+			(*pos)++;
+			ft_lstadd_back_(red, tmp);
+			break ;
+		case '-':
+			free(ps[*pos]);
+			(*pos)++;
+			tmp = redircmd(ps[(*pos)], O_RDWR | O_CREAT, 0);
+			f = tmp->file;
+			tmp->file = get_name();
+			tmp->token = 1;
+			child_signal_def(2);
+			if (fork() == 0)
+			{
+				child_signal_def(1);
+				ft_here_doc(&tmp, env, f);
+			}
+			wait(&tok);
+			child_exit(tok);
+			(*pos)++;
+			ft_lstadd_back_(red, tmp);
+			break ;
+		}
+		tok = get_token_type(ps[(*pos)]);
+	}
 }
