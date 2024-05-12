@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_signals.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: serraoui <serraoui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 19:41:59 by serraoui          #+#    #+#             */
-/*   Updated: 2024/05/12 01:47:13 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/12 21:41:54 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,13 @@ void	signal_handler(int sig)
 	if (sig == SIGINT)
 	{
 		g_exit = 1;
-		// rl_replace_line("", 0);
+		rl_replace_line("", 0);
 		rl_on_new_line();
 		write(1, "\n", 1);
 		rl_redisplay();
 	}
 	else if (sig == SIGQUIT)
-		return ;
-	// rl_redisplay();
+		rl_redisplay();
 }
 
 void	child_exit(int status)
