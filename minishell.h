@@ -6,7 +6,7 @@
 /*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 18:02:20 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/05/11 20:10:07 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/05/12 17:22:57 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@
 
 //error files Command errors Signal  Syntax error
 // extern 
-int s_exit;
+int g_exit;
 
 typedef struct s_redircmd t_redircmd;
 typedef struct s_pwd

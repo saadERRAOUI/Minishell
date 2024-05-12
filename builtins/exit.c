@@ -6,7 +6,7 @@
 /*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 20:14:04 by serraoui          #+#    #+#             */
-/*   Updated: 2024/05/11 20:32:47 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/05/12 17:22:57 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	ft_exit(int ac, char **av)
 
 	if (ac > 2)
 	{
-		s_exit = 1;
+		g_exit = 1;
 		ft_putstr_fd("exit: too many arguments\n", 2);
 		return ;
 	}
@@ -71,7 +71,7 @@ void	ft_exit(int ac, char **av)
 	{
 		if (!ft_atoi_check(av[1], &nbr))
 				exit_ndg(av[1]);
-		s_exit = nbr;
+		g_exit = nbr;
 	}
-	exit(s_exit);
+	exit(g_exit);
 }

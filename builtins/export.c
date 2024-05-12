@@ -6,7 +6,7 @@
 /*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 01:40:47 by serraoui          #+#    #+#             */
-/*   Updated: 2024/05/11 20:30:05 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/05/12 17:22:57 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,10 +71,19 @@ static int	util_export(t_env_v **env, char **s, int flag)
 {
     t_env_v *node;
 
-	if (ft_content_equal(env, s[0]) && flag && s[1])
+	if (ft_content_equal(env, s[0]))
 	{
 		node = ft_content_equal(env, s[0]);
-		node->value = ft_strjoin(node->value, s[1]);
+        if (flag && s[1])
+		    node->value = ft_strjoin(node->value, s[1]);
+        else if (!flag)
+        {
+            free(node->value);
+            if (s[1])
+                node->value = ft_strdup(s[1]);
+            else
+                node->value = ft_strdup(" ");
+        }
 	}
 	else if (!ft_content_equal(env, s[0]))
 	{
@@ -116,7 +125,7 @@ static int	export_argument(t_env_v **env, char *av)
 		return (0);
 	if (!is_valid_name(s[0]))
 	{
-		s_exit = 1;
+		g_exit = 1;
 		ft_putstr_fd("bash: export: '", 2);
 		ft_putstr_fd(av, 2);
 		ft_putstr_fd("': not a valid identifier\n", 2);
@@ -124,7 +133,7 @@ static int	export_argument(t_env_v **env, char *av)
 	}
 	if (!export_arg_value(env, s))
 		return (ft_free(ft_strleen(s), s), 0);
-	s_exit = 0;
+	g_exit = 0;
 	return ((ft_free(ft_strleen(s), s), 1));
 }
 
@@ -135,7 +144,7 @@ void	ft_export(t_env_v **env, char **av)
     flag = 0;
 	if (av && !av[1])
     {
-        s_exit = 0;
+        g_exit = 0;
 		return (ft_export_envs(env));
     }
 	av++;
@@ -149,5 +158,5 @@ void	ft_export(t_env_v **env, char **av)
 		av++;
 	}
     if (!flag)
-        s_exit = 0;
+        g_exit = 0;
 }

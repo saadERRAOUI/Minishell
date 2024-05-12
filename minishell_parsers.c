@@ -6,7 +6,7 @@
 /*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 02:29:36 by serraoui          #+#    #+#             */
-/*   Updated: 2024/05/12 01:18:47 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/05/12 17:22:57 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ t_cmd	*parsepipe(char **ps, int *pos, t_env_v *env)
 		free(ps[*pos]);
 		(*pos)++;
 		cmd = pipecmd(cmd, parsepipe(ps, pos, env));
-        s_exit = 0;
+        g_exit = 0;
 	}
 	return (cmd);
 }
@@ -143,16 +143,17 @@ void    parseredir(t_redircmd **red, char **ps, int *pos, t_env_v *env)
 				f = tmp->file;
 				tmp->file = get_name();
 				tmp->token = 1;
-                // child_signal_def(2);
-				// if (fork() == 0)
-                // {
-                //     // signal(SIGQUIT, SIG_DFL);
-                //     // signal(SIGINT, SIG_DFL);
-                //     child_signal_def(1);
-                ft_here_doc(&tmp, env, f);
-                // }
-				// wait(&tok);
-                // child_exit(tok);
+                child_signal_def(2);
+				if (fork() == 0)
+                {
+                    child_signal_def(3);
+                    ft_here_doc(&tmp, env, f);
+                    exit(0);
+                }
+				wait(&tok);
+                child_exit(tok);
+                if (g_exit == 130)
+                    g_exit = 1;
                 (*pos)++;
                 ft_lstadd_back_(red, tmp);
                 break;
