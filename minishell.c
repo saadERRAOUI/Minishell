@@ -6,7 +6,7 @@
 /*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 17:15:26 by serraoui          #+#    #+#             */
-/*   Updated: 2024/05/11 20:09:56 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/05/12 17:22:57 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,27 +215,17 @@ void ft_execut(t_cmd *cmd, t_env_v *env, t_pwd *wds)
     child_signal_def(2);
 	if (ft_builtin_orch(cd->argv, cd, &env, wds))
 		return ;
-	// if (!cd->path)
-	// {
-	// 	if (fork() == 0)
-    //     {            
-	// 		if (execve(cd->path, cd->argv, cd->envp) == -1)
-    //         {
-	// 	        ft_putstr_fd("command not found\n", 2);
-	// 	        s_exit = 127;
-    //             exit(s_exit);
-    //         }
-    //     }
-	// 	return ;
-	// }
 	else
 	{
-		if (fork() == 0) {
+        if (!cd->argv || !cd->argv[0])
+            return ;
+		else if (fork() == 0) {
             child_signal_def(1);
             if (execve(cd->path, cd->argv, cd->envp) == -1)
             {
 		        ft_putstr_fd("command not found\n", 2);
-                exit(s_exit);
+                g_exit = 127;
+                exit(g_exit);
             }
         }
         else {
@@ -279,15 +269,11 @@ char	*get_name(void)
 	return (name);
 }
 
-//! todo  remove expand from delimeter here_doc
 void ft_here_doc(t_redircmd **cmd, t_env_v *env, char *delimeter)
 {
-	// char	*tmp;
 	char	*str;
 	char	*tm;
-    // int     flag;
 
-	// tmp = get_name();
 	(*cmd)->fd = open((*cmd)->file, O_CREAT | O_RDWR, 0777);
 	if ((*cmd)->fd < 0)
 		ft_putstr_fd("Error in open function\n", 2);
@@ -295,7 +281,10 @@ void ft_here_doc(t_redircmd **cmd, t_env_v *env, char *delimeter)
 	{
 		str = readline("> ");
         if (!str)
-            printf("DELIM_NOT_DONE\n");
+        {
+            free(str);
+            break ;
+        }
 		if (!ft_strcmp(str, delimeter))
 		{
 			free(str);
@@ -314,8 +303,6 @@ void ft_here_doc(t_redircmd **cmd, t_env_v *env, char *delimeter)
 	close((*cmd)->fd);
 	(*cmd)->fd = 0;
 	(*cmd)->token = 0;
-	// free((*cmd)->file);
-	// (*cmd)->file = tmp;
 }
 
 void	redir_cmd(t_cmd *cmd, t_env_v *env)
@@ -333,13 +320,9 @@ void	redir_cmd(t_cmd *cmd, t_env_v *env)
 	{
 		if (redir->fd == 0)
 		{
-			if (redir->mode == 514 && redir->token == 1)
+			if (g_exit == 1 && redir->mode == 514)
 				return ;
 			redir->fd = open(redir->file, O_RDONLY);
-            // printf("[CMD-HERE] %i\n", cmd->type);
-            // printf("[CMD-HERE] %s\n", ((t_redircmd *)cmd)->file);
-            // printf("[CMD-HERE] %p\n", ((t_redircmd *)cmd)->cmd);
-            // printf("[CMD-HERE] %d\n", ((t_redircmd *)cmd)->mode);
 			if (redir->fd < 0)
 				ft_putstr_fd("no such file of directory\n", 2);
 			if (dup2(redir->fd, in) == -1)
@@ -349,10 +332,10 @@ void	redir_cmd(t_cmd *cmd, t_env_v *env)
 		else if (redir->fd == 1 && redir->mode)
 		{
 			redir->fd = open(redir->file, O_CREAT | O_RDWR | O_APPEND, 0664);
-				if (redir->fd < 0)
-					ft_putstr_fd("problem in open function\n", 2);
-				if (dup2(redir->fd, out) == -1)
-					printf("dup3\n");
+            if (redir->fd < 0)
+                ft_putstr_fd("problem in open function\n", 2);
+            if (dup2(redir->fd, out) == -1)
+                printf("dup3\n");
 		}
 		else if (redir->fd == 1)
 		{
@@ -360,7 +343,7 @@ void	redir_cmd(t_cmd *cmd, t_env_v *env)
 			if (redir->fd < 0)
 				ft_putstr_fd("problem in open function\n", 2);
 			if (dup2(redir->fd, out) == -1)
-			printf("dup4\n");
+			    printf("dup4\n");
 		}
 		close(redir->fd);
 		if (!redir->next)
@@ -377,11 +360,6 @@ void	redir_cmd(t_cmd *cmd, t_env_v *env)
 	close(in_);
 	close(out_);
 }
-
-// static void ft_here(void)
-// {
-// 	system("leaks minishell");
-// }
 
 void ft_execution(t_cmd *cmd, t_env_v *env, t_pwd *wds)
 {
@@ -409,8 +387,8 @@ void    disable_raw_mode(void)
 
 static void ft_here(void)
 {
-	return ;
-	// system("leaks minishell");
+	// return ;
+	system("leaks minishell");
 }
 
 int	ft_run_shell(t_env_v *env)
@@ -425,14 +403,10 @@ int	ft_run_shell(t_env_v *env)
     wds = malloc(sizeof(t_pwd));
     getcwd(buffer, sizeof(buffer));
     (*wds) = (t_pwd){NULL, ft_strdup(buffer)};
-	// (void)cmd;
-    // signal(SIGQUIT, handler);
-    // signal(SIGINT, handler);
 	while (1)
 	{
         child_signal_def(0);
 		str = readline("$ ");
-		// printf("ft_strleen %d:\n", (int)ft_strlen(str));
 		if (!str)
 		{
 			ft_free_stack(&env);
@@ -448,32 +422,16 @@ int	ft_run_shell(t_env_v *env)
 		}
 		ptr = ft_expand(ptr, env);
 		pos = 0;
-		//ft_print_tab(ptr);
 		cmd = parsepipe(ptr, &pos, env);
         ft_execution(cmd, env, wds);
 		ft_free_tree(cmd);
-		//ft_print_tab(ff);
-		// ft_free(ft_strleen(ff), ff);
 		free(ptr);
-		//ft_free2(ptr);
-		// printf("sizeof :%lu\n", sizeof());
 		free(str);
 		ft_here();
 	}
 	return (0);
 }
 
-/**
-		for (i = 0; ptr[i]; i++)
-			printf("--> %s\n", ptr[i]);
-		pos = 0;
-		cmd = parsepipe(ptr, &pos, env);
-		printf("TYPE CREATED TREE %i\n", cmd->type);
-		printf("==================== \n");
-		printf("====_PRINT_TREE_==== \n");
-		printf("==================== \n");
-		print_tree(cmd);
-*/
 int	main(int ac, char **av, char **envp)
 {
 	t_env_v	*env;
@@ -481,7 +439,6 @@ int	main(int ac, char **av, char **envp)
 	(void)ac;
 	(void)av;
 	env = env_init(envp);
-	// if (!env)
-	// 	exit(-1);
+    disable_raw_mode();
 	ft_run_shell(env);
 }

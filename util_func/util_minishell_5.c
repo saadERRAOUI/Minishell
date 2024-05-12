@@ -6,7 +6,7 @@
 /*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 17:15:28 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/05/10 22:25:53 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/05/12 15:27:15 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,13 @@ char	*ft_cmd_valid(char **env, char **cmd)
 	char	*tmp;
 
 	i = 0;
-    if (!env)
+    if (!env || !cmd || !*cmd)
         return (NULL);
+	if (!access(cmd[0], F_OK | X_OK))
+		return (ft_strdup(cmd[0]));
 	if ((!ft_strncmp(cmd[i], ".", 1) || !ft_strncmp(cmd[i], "./", 2))
 		|| (!ft_strncmp(cmd[i], "/", 1) && access(cmd[0], X_OK | F_OK)))
 		return (NULL);
-	if (!access(cmd[0], F_OK | X_OK))
-		return (ft_strdup(cmd[0]));
 	while (env[i])
 	{
 		if (env)

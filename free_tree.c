@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_tree.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 15:37:01 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/05/08 16:23:10 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/12 15:22:34 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,11 @@
 
 void ft_free_execcmd(t_execcmd *cmd)
 {
-	ft_free(ft_strleen(cmd->argv), cmd->argv);
+    if (cmd->argv)
+	    ft_free(ft_strleen(cmd->argv), cmd->argv);
 	free(cmd->path);
 	if (cmd->envp)
-		ft_free(ft_strleen(cmd->envp), cmd->envp);
+        ft_free(ft_strleen(cmd->envp), cmd->envp);
 	free(cmd);
 	cmd = NULL;
 }

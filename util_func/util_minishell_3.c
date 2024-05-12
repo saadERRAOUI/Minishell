@@ -6,7 +6,7 @@
 /*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:23:09 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/05/10 21:19:12 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/05/12 17:22:57 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ char	*ft_replace_dollar(char *ptr, t_env_v *env)
 		s1 = get_measurements(&index, &len, ptr);
 		if (!s1)
 		{
-			s2 = ft_itoa(s_exit);
+			s2 = ft_itoa(g_exit);
 			 return (ft_modifie(ptr, index, index + 1, s2));
 		}
 		s1 = ft_substr(ptr, index, len - index);

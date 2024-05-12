@@ -6,7 +6,7 @@
 /*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 17:04:14 by serraoui          #+#    #+#             */
-/*   Updated: 2024/05/11 20:08:53 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/05/12 17:22:57 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ static void	ft_cd_user(t_pwd *wds)
 	char	*s;
 	char	buffer[1024];
 
+    if (!getenv("USER"))
+        return (ft_putstr_fd("bash: cd: HOME not set\n", 2));
 	s = ft_strjoin(ft_strdup("/Users/"), getenv("USER"));
 	getcwd(buffer, sizeof(buffer));
 	if (wds && wds->old_wd)
@@ -32,7 +34,7 @@ static void	ft_cd_user(t_pwd *wds)
 
 static void	ft_cd_error(char *s, int flag)
 {
-	s_exit = 1;
+	g_exit = 1;
 	ft_putstr_fd("bash: cd: ", 2);
 	ft_putstr_fd(s, 2);
 	if (!flag)
@@ -59,7 +61,7 @@ static void	ft_cd_access(t_pwd *wds, char *s)
 static void	ft_cd_parent(t_pwd *wds)
 {
 	wds->curr_wd = ft_strjoin(wds->curr_wd, "/..");
-	s_exit = 0;
+	g_exit = 0;
 	ft_putstr_fd("bash: cd: can't access parent directories\n", 2);
 }
 
