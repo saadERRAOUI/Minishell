@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 01:02:17 by serraoui          #+#    #+#             */
-/*   Updated: 2024/04/17 11:54:21 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/11 20:24:35 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,4 +21,5 @@ void	ft_env(t_env_v *env)
 		printf("%s=%s\n", env->key, env->value);
 		env = env->next;
 	}
+    s_exit = 0;
 }

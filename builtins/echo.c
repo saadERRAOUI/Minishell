@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 17:36:23 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/05/10 15:14:44 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/11 20:24:08 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,5 +85,6 @@ int	echo(int ac, char **av)
 	}
 	if (token == 0)
 		ft_putstr_fd("\n", 1);
+    s_exit = 0;
 	return (0);
 }

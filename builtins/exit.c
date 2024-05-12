@@ -6,20 +6,20 @@
 /*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 20:14:04 by serraoui          #+#    #+#             */
-/*   Updated: 2024/05/05 14:43:25 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/05/11 20:32:47 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./../minishell.h"
 
-/* **********************************************************************
+/*
 	@__AUTHOR : ERRAOUI Saad
 	@__PROTO  : int	ft_atoi_check(const char *, int *);
 	@__DESC   : utility function that checks weither the const char *str
 		is an intger or not, returns 1 if it is the case and 0 if not, and
 		the number takes the int value in its content. 
 	@__DATE   : 10-12-2023
-********************************************************************** */
+*/
 int	ft_atoi_check(const char *str, int *number)
 {
 	int		i;
@@ -51,8 +51,10 @@ int	ft_atoi_check(const char *str, int *number)
 
 static void	exit_ndg(char *s)
 {
-	printf("exit: %s: numeric argument required\n", s);
-	exit(255); //exit status -> 255;
+    ft_putstr_fd("exit: ", 2);
+    ft_putstr_fd(s, 2);
+	ft_putstr_fd(": numeric argument required\n", 2);
+	exit(255);
 }
 
 void	ft_exit(int ac, char **av)
@@ -62,7 +64,7 @@ void	ft_exit(int ac, char **av)
 	if (ac > 2)
 	{
 		s_exit = 1;
-		printf("exit: too many arguments\n"); //!error fd => 2
+		ft_putstr_fd("exit: too many arguments\n", 2);
 		return ;
 	}
 	else if (av[1] && ac == 2)

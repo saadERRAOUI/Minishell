@@ -6,7 +6,7 @@
 /*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 01:40:47 by serraoui          #+#    #+#             */
-/*   Updated: 2024/05/11 20:14:40 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/05/11 20:30:05 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,11 +114,9 @@ static int	export_argument(t_env_v **env, char *av)
 	s = ft_split_2(av, '=');
 	if (!s)
 		return (0);
-    printf("<----------------->\n");
-    //ft_print_tab(s);
 	if (!is_valid_name(s[0]))
 	{
-		s_exit = 2; //!-2 ?
+		s_exit = 1;
 		ft_putstr_fd("bash: export: '", 2);
 		ft_putstr_fd(av, 2);
 		ft_putstr_fd("': not a valid identifier\n", 2);
@@ -132,13 +130,24 @@ static int	export_argument(t_env_v **env, char *av)
 
 void	ft_export(t_env_v **env, char **av)
 {
+    int flag;
+
+    flag = 0;
 	if (av && !av[1])
+    {
+        s_exit = 0;
 		return (ft_export_envs(env));
+    }
 	av++;
 	while (*av)
 	{
 		if (!export_argument(env, (*av)))
+        {
+            flag = 1;
 			break ;
+        }
 		av++;
 	}
+    if (!flag)
+        s_exit = 0;
 }

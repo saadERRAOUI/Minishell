@@ -6,7 +6,7 @@
 /*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 06:09:11 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/05/04 23:15:35 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/05/11 20:30:33 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,5 +35,6 @@ int	pwd(t_pwd *wds)
         free(buffer);
         buffer = NULL;
     }
+    s_exit = 0;
     return (0);
 }

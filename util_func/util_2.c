@@ -6,7 +6,7 @@
 /*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 17:22:40 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/05/10 19:40:43 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/05/11 23:25:45 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ char	*add_32(char *str, char *sym)
 				&& ft_strchr(sym, str[i + 1])) || (ft_strchr(sym, str[i])
 				&& i < (int)ft_strlen(str) && !ft_strchr(sym, str[i + 1])))
 		{
-			printf("-------\n");
 			ptr = ft_charjoin(ptr, str[i]);
 			ptr = ft_charjoin(ptr, 32);
 		}
@@ -47,10 +46,6 @@ char	*add_32(char *str, char *sym)
 			ptr = ft_charjoin(ptr, str[i]);
 		i++;
 	}
-	// printf("ft_strleen %d:\n", (int)ft_strlen(ptr));
-	// free(str);
-	// if (i == 0)
-	// 	free(ptr);
 	return (ptr);
 }
 
@@ -110,7 +105,6 @@ char	*ft_shift(char *ptr)
 
 static int	ft_checkk(char **ptr, int index)
 {
-    printf("INDEX__%d\n", ft_strleen(ptr));
     if ( !ptr || !(*ptr))
         return (0);
 	while (ptr[index])

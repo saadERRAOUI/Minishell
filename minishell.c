@@ -6,7 +6,7 @@
 /*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 17:15:26 by serraoui          #+#    #+#             */
-/*   Updated: 2024/05/11 20:09:56 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/05/12 01:43:07 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -279,23 +279,23 @@ char	*get_name(void)
 	return (name);
 }
 
-//! todo  remove expand from delimeter here_doc
 void ft_here_doc(t_redircmd **cmd, t_env_v *env, char *delimeter)
 {
-	// char	*tmp;
 	char	*str;
 	char	*tm;
-    // int     flag;
 
-	// tmp = get_name();
 	(*cmd)->fd = open((*cmd)->file, O_CREAT | O_RDWR, 0777);
 	if ((*cmd)->fd < 0)
 		ft_putstr_fd("Error in open function\n", 2);
 	while (1)
 	{
 		str = readline("> ");
+        printf("STR____ %s\n", str);
         if (!str)
-            printf("DELIM_NOT_DONE\n");
+        {
+            free(str);
+            break ;
+        }
 		if (!ft_strcmp(str, delimeter))
 		{
 			free(str);
@@ -314,8 +314,6 @@ void ft_here_doc(t_redircmd **cmd, t_env_v *env, char *delimeter)
 	close((*cmd)->fd);
 	(*cmd)->fd = 0;
 	(*cmd)->token = 0;
-	// free((*cmd)->file);
-	// (*cmd)->file = tmp;
 }
 
 void	redir_cmd(t_cmd *cmd, t_env_v *env)
@@ -336,10 +334,6 @@ void	redir_cmd(t_cmd *cmd, t_env_v *env)
 			if (redir->mode == 514 && redir->token == 1)
 				return ;
 			redir->fd = open(redir->file, O_RDONLY);
-            // printf("[CMD-HERE] %i\n", cmd->type);
-            // printf("[CMD-HERE] %s\n", ((t_redircmd *)cmd)->file);
-            // printf("[CMD-HERE] %p\n", ((t_redircmd *)cmd)->cmd);
-            // printf("[CMD-HERE] %d\n", ((t_redircmd *)cmd)->mode);
 			if (redir->fd < 0)
 				ft_putstr_fd("no such file of directory\n", 2);
 			if (dup2(redir->fd, in) == -1)
@@ -349,10 +343,10 @@ void	redir_cmd(t_cmd *cmd, t_env_v *env)
 		else if (redir->fd == 1 && redir->mode)
 		{
 			redir->fd = open(redir->file, O_CREAT | O_RDWR | O_APPEND, 0664);
-				if (redir->fd < 0)
-					ft_putstr_fd("problem in open function\n", 2);
-				if (dup2(redir->fd, out) == -1)
-					printf("dup3\n");
+            if (redir->fd < 0)
+                ft_putstr_fd("problem in open function\n", 2);
+            if (dup2(redir->fd, out) == -1)
+                printf("dup3\n");
 		}
 		else if (redir->fd == 1)
 		{
@@ -360,7 +354,7 @@ void	redir_cmd(t_cmd *cmd, t_env_v *env)
 			if (redir->fd < 0)
 				ft_putstr_fd("problem in open function\n", 2);
 			if (dup2(redir->fd, out) == -1)
-			printf("dup4\n");
+			    printf("dup4\n");
 		}
 		close(redir->fd);
 		if (!redir->next)
@@ -377,11 +371,6 @@ void	redir_cmd(t_cmd *cmd, t_env_v *env)
 	close(in_);
 	close(out_);
 }
-
-// static void ft_here(void)
-// {
-// 	system("leaks minishell");
-// }
 
 void ft_execution(t_cmd *cmd, t_env_v *env, t_pwd *wds)
 {
