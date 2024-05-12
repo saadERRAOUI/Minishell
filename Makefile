@@ -18,7 +18,7 @@ CFILS = ./util_func/util_0.c ./util_func/util_1.c ./libft/ft_atoi.c ./libft/ft_b
 		./builtins/export.c ./builtins/cd.c ./builtins/exit.c ./builtins/unset.c ./builtins/env.c ./builtins/pwd.c\
 		./util_func/util_minishell_3.c ./util_func/util_minishell_4.c ./util_func/util_minishell_5.c\
 		./util_func/util_minishell_6.c free_tree.c minishell_signals.c ./builtins/ft_util_builtins_0.c\
-		minishell_util.c minishell_execution.c
+		minishell_util.c minishell_execution.c minishell_util_0.c
 
 OBJS = $(CFILS:.c=.o)
 

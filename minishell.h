@@ -6,7 +6,7 @@
 /*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 18:02:20 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/05/12 01:50:07 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/12 20:22:19 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,5 +153,11 @@ char						**ft_expand(char **ptr, t_env_v *env);
 int							ft_builtin_orch(char **argv, t_execcmd *cmd,
 								t_env_v **env, t_pwd *wds);
 void						ft_execution(t_cmd *cmd, t_env_v *env, t_pwd *wds);
+void						ft_dup(t_redircmd *redir, int in, int out);
+void						dup4(int *in, int *out, int *in_, int *out_);
+t_redircmd					*here_doc_handler(t_env_v *env, int tok, int *pos,
+								char **ps);
+int							redir_helper(t_redircmd **red, int tok, int *pos,
+								char **ps);
 
 #endif

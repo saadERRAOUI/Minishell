@@ -6,7 +6,7 @@
 /*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 15:37:01 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/05/11 16:23:35 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/12 16:15:54 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	ft_free_execcmd(t_execcmd *cmd)
 {
-	printf("--------> %s\n", cmd->argv[1]);
-	ft_free(ft_strleen(cmd->argv), cmd->argv);
+	if (cmd->argv)
+		ft_free(ft_strleen(cmd->argv), cmd->argv);
 	free(cmd->path);
 	if (cmd->envp)
 		ft_free(ft_strleen(cmd->envp), cmd->envp);

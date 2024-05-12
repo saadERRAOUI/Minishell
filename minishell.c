@@ -6,15 +6,17 @@
 /*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 17:15:26 by serraoui          #+#    #+#             */
-/*   Updated: 2024/05/12 02:09:52 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/12 20:49:46 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/*
 void	ft_print_tab(char **s)
 {
 	int	i;
+		t_redircmd *_t;
 
 	i = 0;
 	if (!s)
@@ -25,13 +27,10 @@ void	ft_print_tab(char **s)
 			printf("EXEC______  %s\n", s[i]);
 		i++;
 	}
-}
-
+}*/
 /*
 static void	print_tree(t_cmd *tree)
 {
-		t_redircmd *_t;
-
 	printf("TREE____ %p\n", tree);
 	if (tree && tree->type == 1)
 	{
@@ -84,9 +83,7 @@ void	ft_here_doc(t_redircmd **cmd, t_env_v *env, char *delimeter)
 	while (1)
 	{
 		str = readline("> ");
-		if (!str)
-			printf("DELIM_NOT_DONE\n");
-		if (!ft_strcmp(str, delimeter))
+		if (!str || !ft_strcmp(str, delimeter))
 		{
 			free(str);
 			break ;
@@ -97,41 +94,46 @@ void	ft_here_doc(t_redircmd **cmd, t_env_v *env, char *delimeter)
 			str = ft_replace_dollar(str, env);
 			free(tm);
 		}
-		ft_putstr_fd(str, (*cmd)->fd);
-		ft_putstr_fd("\n", (*cmd)->fd);
+		ft_putendl_fd(str, (*cmd)->fd);
 		free(str);
 	}
 	close((*cmd)->fd);
 	(*cmd)->fd = 0;
-	(*cmd)->token = 0;
 }
 
-static void	ft_here(void)
+static t_pwd	*ft_init_wds(void)
 {
-	return ;
+	t_pwd	*wds;
+	char	buffer[1024];
+
+	wds = malloc(sizeof(t_pwd));
+	if (!wds)
+		return (NULL);
+	getcwd(buffer, sizeof(buffer));
+	(*wds) = (t_pwd){NULL, ft_strdup(buffer)};
+	return (wds);
 }
 
-int	ft_run_shell(t_env_v *env)
+static void	ft_post_free(t_cmd *cmd, char **ptr, char *str)
+{
+	ft_free_tree(cmd);
+	free(ptr);
+	free(str);
+}
+
+void	ft_run_shell(t_env_v *env)
 {
 	t_cmd	*cmd;
 	char	*str;
-	char	buffer[1024];
 	char	**ptr;
 	int		pos;
 	t_pwd	*wds;
 
-	wds = malloc(sizeof(t_pwd));
-	getcwd(buffer, sizeof(buffer));
-	(*wds) = (t_pwd){NULL, ft_strdup(buffer)};
+	wds = ft_init_wds();
 	while (1)
 	{
 		child_signal_def(0);
 		str = readline("$ ");
-		if (!str)
-		{
-			ft_free_stack(&env);
-			exit(130);
-		}
 		if (!ft_handel_line(str))
 			continue ;
 		ptr = ft_check_syntax(str);
@@ -144,12 +146,8 @@ int	ft_run_shell(t_env_v *env)
 		pos = 0;
 		cmd = parsepipe(ptr, &pos, env);
 		ft_execution(cmd, env, wds);
-		ft_free_tree(cmd);
-		free(ptr);
-		free(str);
-		ft_here();
+		ft_post_free(cmd, ptr, str);
 	}
-	return (0);
 }
 
 int	main(int ac, char **av, char **envp)
