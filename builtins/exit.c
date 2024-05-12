@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 20:14:04 by serraoui          #+#    #+#             */
-/*   Updated: 2024/05/12 17:22:57 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/05/12 01:09:50 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 	@__PROTO  : int	ft_atoi_check(const char *, int *);
 	@__DESC   : utility function that checks weither the const char *str
 		is an intger or not, returns 1 if it is the case and 0 if not, and
-		the number takes the int value in its content. 
+		the number takes the int value in its content.
 	@__DATE   : 10-12-2023
 */
 int	ft_atoi_check(const char *str, int *number)
@@ -59,7 +59,7 @@ static void	exit_ndg(char *s)
 
 void	ft_exit(int ac, char **av)
 {
-	int	nbr;
+	int		nbr;
 
 	if (ac > 2)
 	{

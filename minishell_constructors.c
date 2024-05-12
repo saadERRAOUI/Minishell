@@ -6,7 +6,7 @@
 /*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 20:42:18 by serraoui          #+#    #+#             */
-/*   Updated: 2024/05/03 17:07:28 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/12 20:33:30 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ t_cmd	*execcmd(void)
 	cmd->argv = malloc(MAXARGS * sizeof(char *));
 	ft_memset(cmd, 0, sizeof(t_execcmd *));
 	cmd->type = EXEC;
+	cmd->envp = NULL;
 	return ((t_cmd *)cmd);
 }
 

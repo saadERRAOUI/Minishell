@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 17:36:23 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/05/12 17:22:57 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/05/12 01:05:53 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,9 @@ void	print_arg(int index, char **av, int ac)
 	return ;
 }
 
-static int only_char(char *str, char c)
+static int	only_char(char *str, char c)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (str[i])
@@ -40,12 +40,10 @@ static int only_char(char *str, char c)
 	return (0);
 }
 
-static int is_flag(char **ptr, int *i)
+static int	is_flag(char **ptr, int *i, int *token)
 {
-	int token;
-	int j;
+	int	j;
 
-	token = 0;
 	while (ptr[*i])
 	{
 		j = 0;
@@ -55,8 +53,8 @@ static int is_flag(char **ptr, int *i)
 			{
 				if (!only_char((ptr[*i] + 1), 'n'))
 				{
-						token = 1;
-						(*i)++;
+					*token = 1;
+					(*i)++;
 				}
 			}
 			else if (!only_char((ptr[*i] + 1), 'n'))
@@ -67,21 +65,21 @@ static int is_flag(char **ptr, int *i)
 		else
 			break ;
 	}
-	return (token);
+	return (*token);
 }
 
 int	echo(int ac, char **av)
 {
 	int	i;
-	int token;
+	int	token;
 
 	token = 0;
 	if (ac >= 2)
 	{
 		i = 1;
 		if (ft_strlen(av[1]) >= 2 && !ft_strncmp(av[i], "-n", 2))
-			token = is_flag(av, &i);
-			print_arg(i, av, ac);
+			token = is_flag(av, &i, &token);
+		print_arg(i, av, ac);
 	}
 	if (token == 0)
 		ft_putstr_fd("\n", 1);

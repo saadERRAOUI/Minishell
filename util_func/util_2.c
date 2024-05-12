@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   util_2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 17:22:40 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/05/12 17:22:57 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/05/12 01:10:13 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,17 +105,15 @@ char	*ft_shift(char *ptr)
 
 static int	ft_checkk(char **ptr, int index)
 {
-    if ( !ptr || !(*ptr))
-        return (0);
+	if (!ptr || !(*ptr))
+		return (0);
 	while (ptr[index])
 	{
 		if (ft_strchr("<>|", ptr[index][0]) && ft_strlen(ptr[index]) >= 2)
 		{
 			if (ft_strlen(ptr[index]) > 2)
 				return (0);
-			if (ptr[index][0] != ptr[index][1])
-				return (0);
-			if (!ptr[index + 1])
+			if ((ptr[index][0] != ptr[index][1]) || !ptr[index + 1])
 				return (0);
 		}
 		else if (index && ft_strchr("|<>", ptr[index][0]) && ft_strchr("|<>",
@@ -124,7 +122,8 @@ static int	ft_checkk(char **ptr, int index)
 		else if (ft_strchr("|><", ptr[index][0]) && (!ptr[index + 1]
 				|| ft_strchr("|><", ptr[index + 1][0])))
 		{
-			if (ptr[index][0] == '|' && ptr[index + 1] && ptr[index + 1][0] != '|')
+			if (ptr[index][0] == '|' && ptr[index + 1] && ptr[index
+				+ 1][0] != '|')
 				return (1);
 			return (0);
 		}
@@ -144,7 +143,6 @@ char	**syntax(char **ptr)
 	if (!ft_checkk(ptr, 0))
 	{
 		ft_free(ft_strleen(ptr), ptr);
-		// free(ptr);
 		ft_putstr_fd("bash: syntax error near unexpected token\n", 2);
 		g_exit = 258;
 		return (NULL);

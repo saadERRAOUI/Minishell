@@ -6,7 +6,7 @@
 /*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 18:21:26 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/05/09 15:12:41 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/11 23:00:00 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,4 +86,52 @@ char	*ft_charjoin(char *str, char c)
 	ptr[len] = c;
 	free(str);
 	return (ptr);
+}
+
+void	ft_free2(char **ptr)
+{
+	while ((*ptr))
+	{
+		free(*ptr);
+		*ptr = NULL;
+		ptr++;
+	}
+	free(ptr);
+}
+
+/*
+	@AUTHOR: Hicham bouzid
+	@PROTOTYPE: char	*ft_modifie(char *ptr, int start, int end, char *t)
+	@DESC: realloc for a new strin by adding the value of a env variable
+			if it's found else remove it's.
+	@DATE: 18-04-2024
+*/
+
+char	*ft_modifie(char *ptr, int start, int end, char *t)
+{
+	int		len;
+	char	*str;
+	int		i;
+	int		j;
+
+	len = ft_strlen(ptr) - (end - start) - 1;
+	if (t)
+		len += ft_strlen(t);
+	str = malloc(sizeof(char) * (len));
+	str[len] = 0;
+	i = 0;
+	j = 0;
+	while (i < len)
+	{
+		while (i < start - 1)
+		{
+			str[i] = ptr[i];
+			i++;
+		}
+		while (t && t[j])
+			str[i++] = t[j++];
+		while (i < len && end < (int)ft_strlen(ptr))
+			str[i++] = ptr[end++];
+	}
+	return (str);
 }

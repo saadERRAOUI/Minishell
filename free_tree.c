@@ -3,20 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   free_tree.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 15:37:01 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/05/12 15:22:34 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/05/12 16:15:54 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-
-void ft_free_execcmd(t_execcmd *cmd)
+void	ft_free_execcmd(t_execcmd *cmd)
 {
-    if (cmd->argv)
-	    ft_free(ft_strleen(cmd->argv), cmd->argv);
+	if (cmd->argv)
+		ft_free(ft_strleen(cmd->argv), cmd->argv);
 	free(cmd->path);
 	if (cmd->envp)
         ft_free(ft_strleen(cmd->envp), cmd->envp);
@@ -24,9 +23,9 @@ void ft_free_execcmd(t_execcmd *cmd)
 	cmd = NULL;
 }
 
-void ft_free_redir(t_redircmd *cmd)
+void	ft_free_redir(t_redircmd *cmd)
 {
-	t_redircmd *tmp;
+	t_redircmd	*tmp;
 
 	while (cmd)
 	{
@@ -44,10 +43,10 @@ void ft_free_redir(t_redircmd *cmd)
 	}
 }
 
-void ft_free_pipe(t_cmd *cmd)
+void	ft_free_pipe(t_cmd *cmd)
 {
-	t_cmd *tmp;
-	
+	t_cmd	*tmp;
+
 	tmp = cmd;
 	if (((t_pipecmd *)cmd)->left)
 		ft_free_tree(((t_pipecmd *)cmd)->left);
@@ -64,7 +63,7 @@ void ft_free_pipe(t_cmd *cmd)
 	}
 }
 
-void ft_free_tree(t_cmd *cmd)
+void	ft_free_tree(t_cmd *cmd)
 {
 	if (cmd->type == 1)
 		ft_free_execcmd((t_execcmd *)cmd);

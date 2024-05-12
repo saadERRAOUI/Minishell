@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 17:04:14 by serraoui          #+#    #+#             */
-/*   Updated: 2024/05/12 17:22:57 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/05/12 01:09:31 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,17 +73,12 @@ void	cd(char **av, t_pwd *wds)
 		return ;
 	if (!av[1])
 		ft_cd_user(wds);
-	else if (stat(av[1], &path_stat) == 0
-		&& S_ISREG(path_stat.st_mode)
-	)
+	else if (stat(av[1], &path_stat) == 0 && S_ISREG(path_stat.st_mode))
 		ft_cd_error(av[1], 0);
 	else if (((!ft_strcmp(av[1], "..") && wds && wds->old_wd
-				&& ft_strnstr(wds->curr_wd,
-					wds->old_wd,
-					ft_strlen(wds->curr_wd)))
-			|| (wds && !ft_strcmp(av[1], wds->old_wd)))
-		&& access(wds->old_wd, F_OK) == -1
-	)
+				&& ft_strnstr(wds->curr_wd, wds->old_wd,
+					ft_strlen(wds->curr_wd))) || (wds && !ft_strcmp(av[1],
+					wds->old_wd))) && access(wds->old_wd, F_OK) == -1)
 		ft_cd_parent(wds);
 	else if (!access(av[1], F_OK))
 		ft_cd_access(wds, av[1]);
