@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_parsers.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: serraoui <serraoui@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 02:29:36 by serraoui          #+#    #+#             */
-/*   Updated: 2024/05/13 00:44:04 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/05/13 01:43:37 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ static t_execcmd	*parse_exec_helper(t_redircmd **ret, char **ps, int *pos,
 		cmd->argv[argc] = ps[(*pos)];
 		argc++;
 		if (argc >= MAXARGS)
-			return (g_exit = 1 , ft_putstr_fd("bash: too many arguments !\n", 2), NULL);
+			return (g_exit = 1, ft_putstr_fd("bash: too many arguments !\n", 2),
+				NULL);
 		(*pos)++;
 		parseredir(ret, ps, pos, env);
 		tok = get_token_type(ps[(*pos)]);

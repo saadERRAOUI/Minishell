@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: serraoui <serraoui@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 17:15:26 by serraoui          #+#    #+#             */
-/*   Updated: 2024/05/13 00:46:18 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/05/13 01:55:46 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,12 +121,6 @@ static void	ft_post_free(t_cmd *cmd, char **ptr, char *str)
 	free(str);
 }
 
-static void ft_here()
-{
-	system("leaks minishell");
-	
-}
-
 void	ft_run_shell(t_env_v *env)
 {
 	t_cmd	*cmd;
@@ -140,12 +134,7 @@ void	ft_run_shell(t_env_v *env)
 	{
 		child_signal_def(0);
 		str = readline("$ ");
-		if (!str)
-		{
-			ft_free_stack(&env);
-			exit(0);
-		}
-		if (!ft_handel_line(str))
+		if (!ft_handel_line(str, env))
 			continue ;
 		ptr = ft_check_syntax(str);
 		if (!ptr)
@@ -158,7 +147,6 @@ void	ft_run_shell(t_env_v *env)
 		cmd = parsepipe(ptr, &pos, env);
 		ft_execution(cmd, env, wds);
 		ft_post_free(cmd, ptr, str);
-		ft_here();
 	}
 }
 

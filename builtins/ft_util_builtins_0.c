@@ -6,7 +6,7 @@
 /*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/12 00:59:01 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/05/12 01:17:46 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/13 01:44:10 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,4 +77,11 @@ char	**ft_expand(char **ptr, t_env_v *env)
 		i++;
 	}
 	return (ptr);
+}
+
+char	*selectt(char *str)
+{
+	if (str)
+		return (ft_strdup(str));
+	return (ft_strdup(" "));
 }

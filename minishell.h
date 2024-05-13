@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: serraoui <serraoui@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 18:02:20 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/05/13 00:29:29 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/05/13 01:44:05 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,7 @@ char						*get_name(void);
 char						**syntax(char **ptr);
 int							ft_lst_size(t_env_v *lst);
 int							get_token_type(char *s);
-int							ft_handel_line(char *str);
+int							ft_handel_line(char *str, t_env_v *env);
 int							ft_util_quotes(char *av, char q, int *index);
 int							ft_quotes(char *str);
 int							ft_strlen_until(char *str, char c);
@@ -162,5 +162,6 @@ t_redircmd					*here_doc_handler(t_env_v *env, int tok, int *pos,
 int							redir_helper(t_redircmd **red, int tok, int *pos,
 								char **ps);
 int							only_char(char *str, char c);
+char						*selectt(char *str);
 
 #endif

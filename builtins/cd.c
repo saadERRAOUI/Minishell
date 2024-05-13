@@ -17,8 +17,8 @@ static void	ft_cd_user(t_pwd *wds)
 	char	*s;
 	char	buffer[1024];
 
-    if (!getenv("USER"))
-        return (ft_putstr_fd("bash: cd: HOME not set\n", 2));
+	if (!getenv("USER"))
+		return (ft_putstr_fd("bash: cd: HOME not set\n", 2));
 	s = ft_strjoin(ft_strdup("/Users/"), getenv("USER"));
 	getcwd(buffer, sizeof(buffer));
 	if (wds && wds->old_wd)

@@ -51,15 +51,15 @@ int	ft_atoi_check(const char *str, int *number)
 
 static void	exit_ndg(char *s)
 {
-    ft_putstr_fd("exit: ", 2);
-    ft_putstr_fd(s, 2);
+	ft_putstr_fd("exit: ", 2);
+	ft_putstr_fd(s, 2);
 	ft_putstr_fd(": numeric argument required\n", 2);
 	exit(255);
 }
 
 void	ft_exit(int ac, char **av)
 {
-	int		nbr;
+	int	nbr;
 
 	if (ac > 2)
 	{
@@ -70,7 +70,7 @@ void	ft_exit(int ac, char **av)
 	else if (av[1] && ac == 2)
 	{
 		if (!ft_atoi_check(av[1], &nbr))
-				exit_ndg(av[1]);
+			exit_ndg(av[1]);
 		g_exit = nbr;
 	}
 	exit(g_exit);

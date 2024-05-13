@@ -21,5 +21,5 @@ void	ft_env(t_env_v *env)
 		printf("%s=%s\n", env->key, env->value);
 		env = env->next;
 	}
-    g_exit = 0;
+	g_exit = 0;
 }

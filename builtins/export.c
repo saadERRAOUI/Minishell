@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: serraoui <serraoui@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 01:40:47 by serraoui          #+#    #+#             */
-/*   Updated: 2024/05/13 01:14:33 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/05/13 01:44:27 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,22 +41,17 @@ static int	util_export(t_env_v **env, char **s, int flag)
 	if (ft_content_equal(env, s[0]))
 	{
 		node = ft_content_equal(env, s[0]);
-        if (flag && s[1])
-		    node->value = ft_strjoin(node->value, s[1]);
-        else if (!flag)
-        {
-            free(node->value);
-            if (s[1])
-                node->value = ft_strdup(s[1]);
-            else
-                node->value = ft_strdup(" ");
-        }
+		if (flag && s[1])
+			node->value = ft_strjoin(node->value, s[1]);
+		else if (!flag)
+		{
+			free(node->value);
+			node->value = selectt(s[1]);
+		}
 	}
 	else if (!ft_content_equal(env, s[0]))
 	{
 		node = (t_env_v *)malloc(sizeof(t_env_v));
-		if (!node)
-			return (0);
 		if (s[1])
 			(*node) = (t_env_v){ft_strdup(s[0]), ft_strdup(s[1]), NULL};
 		else
@@ -108,23 +103,24 @@ static int	export_argument(t_env_v **env, char *av)
 
 void	ft_export(t_env_v **env, char **av)
 {
-    int flag;
+	int	flag;
 
-    flag = 0;if (av && !av[1])
-    {
-        g_exit = 0;
+	flag = 0;
+	if (av && !av[1])
+	{
+		g_exit = 0;
 		return (ft_export_envs(env));
-    }
+	}
 	av++;
 	while (*av)
 	{
 		if (!export_argument(env, (*av)))
-        {
-            flag = 1;
+		{
+			flag = 1;
 			break ;
-        }
+		}
 		av++;
 	}
-    if (!flag)
-        g_exit = 0;
+	if (!flag)
+		g_exit = 0;
 }

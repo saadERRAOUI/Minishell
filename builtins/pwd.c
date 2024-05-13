@@ -24,11 +24,11 @@ int	pwd(t_pwd *wds)
 {
 	char	buffer[1024];
 
-    getcwd(buffer, sizeof(buffer));
-    if (!ft_strcmp(buffer, NULL) && wds)
-        printf("%s\n", wds->curr_wd);
-    else
-        printf("%s\n", buffer);
-    g_exit = 0;
-    return (0);
+	getcwd(buffer, sizeof(buffer));
+	if (!ft_strcmp(buffer, NULL) && wds)
+		printf("%s\n", wds->curr_wd);
+	else
+		printf("%s\n", buffer);
+	g_exit = 0;
+	return (0);
 }

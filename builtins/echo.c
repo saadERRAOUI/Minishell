@@ -83,6 +83,6 @@ int	echo(int ac, char **av)
 	}
 	if (token == 0)
 		ft_putstr_fd("\n", 1);
-    g_exit = 0;
+	g_exit = 0;
 	return (0);
 }

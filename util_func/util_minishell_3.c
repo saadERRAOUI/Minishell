@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   util_minishell_3.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: serraoui <serraoui@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:23:09 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/05/13 00:52:25 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/05/13 01:27:17 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,8 +102,7 @@ char	*ft_replace_dollar(char *ptr, t_env_v *env)
 			}
 			env = env->next;
 		}
-		free(s1);
-		return (ft_modifie(ptr, index, len, s2));
+		return (free(s1), ft_modifie(ptr, index, len, s2));
 	}
 	return (NULL);
 }

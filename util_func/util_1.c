@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   util_1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: serraoui <serraoui@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 23:43:26 by serraoui          #+#    #+#             */
-/*   Updated: 2024/05/12 22:10:36 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/05/13 01:24:11 by hibouzid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	ft_list_remove_if(t_env_v **begin_list, void *data_ref,
 	{
 		(*begin_list) = (*begin_list)->next;
 		free(node->key);
-        free(node->value);
+		free(node->value);
 		free(node);
 		ft_list_remove_if(begin_list, data_ref, cmp);
 	}
@@ -77,8 +77,13 @@ void	ft_list_remove_if(t_env_v **begin_list, void *data_ref,
 	}
 }
 
-int	ft_handel_line(char *str)
+int	ft_handel_line(char *str, t_env_v *env)
 {
+	if (!str)
+	{
+		ft_free_stack(&env);
+		exit(0);
+	}
 	if (!*str || !only_char(str, ' ') || !only_char(str, '\t')
 		|| !ft_strcmp(str, "\n") || !ft_quotes(str))
 	{
