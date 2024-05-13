@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   util_minishell_5.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: serraoui <serraoui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 17:15:28 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/05/11 22:21:54 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/12 22:04:56 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,14 @@ char	*ft_cmd_valid(char **env, char **cmd)
 	char	*tmp;
 
 	i = 0;
-  if (!env || !cmd || !*cmd)
+  if (!cmd || !*cmd)
         return (NULL);
 	if (!access(cmd[0], F_OK | X_OK))
 		return (ft_strdup(cmd[0]));
 	if ((!ft_strncmp(cmd[i], ".", 1) || !ft_strncmp(cmd[i], "./", 2))
 		|| (!ft_strncmp(cmd[i], "/", 1) && access(cmd[0], X_OK | F_OK)))
 		return (NULL);
-	while (env[i])
+	while (env && env[i])
 	{
 		if (env)
 			tmp = ft_strjoin(ft_strdup(env[i]), cmd[0]);

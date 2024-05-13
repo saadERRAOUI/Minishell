@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   util_minishell_6.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: serraoui <serraoui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 18:21:26 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/05/11 23:00:00 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/12 22:36:51 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ int	ft_strleen(char **ptr)
 	int	i;
 
 	i = 0;
+	if (!ptr)
+		return (0);
 	while (ptr[i])
 		i++;
 	return (i);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_tree.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: serraoui <serraoui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 15:37:01 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/05/12 16:15:54 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/13 00:22:29 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,8 @@ void	ft_free_pipe(t_cmd *cmd)
 
 void	ft_free_tree(t_cmd *cmd)
 {
+	if (!cmd)
+		return ;
 	if (cmd->type == 1)
 		ft_free_execcmd((t_execcmd *)cmd);
 	if (cmd->type == 2)

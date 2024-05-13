@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_execution.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: serraoui <serraoui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/12 01:48:44 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/05/12 19:45:04 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/13 00:46:57 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,8 @@ void	ft_execution(t_cmd *cmd, t_env_v *env, t_pwd *wds)
 {
 	int	s;
 
+	if (!cmd)
+		return ;
 	if (cmd->type == 3)
 		ft_pipe((t_pipecmd *)cmd, env);
 	else if (cmd->type == 2)

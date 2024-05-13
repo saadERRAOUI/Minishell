@@ -6,7 +6,7 @@
 /*   By: serraoui <serraoui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 18:02:20 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/05/12 21:41:15 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/05/13 00:29:29 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,5 +161,6 @@ t_redircmd					*here_doc_handler(t_env_v *env, int tok, int *pos,
 								char **ps);
 int							redir_helper(t_redircmd **red, int tok, int *pos,
 								char **ps);
+int							only_char(char *str, char c);
 
 #endif

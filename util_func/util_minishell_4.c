@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   util_minishell_4.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: serraoui <serraoui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 17:24:26 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/05/11 22:29:19 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/12 22:47:56 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ char	*expand_or_not(char *ptr)
 
 char	**ft_free(int index, char **ptr)
 {
+	if (!ptr)
+		return (NULL);
 	while (index >= 0)
 	{
 		free(ptr[index]);

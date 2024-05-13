@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   util_minishell_3.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: serraoui <serraoui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:23:09 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/05/12 01:10:25 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/13 00:52:25 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,8 +89,9 @@ char	*ft_replace_dollar(char *ptr, t_env_v *env)
 	if (ft_strlen_until(ptr, '$') != -1)
 	{
 		s1 = get_measurements(&index, &len, ptr);
-		if (!s1)
+		if (!s1 && ptr[index] == '?')
 			return (ft_help(ptr, index));
+		free(s1);
 		s1 = ft_substr(ptr, index, len - index);
 		while (env)
 		{

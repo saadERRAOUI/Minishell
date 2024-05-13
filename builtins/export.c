@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: serraoui <serraoui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 01:40:47 by serraoui          #+#    #+#             */
-/*   Updated: 2024/05/12 17:22:57 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/05/13 01:14:33 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,8 @@ static int	export_arg_value(t_env_v **env, char **s)
 	int	flag;
 
 	flag = 0;
+	if (!env || !*env)
+		return (0);
 	if (s[0] && s[0][ft_strlen(s[0]) - 1] == '+')
 	{
 		s[0][ft_strlen(s[0]) - 1] = '\0';
@@ -108,8 +110,7 @@ void	ft_export(t_env_v **env, char **av)
 {
     int flag;
 
-    flag = 0;
-	if (av && !av[1])
+    flag = 0;if (av && !av[1])
     {
         g_exit = 0;
 		return (ft_export_envs(env));

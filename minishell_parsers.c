@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_parsers.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: serraoui <serraoui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 02:29:36 by serraoui          #+#    #+#             */
-/*   Updated: 2024/05/12 20:50:18 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/13 00:44:04 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static t_execcmd	*parse_exec_helper(t_redircmd **ret, char **ps, int *pos,
 		cmd->argv[argc] = ps[(*pos)];
 		argc++;
 		if (argc >= MAXARGS)
-			exit(1);
+			return (g_exit = 1 , ft_putstr_fd("bash: too many arguments !\n", 2), NULL);
 		(*pos)++;
 		parseredir(ret, ps, pos, env);
 		tok = get_token_type(ps[(*pos)]);
@@ -48,6 +48,8 @@ t_cmd	*parsexec(char **ps, int *pos, t_env_v *env)
 
 	ret = NULL;
 	cmd = parse_exec_helper(&ret, ps, pos, env);
+	if (!cmd)
+		return (NULL);
 	if (cmd->envp)
 	{
 		tab = ft_parce_env(cmd->envp);
@@ -126,7 +128,6 @@ void	parseredir(t_redircmd **red, char **ps, int *pos, t_env_v *env)
 			tmp = here_doc_handler(env, tok, pos, ps);
 			(*pos)++;
 			ft_lstadd_back_(red, tmp);
-			break ;
 		}
 		tok = get_token_type(ps[(*pos)]);
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hibouzid <hibouzid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: serraoui <serraoui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 17:36:23 by hibouzid          #+#    #+#             */
-/*   Updated: 2024/05/12 01:05:53 by hibouzid         ###   ########.fr       */
+/*   Updated: 2024/05/12 21:57:04 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	print_arg(int index, char **av, int ac)
 	return ;
 }
 
-static int	only_char(char *str, char c)
+int	only_char(char *str, char c)
 {
 	int	i;
 

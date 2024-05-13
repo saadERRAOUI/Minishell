@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   util_1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: serraoui <serraoui@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: serraoui <serraoui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 23:43:26 by serraoui          #+#    #+#             */
-/*   Updated: 2024/05/12 17:02:51 by serraoui         ###   ########.fr       */
+/*   Updated: 2024/05/12 22:10:36 by serraoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,8 @@ void	ft_list_remove_if(t_env_v **begin_list, void *data_ref,
 
 int	ft_handel_line(char *str)
 {
-	if (!*str || !ft_strcmp(str, "\n") || !ft_quotes(str))
+	if (!*str || !only_char(str, ' ') || !only_char(str, '\t')
+		|| !ft_strcmp(str, "\n") || !ft_quotes(str))
 	{
 		free(str);
 		return (0);
